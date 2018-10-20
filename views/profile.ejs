@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script>
+    function publishRepo(repo){
+        console.log(repo);
+        fetch(`/publish/${repo}`).then(data => data.json()).then(data => console.log(data));
+    }
+    </script>
+</head>
+<body>
+        <p>
+                ID: <%= user.id %><br/>
+                Username: <%= user.username %><br/>
+                Name: <%= user.displayName %><br/>
+                <% if (user.emails) { %>
+                Email: <%= user.emails[0].value %><br/>
+                <% } %>
+                </p>
+                <div id="repos">
+                        <table>
+                                <% for(var i=0; i < repos.length; i++) { %>
+                                   <tr>
+                                     <td><%= repos[i].id %></td>
+                                     <td><%= repos[i].name %></td>
+                                     <button onclick="publishRepo('<%= repos[i].name %>')">Publish</button>
+                                   </tr>
+                                <% } %>
+                          </table>
+                </div>
+                
+</body>
+</html>
