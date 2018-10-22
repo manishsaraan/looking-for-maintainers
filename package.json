@@ -2,6 +2,9 @@
   "name": "express-4.x-facebook-example",
   "version": "0.0.0",
   "description": "Express 4.x app using Passport for authentication with Facebook.",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint server.js"
+  },
   "keywords": [
     "example",
     "express",
@@ -30,5 +33,10 @@
     "passport": "^0.2.2",
     "passport-facebook": "^2.0.0",
     "passport-github": "^1.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.8.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
   }
 }
