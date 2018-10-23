@@ -26,9 +26,9 @@
                         <table>
                                 <% for(var i=0; i < repos.length; i++) { %>
                                    <tr>
-                                     <td><%= repos[i].id %></td>
+                                     <td><%= repos[i]._id %></td>
                                      <td><%= repos[i].name %></td>
-                                     <button onclick="publishRepo('<%= repos[i].name %>')">Publish</button>
+                                     <button onclick="publishRepo('<%= repos[i]._id %>')">Publish</button>
                                    </tr>
                                 <% } %>
                           </table>
