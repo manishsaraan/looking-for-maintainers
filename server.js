@@ -53,13 +53,12 @@ app.use(passport.session());
 // Define routes.
 app.get('/',
   function(req, res) {
-    Repos.find({}, null, { sort: {stargazers_count: -1 },limit: 100 }, function(err, repos) {
+    Repos.find({}).populate('repo').sort({stargazers_count: -1 }).limit(20).exec(function(err, repos) {
       if (err) throw err;
-    
-      // object of all the users
        res.render('home', { user: req.user, repos });
 
     });
+    // Repos.find({}, null, { sort: {stargazers_count: -1 },limit: 100 }, );
   });
 
 app.get('/login',
@@ -138,14 +137,17 @@ app.get('/profile',
 
   app.get('/publish/:repoId', async (req, res) => {
     require('connect-ensure-login').ensureLoggedIn();
-    console.log("---------req.user----------",req.user)
-    const { accessToken,  username } = req.user;
+    // console.log("---------req.user----------",req.user)
+    // const { accessToken,  username } = req.user;
     const { repoId } = req.params;
-  
-    const apiUrl = `${baseUrl}/repos/${username}/${repoId}?token=${accessToken}`;
-    console.log("((repos(((((((((sddddddddddddd", apiUrl);
-    const {body: repoContent} = await got(apiUrl, {json: true, method: 'GET'});
-
+    const repo = new Repos({
+      repo:repoId
+    });
+    // const apiUrl = `${baseUrl}/repos/${username}/${repoId}?token=${accessToken}`;
+    // console.log("((repos(((((((((sddddddddddddd", apiUrl);
+    // const {body: repoContent} = await got(apiUrl, {json: true, method: 'GET'});
+    repo.save((err, data) => res.json({data}));
+    
     
   });
 
