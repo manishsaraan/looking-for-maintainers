@@ -4,10 +4,12 @@ const Strategy = require('passport-github').Strategy;
 const got = require("got");
 const mongoose = require('mongoose');
 const async = require("async");
+
 const baseUrl = "https://api.github.com";
 mongoose.connect('mongodb://node_passport:Admin123#@ds245523.mlab.com:45523/repos',{ useNewUrlParser: true });
 const Repos = require('./repos');
 const UserRepos = require('./user-repos');
+const Users = require('./users');
 const clientID = "b2464a59102ba2db9cb1";
 const clientSecret = "4e265ceaa7bfc09315438f9d9e3d795302bca1ce";
 
@@ -18,7 +20,33 @@ passport.use(new Strategy({
   },
   function(accessToken, refreshToken, profile, cb) {
     console.log(accessToken, refreshToken, profile);
-    return cb(null, { ...profile, accessToken, refreshToken });
+    const {  username, displayName, _json: {
+      id, avatar_url, html_url, blog, location, email, bio, public_repos, public_gists, followers,following, created_at
+    } } = profile;
+    const userData = {
+      github_id: id,
+      name: displayName,
+      username,
+      email,
+      avatar_url,
+      html_url,
+      blog,
+      location,
+      bio,
+      public_repos,
+      public_gists,
+      followers,
+      following,
+      created_at
+    };
+
+    Users.findOneAndUpdate({ github_id: id}, userData , { upsert: true, new: true, setDefaultsOnInsert: true }, function(error, savedData) {
+      if (error) console.log(error);
+    console.log("mainuaerasdfsdf&&&&&&&&&&&&&&&&&&&&&&&&&&",savedData);
+    return cb(null, { ...userData, id: savedData._id, accessToken, refreshToken });
+      // do something with the document
+    });
+   
   }));
 
 passport.serializeUser(function(user, cb) {
@@ -79,15 +107,16 @@ app.get('/login/github/return',
 app.get('/profile',
   require('connect-ensure-login').ensureLoggedIn(),
   async (req, res) => {
-    const { accessToken, username, _json: { public_repos } } = req.user;
+    const { accessToken, username, public_repos } = req.user;
     // const {body: sss} = await got(`${baseUrl}/users/sindresorhus?client_id=${clientID}&client_secret=${clientSecret}`, {json: true, method: 'GET'});
 
+    if(!req.session.isSynced){
     const totalPages = Math.ceil(public_repos/100);
     let reposData = [];
     const apiUrl = `${baseUrl}/users/${username}/repos?client_id=${clientID}&client_secret=${clientSecret}&per_page=100&page=1`;
     console.log(public_repos,"((repos(((((((((sddddddddddddd", apiUrl);
     const {body: repos} = await got(apiUrl, {json: true, method: 'GET'});
-    console.log(username, "((((((((((((((repos(((((((((((((((((", repos.length);
+   //console.log(username, "((((((((((((((repos(((((((((((((((((", repos.length);
 
     reposData = [ ...reposData, ...repos];
     if(totalPages > 1){
@@ -95,7 +124,7 @@ app.get('/profile',
       let apiUrlNew = `${baseUrl}/users/${username}/repos?client_id=${clientID}&client_secret=${clientSecret}&per_page=100&page=${i}`;
       console.log("((repos(((((((((apiUrlNew", apiUrlNew);
       const {body: repos} = await got(apiUrlNew, {json: true, method: 'GET'});
-      console.log(username, "((((((((((((((repos(((((((((((((((((", repos.length);
+     // console.log(username, "((((((((((((((repos(((((((((((((((((", repos.length);
       reposData = [ ...reposData, ...repos];      
     }
   }
@@ -128,10 +157,15 @@ app.get('/profile',
           // do something with the document
         });
        },(err, repos) => {
-         console.log(repos)
+         console.log(repos);
+         req.session.isSynced = true;
          res.render('profile', { user: req.user, repos: repos });
 
        });
+      } else {
+        console.log('***********************', req.user)
+        res.render('profile', { user: req.user, repos: { } });
+      }
 
   });
 
