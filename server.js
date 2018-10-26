@@ -4,11 +4,11 @@ const Strategy = require('passport-github').Strategy;
 const got = require("got");
 const mongoose = require('mongoose');
 const async = require("async");
+const libs = require("./libs");
 
 const baseUrl = "https://api.github.com";
-mongoose.connect('mongodb://node_passport:Admin123#@ds245523.mlab.com:45523/repos',{ useNewUrlParser: true });
+mongoose.connect('mongodb://localhost/repos',{ useNewUrlParser: true });
 const Repos = require('./repos');
-const UserRepos = require('./user-repos');
 const Users = require('./users');
 const clientID = "b2464a59102ba2db9cb1";
 const clientSecret = "4e265ceaa7bfc09315438f9d9e3d795302bca1ce";
@@ -86,7 +86,6 @@ app.get('/',
        res.render('home', { user: req.user, repos });
 
     });
-    // Repos.find({}, null, { sort: {stargazers_count: -1 },limit: 100 }, );
   });
 
 app.get('/login',
@@ -107,83 +106,95 @@ app.get('/login/github/return',
 app.get('/profile',
   require('connect-ensure-login').ensureLoggedIn(),
   async (req, res) => {
-    const { accessToken, username, public_repos } = req.user;
+    req.session.user  = req.user;
+    const { accessToken, username, public_repos, id } = req.user;
     // const {body: sss} = await got(`${baseUrl}/users/sindresorhus?client_id=${clientID}&client_secret=${clientSecret}`, {json: true, method: 'GET'});
 
-    if(!req.session.isSynced){
-    const totalPages = Math.ceil(public_repos/100);
-    let reposData = [];
-    const apiUrl = `${baseUrl}/users/${username}/repos?client_id=${clientID}&client_secret=${clientSecret}&per_page=100&page=1`;
-    console.log(public_repos,"((repos(((((((((sddddddddddddd", apiUrl);
-    const {body: repos} = await got(apiUrl, {json: true, method: 'GET'});
-   //console.log(username, "((((((((((((((repos(((((((((((((((((", repos.length);
+  //   if(!req.session.isSynced){
+  //   // const totalPages = Math.ceil(public_repos/100);
+  //   let reposData = [];
+  //   const apiUrl = `${baseUrl}/users/${username}/repos?client_id=${clientID}&client_secret=${clientSecret}&per_page=100&page=1`;
+  //   console.log(public_repos,"((repos(((((((((sddddddddddddd", apiUrl);
+  //   const {body: repos} = await got(apiUrl, {json: true, method: 'GET'});
+  //  //console.log(username, "((((((((((((((repos(((((((((((((((((", repos.length);
 
-    reposData = [ ...reposData, ...repos];
-    if(totalPages > 1){
-    for(let i = 1; i<=totalPages; i++){      
-      let apiUrlNew = `${baseUrl}/users/${username}/repos?client_id=${clientID}&client_secret=${clientSecret}&per_page=100&page=${i}`;
-      console.log("((repos(((((((((apiUrlNew", apiUrlNew);
-      const {body: repos} = await got(apiUrlNew, {json: true, method: 'GET'});
-     // console.log(username, "((((((((((((((repos(((((((((((((((((", repos.length);
-      reposData = [ ...reposData, ...repos];      
-    }
-  }
+  //   reposData = [ ...reposData, ...repos];
+  // //   if(totalPages > 1){
+  // //   for(let i = 1; i<=totalPages; i++){      
+  // //     let apiUrlNew = `${baseUrl}/users/${username}/repos?client_id=${clientID}&client_secret=${clientSecret}&per_page=100&page=${i}`;
+  // //     console.log("((repos(((((((((apiUrlNew", apiUrlNew);
+  // //     const {body: repos} = await got(apiUrlNew, {json: true, method: 'GET'});
+  // //    // console.log(username, "((((((((((((((repos(((((((((((((((((", repos.length);
+  // //     reposData = [ ...reposData, ...repos];      
+  // //   }
+  // // }
 
 
-       async.mapSeries(reposData, (repo, cb) => {
-        const { full_name, stargazers_count, watchers_count, open_issues_count, created_at, forks_count, 
-          description, html_url, language, owner, id } = repo;
-        const { html_url: userProfileUrl, avatar_url, login } = owner;
-        
-        UserRepos.findOneAndUpdate({ github_id: id}, {
-          name: full_name,
-          github_id: id,
-          stargazers_count,
-          watchers_count,
-          open_issues_count,
-          forks_count,
-          description,
-          html_url,
-          language,
-          owner: {
-            userProfileUrl,
-            avatar_url,
-            username: login
-          },
-          created_at
-        }, { upsert: true, new: true, setDefaultsOnInsert: true }, function(error, savedData) {
-          if (error) return;
-          cb(null, savedData);
-          // do something with the document
-        });
-       },(err, repos) => {
-         console.log(repos);
-         req.session.isSynced = true;
-         res.render('profile', { user: req.user, repos: repos });
+  //      async.mapSeries(reposData, (repo, cb) => {
 
-       });
-      } else {
-        console.log('***********************', req.user)
-        res.render('profile', { user: req.user, repos: { } });
-      }
+  //       libs.saveUserRepo(repo, (err, savedRepo) => cb(err, savedRepo));
+
+  //      },(err, repos) => {
+  //        console.log(repos);
+  //        req.session.isSynced = true;
+  //        res.render('profile', { user: req.user, repos: repos });
+
+  //      });
+  //     } else {
+        // console.log('***********************', req.user)
+        res.render('profile', { user: req.user });
+      // }
 
   });
 
-  app.get('/publish/:repoId', async (req, res) => {
+
+//   app.get("/publish/:repoName",
+//   async (req, res) => {
+//     const { repoName } = req.params;
+
+
+// });
+
+app.get('/search/:repoName', require('connect-ensure-login').ensureLoggedIn(), 
+async (req, res) => {
+  
+  console.log("---------req.user----------",req.user)
+  // const { accessToken,  username } = req.user;
+  const { repoName } = req.params;
+  console.log("--------------req.user------------",req.session );
+
+      const { accessToken, username, public_repos, id } = req.session.user ;
+    
+    const apiUrl = `${baseUrl}/search/repositories?q=${repoName}+user:${username}&client_id=${clientID}&client_secret=${clientSecret}`;
+    console.log("--------------apdd------------",apiUrl);
+    const {body: repos} = await got(apiUrl, {json: true, method: 'GET'});
+    res.json({ repo: repos});
+  
+});
+
+  app.get('/publish/:repoName', async (req, res) => {
     require('connect-ensure-login').ensureLoggedIn();
-    // console.log("---------req.user----------",req.user)
-    // const { accessToken,  username } = req.user;
-    const { repoId } = req.params;
-    const repo = new Repos({
-      repo:repoId
-    });
+    const { repoName } = req.params;
+    console.log("--------------req.user------------",req.session );
+  
+        const { accessToken, username, public_repos, id } = req.session.user ;
+      
+      const apiUrl = `${baseUrl}/repos/${username}/${repoName}?client_id=${clientID}&client_secret=${clientSecret}`;
+      console.log("--------------apdd------------",apiUrl);
+      const {body: repos} = await got(apiUrl, {json: true, method: 'GET'});
+      res.json({ repo: repos});
+    // const { repoName } = req.params;
+    // const repo = new Repos({
+    //   repo:repoId
+    // });
     // const apiUrl = `${baseUrl}/repos/${username}/${repoId}?token=${accessToken}`;
     // console.log("((repos(((((((((sddddddddddddd", apiUrl);
     // const {body: repoContent} = await got(apiUrl, {json: true, method: 'GET'});
-    repo.save((err, data) => res.json({data}));
+    // repo.save((err, data) => res.json({data}));
     
     
   });
+  
 
   app.get('/logout', function(req, res){
     req.logout();

@@ -6,12 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
-    <script>
-    function publishRepo(repo){
-        console.log(repo);
-        fetch(`/publish/${repo}`).then(data => data.json()).then(data => console.log(data));
-    }
-    </script>
+   
 </head>
 <body>
         <p>
@@ -22,17 +17,49 @@
                 Email: <%= user.email %><br/>
                 <% } %>
                 </p>
-                <div id="repos">
-                        <table>
-                                <% for(var i=0; i < repos.length; i++) { %>
-                                   <tr>
-                                     <td><%= repos[i]._id %></td>
-                                     <td><%= repos[i].name %></td>
-                                     <button onclick="publishRepo('<%= repos[i]._id %>')">Publish</button>
-                                   </tr>
-                                <% } %>
-                          </table>
-                </div>
+                
+                    <form id="searchForm">
+                            <input type="text" id="search" />
+                            <input type="submit" value="search">
+
+                    </form>
+                <ul id="repos">
+                  <li></li>
+                </ul>
+                <script>
+                        function publishRepo(repo){
+                            console.log(repo);
+                            fetch(`/publish/${repo}`).then(data => data.json()).then(data => console.log(data));
+                        }
+                    
+                        
+
+                        document.querySelector("#searchForm").addEventListener("submit", function(event){
+                            event.preventDefault();
+                    
+                            var repoName = document.querySelector("input").value;
+                            var request = $.ajax({
+                            url: `/search/${repoName}`,
+                            type: "GET",
+                            data: {},
+                            dataType: "json",
+                            success: function(data){
+                                console.log(data);
+                                var reposHtml = "";
+                                 data.repo.items.forEach(function(repo){
+                                    reposHtml+= `
+                                      <li>
+                                        <span>${repo.name}</span>
+                                        <button onClick="publishRepo(${repo.name})">publihs</button>
+                                      </li>
+                                    `;
+                                });
+                                document.getElementById("repos").innerHTML = reposHtml;
+                            }
+                        });
+                           
+                        })
+                        </script>
                 
 </body>
 </html>
