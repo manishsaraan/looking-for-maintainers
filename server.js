@@ -175,14 +175,21 @@ async (req, res) => {
   app.get('/publish/:repoName', async (req, res) => {
     require('connect-ensure-login').ensureLoggedIn();
     const { repoName } = req.params;
-    console.log("--------------req.user------------",req.session );
+    // console.log("--------------req.user------------",req.session );
   
         const { accessToken, username, public_repos, id } = req.session.user ;
       
       const apiUrl = `${baseUrl}/repos/${username}/${repoName}?client_id=${clientID}&client_secret=${clientSecret}`;
-      console.log("--------------apdd------------",apiUrl);
+      // console.log("--------------apdd------------",apiUrl);
       const {body: repos} = await got(apiUrl, {json: true, method: 'GET'});
-      res.json({ repo: repos});
+      console.log(repos);
+ 
+    
+        libs.saveUserRepo({repo: repos, userId: id}, (err, savedRepo) => res.json({ repo: savedRepo}));
+
+      
+
+      ;
     // const { repoName } = req.params;
     // const repo = new Repos({
     //   repo:repoId

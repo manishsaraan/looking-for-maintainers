@@ -1,6 +1,6 @@
 const UserRepos = require("./user-repos");
 
-module.exports.saveUserRepo = (repo, cb) => {
+module.exports.saveUserRepo = ({ repo, userId }, cb) => {
     const {
         full_name, stargazers_count, watchers_count, open_issues_count, created_at, forks_count,
         description, html_url, language, owner, id,
@@ -8,7 +8,7 @@ module.exports.saveUserRepo = (repo, cb) => {
     const { html_url: userProfileUrl, avatar_url, login } = owner;
       console.log('********saving', full_name);
     UserRepos.findOneAndUpdate({ github_id: id }, {
-        userId: id,
+        userId: userId,
         name: full_name,
         github_id: id,
         stargazers_count,

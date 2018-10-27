@@ -27,9 +27,19 @@
                   <li></li>
                 </ul>
                 <script>
-                        function publishRepo(repo){
-                            console.log(repo);
-                            fetch(`/publish/${repo}`).then(data => data.json()).then(data => console.log(data));
+                        function publishRepo(repoName){
+                            console.log(repoName);
+                            var request = $.ajax({
+                            url: `/publish/${repoName}`,
+                            type: "GET",
+                            data: {},
+                            dataType: "json",
+                            success: function(data){
+                                console.log(data);
+                                
+                            }
+                        });
+                            //fetch(`/publish/${repo}`).then(data => data.json()).then(data => console.log(data));
                         }
                     
                         
@@ -50,7 +60,7 @@
                                     reposHtml+= `
                                       <li>
                                         <span>${repo.name}</span>
-                                        <button onClick="publishRepo(${repo.name})">publihs</button>
+                                        <button onClick="publishRepo('${repo.name}')">publihs</button>
                                       </li>
                                     `;
                                 });
