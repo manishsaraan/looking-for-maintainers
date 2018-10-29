@@ -9,7 +9,7 @@ const { db, callbackUrl, PORT } = require("./config");
 
 const baseUrl = "https://api.github.com";
 mongoose.connect(db, { useNewUrlParser: true });
-const Repos = require('./repos');
+const UserRepos = require("./user-repos");
 const Users = require('./users');
 const clientID = "b2464a59102ba2db9cb1";
 const clientSecret = "4e265ceaa7bfc09315438f9d9e3d795302bca1ce";
@@ -82,8 +82,9 @@ app.use(passport.session());
 // Define routes.
 app.get('/',
   function(req, res) {
-    Repos.find({}).populate('repo').sort({stargazers_count: -1 }).limit(20).exec(function(err, repos) {
+    UserRepos.find({}).populate('userId').sort({stargazers_count: -1 }).limit(20).exec(function(err, repos) {
       if (err) throw err;
+      console.log(repos);
        res.render('home', { user: req.user, repos });
 
     });
@@ -140,23 +141,8 @@ async (req, res) => {
       const apiUrl = `${baseUrl}/repos/${username}/${repoName}?client_id=${clientID}&client_secret=${clientSecret}`;
       // console.log("--------------apdd------------",apiUrl);
       const {body: repos} = await got(apiUrl, {json: true, method: 'GET'});
-      console.log(repos);
- 
-    
-        libs.saveUserRepo({repo: repos, userId: id}, (err, savedRepo) => res.json({ repo: savedRepo}));
-
-      
-
-      ;
-    // const { repoName } = req.params;
-    // const repo = new Repos({
-    //   repo:repoId
-    // });
-    // const apiUrl = `${baseUrl}/repos/${username}/${repoId}?token=${accessToken}`;
-    // console.log("((repos(((((((((sddddddddddddd", apiUrl);
-    // const {body: repoContent} = await got(apiUrl, {json: true, method: 'GET'});
-    // repo.save((err, data) => res.json({data}));
-    
+      console.log(repos);    
+      libs.saveUserRepo({repo: repos, userId: id}, (err, savedRepo) => res.json({ repo: savedRepo}));    
     
   });
   

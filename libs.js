@@ -27,6 +27,5 @@ module.exports.saveUserRepo = ({ repo, userId }, cb) => {
     }, { upsert: true, new: true, setDefaultsOnInsert: true }, (error, savedData) => {
         if (error) console.log(error);
         cb(null, savedData);
-        // do something with the document
     });
 };
