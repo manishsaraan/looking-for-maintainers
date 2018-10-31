@@ -5,14 +5,12 @@ const got = require("got");
 const mongoose = require('mongoose');
 const async = require("async");
 const libs = require("./libs");
-const { db, callbackUrl, PORT } = require("./config");
+const { db, clientID, clientSecret, PORT } = require("./config");
 
 const baseUrl = "https://api.github.com";
 mongoose.connect(db, { useNewUrlParser: true });
 const UserRepos = require("./user-repos");
 const Users = require('./users');
-const clientID = "b2464a59102ba2db9cb1";
-const clientSecret = "4e265ceaa7bfc09315438f9d9e3d795302bca1ce";
 
 passport.use(new Strategy({
     clientID,
