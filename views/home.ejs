@@ -7,34 +7,56 @@
 	<title>Document</title>
 	<link rel="stylesheet" href="bootstrap.css" />
 	<link rel="stylesheet" type="text/css" href="global.css" />
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body>
 	
 </body>
 </html>
 <div class="page-wrap">
-	<div class="top-nav">
-		<div class="container clearfix">
-			<a href="https://github.com/manishsaraan/looking-for-maintainers" rel="noopener noreferrer" target="_blank" class="logo clearfix float-left">
-				<div class="logo-text">
-					<h4>LFM</h4>
-					<p class="text-muted d-none d-sm-inline-block d-md-inline-block d-xl-inline-block d-lg-inline-block">Looking for maintainers projects</p>
-				</div>
-			</a>
-			<div class="float-right external-btns">
-				<a href="https://github.com/manishsaraan/looking-for-maintainers" rel="noopener noreferrer" class="btn btn-dark">
-					<i class="fa fa-github mr-1"></i> View Source</a>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<div class="container">
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<a href="https://github.com/manishsaraan/looking-for-maintainers" rel="noopener noreferrer" target="_blank" class="navbar-brand">
+			<div class="logo-text">
+				<h4>LFM</h4>
+			</div>
+		</a>
+
+				<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+					<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+						
+					</ul>
+		
+					<form id="searchForm" class="form-inline my-2 my-lg-0">
+						<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+					</form>
+		            <% if (user) { %>
+					<ul class="navbar-nav ">
+						<!-- PROFILE DROPDOWN - scrolling off the page to the right -->
+						<li class="nav-item dropdown">
+							<a href="#" class="nav-link dropdown-toggle" id="navDropDownLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<%= user.username %>
+				    	    </a>
+							<div class="dropdown-menu" aria-labelledby="navDropDownLink">
+								<a class="dropdown-item" href="/profile">Profile</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="/logout">Logout</a>
+							</div>
+						</li>
+					</ul>
+					<% } else { %>
 					<a href="/login/github" target="_blank" rel="noopener noreferrer" class="btn btn-danger d-none d-sm-none d-md-inline-block d-xl-inline-block d-lg-inline-block">
 						<i class="fa fa-comment mr-1"></i> Login </a>
-						</div>
-					</div>
+					<% } %>
 				</div>
+			</div>
+		
+		</nav>
 
-<% if (!user) { %>
-	<p>Welcome! Please <a href="/login">log in</a>.</p>	
-<% } else { %>
-	<p>Hello, <%= user.username %>. View your <a href="/profile">profile</a>. <a href="/logout">logout</a></p>
-<% } %>
    <div class="container mb-5 pb-4">
 	<div class="body-row">
 		<div class="repositories-grid">
