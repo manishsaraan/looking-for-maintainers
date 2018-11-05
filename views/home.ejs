@@ -9,6 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="global.css" />
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 </head>
 <body>
 	
@@ -28,12 +29,10 @@
 
 				<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 					<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-						
+							
 					</ul>
-		
-					<form id="searchForm" class="form-inline my-2 my-lg-0">
-						<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-					</form>
+					<div class="filter-item"><div class="language-filter-wrap"><button class="btn btn-light language-filter shadowed"><i class="fa fa-filter mr-2"></i>JavaScript</button></div></div>
+				
 		            <% if (user) { %>
 					<ul class="navbar-nav ">
 						<!-- PROFILE DROPDOWN - scrolling off the page to the right -->
@@ -65,9 +64,9 @@
 						<div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 grid-item-container">
 							<div class="grid-item-body">
 							<div class="author-header clearfix">
-								<a href="<%= repos[i].owner.avatar_url %>" target="_blank">
+								<a href="<%= repos[i].owner.userProfileUrl %>" target="_blank">
 									<div class="author-img">
-										<img src="<%= repos[i].owner.avatar_url %>" alt="facebookresearch">
+										<img src="<%= repos[i].owner.avatar_url %>" alt="<%= repos[i].owner.userProfileUrl %>">
 									</div><div class="author-details">
 										<h5><%= repos[i].owner.username %></h5>
 										<p class="small text-muted">View Profile</p>
