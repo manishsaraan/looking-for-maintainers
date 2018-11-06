@@ -14,6 +14,7 @@ const userReposSchema = new Schema({
     description: { type: String },
     language: { type: String },
     created_at: Date,
+    formated_date: { type: String, required: true },
     owner: {
         type: Object,
     },
