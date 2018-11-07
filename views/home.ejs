@@ -28,11 +28,8 @@
 		</a>
 
 				<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-					<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-							
-					</ul>
-					<div class="filter-item"><div class="language-filter-wrap"><button class="btn btn-light language-filter shadowed"><i class="fa fa-filter mr-2"></i>JavaScript</button></div></div>
-				
+					<ul class="navbar-nav mr-auto mt-2 mt-lg-0">							
+					</ul>				
 		            <% if (user) { %>
 					<ul class="navbar-nav ">
 						<!-- PROFILE DROPDOWN - scrolling off the page to the right -->
@@ -48,8 +45,9 @@
 						</li>
 					</ul>
 					<% } else { %>
-					<a href="/login/github" target="_blank" rel="noopener noreferrer" class="btn btn-danger d-none d-sm-none d-md-inline-block d-xl-inline-block d-lg-inline-block">
-						<i class="fa fa-comment mr-1"></i> Login </a>
+						<a href="/login/github" rel="noopener noreferrer" class="btn btn-light language-filter shadowed">
+							<i class="fa fa-github mr-1"></i> Login
+						</a>
 					<% } %>
 				</div>
 			</div>
