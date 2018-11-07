@@ -76,12 +76,12 @@
 								<div class="repo-header">
 									<h5>
 										<a href="<%= repos[i].owner.userProfileUrl %>" target="_blank">
-											<span class="repo-name"><%= repos[i].owner.username %></span></a>
+											<span class="repo-name"><%= repos[i].name %></span></a>
 										</h5>
-										<p class="repo-meta text-muted small">Built by · <a target="_blank" href="<%= repos[i].owner.userProfileUrl %>"><%= repos[i].owner.username %></a> · October 24, 2018</p>
+										<p class="repo-meta text-muted small">Built by · <a target="_blank" href="<%= repos[i].owner.userProfileUrl %>"><%= repos[i].owner.username %></a> · <%= repos[i].formated_date %></p>
 								</div>
 								<div class="repo-body">
-									<p><%= repos[i].description %></p>
+									<p><%= repos[i].description || "No description given." %></p>
 								</div>
 								<div class="repo-footer">
 										<span class="d-inline-block mr-3">
