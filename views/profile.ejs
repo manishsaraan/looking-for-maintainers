@@ -5,10 +5,227 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
-   
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <style>
+            .form-control-borderless {
+                border: none;
+            }
+            .form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
+                border: none;
+                outline: none;
+                box-shadow: none;
+            }
+            /* spinnmer */
+            /*Huge thanks to @tobiasahlin at http://tobiasahlin.com/spinkit/ */
+            .spinner {
+              margin: 100px auto 0;
+              width: 70px;
+              text-align: center;
+            }
+            .spinner > div {
+              width: 18px;
+              height: 18px;
+              background-color: #333;
+              border-radius: 100%;
+              display: inline-block;
+              -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+              animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+            }
+            .spinner .bounce1 {
+              -webkit-animation-delay: -0.32s;
+              animation-delay: -0.32s;
+            }
+            .spinner .bounce2 {
+              -webkit-animation-delay: -0.16s;
+              animation-delay: -0.16s;
+            }
+            @-webkit-keyframes sk-bouncedelay {
+              0%, 80%, 100% { -webkit-transform: scale(0) }
+              40% { -webkit-transform: scale(1.0) }
+            }
+            @keyframes sk-bouncedelay {
+              0%, 80%, 100% { 
+                -webkit-transform: scale(0);
+                transform: scale(0);
+              } 40% { 
+                -webkit-transform: scale(1.0);
+                transform: scale(1.0);
+              }
+            }
+            </style>
 </head>
 <body>
+    	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a href="https://github.com/manishsaraan/looking-for-maintainers" rel="noopener noreferrer" target="_blank" class="navbar-brand">
+                <div class="logo-text">
+                    <h4>LFM</h4>
+                </div>
+            </a>
+    
+                    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">							
+                        </ul>				
+                        <% if (user) { %>
+                        <ul class="navbar-nav ">
+                            <!-- PROFILE DROPDOWN - scrolling off the page to the right -->
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" id="navDropDownLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <%= user.username %>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navDropDownLink">
+                                    <a class="dropdown-item" href="/profile">Profile</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="/logout">Logout</a>
+                                </div>
+                            </li>
+                        </ul>
+                        <% } else { %>
+                            <a href="/login/github" rel="noopener noreferrer" class="btn btn-light language-filter shadowed">
+                                <i class="fa fa-github mr-1"></i> Login
+                            </a>
+                        <% } %>
+                    </div>
+                </div>
+            
+            </nav>
+        <div class="container bootstrap snippet">
+                <div class="row">
+                      <div class="col-sm-3"><!--left col-->
+                          
+            
+                  <div class="text-left">
+                    <img src="https://avatars1.githubusercontent.com/u/170270?v=4" class="avatar img-circle img-thumbnail" alt="avatar">
+                    <div><h2 class="text-left">Sindre Sorhus</h2></div>
+                    <div><h4 class="text-left">sindresorhus</h4></div>
+                    <div><p>Maker · Full-Time Open-Sourcerer · Into Swift and Node.js</p></div>        
+                </div></hr><br>
+            
+                      
+                    </div><!--/col-3-->
+                    <div class="col-sm-9">
+                            <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                      <a class="nav-link active" href="#repositories" role="tab" data-toggle="tab">Repositories</a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" href="#settings" role="tab" data-toggle="tab">Settings</a>
+                                    </li>
+                                  </ul>
+                                  
+                                  <!-- Tab panes -->
+                                  <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade in active" id="repositories">
+                                            <div class="container">
+                                                    <br/>
+                                                    <div class="row justify-content-center">
+                                                                        <div class="col-12 col-md-10 col-lg-8">
+                                                                            <form class="card card-sm">
+                                                                                <div class="card-body row no-gutters align-items-center">
+                                                                                    <div class="col-auto">
+                                                                                        <i class="fas fa-search h4 text-body"></i>
+                                                                                    </div>
+                                                                                    <!--end of col-->
+                                                                                    <div class="col">
+                                                                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords">
+                                                                                    </div>
+                                                                                    <!--end of col-->
+                                                                                    <div class="col-auto">
+                                                                                            <div class="spinner">
+                                                                                                    <div class="bounce1"></div>
+                                                                                                    <div class="bounce2"></div>
+                                                                                                    <div class="bounce3"></div>
+                                                                                            </div>
+                                                                                        <button class="btn btn-lg btn-success" type="submit">Search</button>
+                                                                                    </div>
+                                                                                    <!--end of col-->
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                        <!--end of col-->
+                                                                    </div>
+                                                </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="settings">
+                                            <h2></h2>
+                                            <form class="form" action="##" method="post" id="registrationForm">
+                                             <div class="form-group">
+                                                 
+                                                 <div class="col-xs-6">
+                                                     <label for="first_name"><h4>First name</h4></label>
+                                                     <input type="text" class="form-control" name="first_name" id="first_name" placeholder="first name" title="enter your first name if any.">
+                                                 </div>
+                                             </div>
+                                             <div class="form-group">
+                                                 
+                                                 <div class="col-xs-6">
+                                                   <label for="last_name"><h4>Last name</h4></label>
+                                                     <input type="text" class="form-control" name="last_name" id="last_name" placeholder="last name" title="enter your last name if any.">
+                                                 </div>
+                                             </div>
+                                 
+                                             <div class="form-group">
+                                                 
+                                                 <div class="col-xs-6">
+                                                     <label for="phone"><h4>Phone</h4></label>
+                                                     <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" title="enter your phone number if any.">
+                                                 </div>
+                                             </div>
+                                 
+                                             <div class="form-group">
+                                                 <div class="col-xs-6">
+                                                    <label for="mobile"><h4>Mobile</h4></label>
+                                                     <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter mobile number" title="enter your mobile number if any.">
+                                                 </div>
+                                             </div>
+                                             <div class="form-group">
+                                                 
+                                                 <div class="col-xs-6">
+                                                     <label for="email"><h4>Email</h4></label>
+                                                     <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
+                                                 </div>
+                                             </div>
+                                             <div class="form-group">
+                                                 
+                                                 <div class="col-xs-6">
+                                                     <label for="email"><h4>Location</h4></label>
+                                                     <input type="email" class="form-control" id="location" placeholder="somewhere" title="enter a location">
+                                                 </div>
+                                             </div>
+                                             <div class="form-group">
+                                                 
+                                                 <div class="col-xs-6">
+                                                     <label for="password"><h4>Password</h4></label>
+                                                     <input type="password" class="form-control" name="password" id="password" placeholder="password" title="enter your password.">
+                                                 </div>
+                                             </div>
+                                             <div class="form-group">
+                                                 
+                                                 <div class="col-xs-6">
+                                                   <label for="password2"><h4>Verify</h4></label>
+                                                     <input type="password" class="form-control" name="password2" id="password2" placeholder="password2" title="enter your password2.">
+                                                 </div>
+                                             </div>
+                                             <div class="form-group">
+                                                  <div class="col-xs-12">
+                                                       <br>
+                                                         <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
+                                                          <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
+                                                   </div>
+                                             </div>
+                                         </form>
+            
+                                    </div>                        
+                                  </div>
+                      </div><!--/tab-content-->
+            
+                    </div><!--/col-9-->
+                </div><!--/row-->
         <p>
                 ID: <%= user._id %><br/>
                 Username: <%= user.username %><br/>
