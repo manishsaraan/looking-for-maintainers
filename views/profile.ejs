@@ -230,7 +230,7 @@ input:checked + .slider:before {
                                                                                                 </div>
                                                                                                 <div class="col-3">
                                                                                                         <label class="switch">
-                                                                                                                <input type="checkbox" checked>
+                                                                                                                <input type="checkbox" onchange="publishRepo(this, '<%= repos[i].name %>')" checked>
                                                                                                                 <span class="slider round"></span>
                                                                                                         </label>
                                                                                                 </div>
@@ -255,11 +255,12 @@ input:checked + .slider:before {
                     </div>
                 </div>
                 <script>
-                        function publishRepo(repoName){
-                            console.log(repoName);
+                        function publishRepo(e, repoName){
+                          
+                            var isChecked = jQuery(e).prop('checked');
                             var request = $.ajax({
                             url: `/publish/${repoName}`,
-                            type: "GET",
+                            type: isChecked ? "GET" : "DELETE",
                             data: {},
                             dataType: "json",
                             success: function(data){
@@ -283,7 +284,7 @@ input:checked + .slider:before {
                                     </div>
                                     <div class="col-3">
                                             <label class="switch">
-                                                    <input type="checkbox">
+                                                    <input type="checkbox" onchange="publishRepo(this, '${repo.name}')">
                                                     <span class="slider round"></span>
                                             </label>
                                     </div>
