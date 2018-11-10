@@ -3,7 +3,6 @@ const passport = require('passport');
 const Strategy = require('passport-github').Strategy;
 const got = require("got");
 const mongoose = require('mongoose');
-const async = require("async");
 const libs = require("./libs");
 const { db, clientID, clientSecret, PORT } = require("./config");
 
@@ -97,7 +96,7 @@ app.get('/login/github',
   passport.authenticate('github'));
 
 app.get('/login/github/return', 
-  passport.authenticate('github', { failureRedirect: '/login' }),
+  passport.authenticate('github', { failureRedirect: '/' }),
   function(req, res) {
     res.redirect('/profile');
   });
@@ -107,8 +106,13 @@ app.get('/profile',
   require('connect-ensure-login').ensureLoggedIn(),
   async (req, res) => {
     req.session.user  = req.user;
-    const { accessToken, username, public_repos, id } = req.user;
-    res.render('profile', { user: req.user });
+    const { id } = req.user;
+
+    UserRepos.find({userId: id}).populate('userId').sort({ name: -1 }).exec(function(err, repos) { 
+      console.log("--------**************------repos", repos);
+       res.render('profile', { user: req.user, repos });
+    });
+    
   });
 
 
