@@ -132,6 +132,20 @@ async (req, res) => {
     res.json({ repo: repos});
   
 });
+ 
+  app.delete('/delete/:repoName', (req, res) => {
+    require('connect-ensure-login').ensureLoggedIn();
+    const { repoName } = req.params;
+    const { id } = req.user;
+
+    UserRepos.remove({ userId: id, name:  repoName }, function(err) { 
+      if(err){
+        res.json({ ok: false });
+      }else{
+        res.json({ ok: true });
+      }
+    });
+  });
 
   app.get('/publish/:repoName', async (req, res) => {
     require('connect-ensure-login').ensureLoggedIn();

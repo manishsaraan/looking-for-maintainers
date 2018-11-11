@@ -259,7 +259,7 @@ input:checked + .slider:before {
                           
                             var isChecked = jQuery(e).prop('checked');
                             var request = $.ajax({
-                            url: `/publish/${repoName}`,
+                            url:isChecked ? `/publish/${repoName}` : `/delete/${repoName}`,
                             type: isChecked ? "GET" : "DELETE",
                             data: {},
                             dataType: "json",
