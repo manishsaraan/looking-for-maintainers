@@ -17,7 +17,7 @@ passport.use(new Strategy({
     callbackURL: '/login/github/return'
   },
   function(accessToken, refreshToken, profile, cb) {
-    console.log(accessToken, refreshToken, profile);
+    console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&', profile);
     const {  username, displayName, _json: {
       id, avatar_url, html_url, blog, location, email, bio, public_repos, public_gists, followers,following, created_at
     } } = profile;
@@ -77,7 +77,17 @@ app.use(passport.session());
 
 
 // Define routes.
-app.get('/',
+
+app.get('/', (req, res) => {
+  UserRepos.find({}).populate('userId').sort({stargazers_count: -1 }).limit(20).exec(function(err, repos) {
+    if (err) throw err;
+    console.log(repos);
+     res.render('landing', { user: req.user, repos });
+
+  });
+});
+
+app.get('/explore',
   function(req, res) {
     UserRepos.find({}).populate('userId').sort({stargazers_count: -1 }).limit(20).exec(function(err, repos) {
       if (err) throw err;
