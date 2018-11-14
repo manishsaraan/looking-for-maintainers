@@ -9,6 +9,8 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/notie/4.3.1/notie.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/notie/4.3.1/notie.min.js"></script>
     <style>
             .form-control-borderless {
                 border: none;
@@ -265,6 +267,14 @@ input:checked + .slider:before {
                             dataType: "json",
                             success: function(data){
                                 console.log(data);
+
+                            notie.alert({
+                                type:"success", // optional, default = 4, enum: [1, 2, 3, 4, 5, 'success', 'warning', 'error', 'info', 'neutral']
+                                text: isChecked ? `${repoName} successfully published` : `${repoName} successfully un-published`,
+                                stay: false, // optional, default = false
+                                time: 3, // optional, default = 3, minimum = 1,
+                                position: "top" // optional, default = 'top', enum: ['top', 'bottom']
+                            });
                                 
                             }
                         });
