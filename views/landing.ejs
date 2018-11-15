@@ -9,99 +9,13 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />    
+    <link rel="stylesheet" href="/global.css" />    
         <link rel="shortcut icon" href="img/emoji.png">
         <meta name="og:title" content="Looking for maintainers for your open source projects or want to be a contributor.">
         <meta name="twitter:title" content="Looking for maintainers for your open source projects or want to be a contributor.">
         <meta name="og:description" content="A place where you can publish your open source projects and let other people know, you are looking for maintainers/contributors for your project.">
         <meta name="twitter:description" content="A place where you can publish your open source projects and let other people know, you are looking for maintainers/contributors for your project.">
         <meta name="twitter:site" content="@manish_saraan">
-    <style>
-    /* Resets */
-hr {
-  margin-left: 0;
-  max-width: 40px;
-}
-/* Jumbotron (hero) */
-.jumbotron {
-  position: relative;
-  background: url(https://source.unsplash.com/_yMciiStJyY/1920x1080) no-repeat bottom center / cover;
-}
-.jumbotron:before {
-  position: absolute;
-  content: '';
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, .5);
-}
-.jumbotron .container {
-  padding: 75px 0;
-}
-.jumbotron h1, .jumbotron .lead {
-  color: #fff;
-}
-/* Bustom button */
-.btn-primary {
-  background: #1096fc;
-  border: 0;
-}
-.btn-primary:hover {
-  background: #0384e5;
-}
-/* Features */
-.sec-features .row:nth-of-type(n+2) {
-  margin-top: 160px;
-}
-.sec-features .row:last-of-type {
-  margin-bottom: 160px;
-}
-.sec-features .feature-icon {
-  max-width: 150px;
-}
-/* Testimonials */
-.sec-testimonials {
-  padding-top: 128px;
-  padding-bottom: 128px;
-}
-/* Carousel */
-.carousel-indicators {
-  bottom: -30px;
-}
-.carousel-indicators li {
-  background: rgba(33, 33, 33, .1);
-}
-.carousel-indicators li:focus, .carousel-indicators li:hover {
-  background: rgba(33, 33, 33, .5);
-}
-.carousel-indicators .active {
-  background: rgba(33, 33, 33, .75);
-}
-.carousel-control-next, .carousel-control-prev {
-  color: #212121;
-}
-.carousel-control-next:focus, .carousel-control-prev:focus, .carousel-control-next:hover, .carousel-control-prev:hover {
-  color: #111;
-}
-/* Footer */
-.footer {
-  padding-top: 24px;
-  padding-bottom: 24px;
-  background: #212121;
-}
-.footer li:nth-of-type(n+2) {
-  margin-left: 8px;
-}
-.footer a {
-  font-size: 18px;
-  color: rgba(255, 255, 255, .5);
-  transition: color 0.235s ease-in-out;
-}
-.footer {
-  color: #fff;
-}
-
-    </style>
 </head>
 <body>
         <div class="wrapper">
@@ -147,12 +61,12 @@ hr {
                     <div class="container">
                       <div class="row justify-content-center text-center">
                         <div class="col-md-10 col-lg-6">
-                          <h1 class="display-5">Looking for maintainers/contributors ?</h1>
+                          <h1 class="display-5">Are You Looking for maintainers/contributors ?</h1>
               
                           <p class="lead">A place where you can publish your open source projects and let other people know, you are looking for maintainers/contributors for your project.</p>
               
                           <p class="lead">
-                            <a class="btn btn-primary btn-lg" href="/explore" role="button">Explore Projects</a>
+                            <a id="explore-button" class="btn btn-primary btn-lg" href="/explore" role="button">Explore Projects</a>
                           </p>
                         </div>
                       </div>

@@ -296,7 +296,71 @@ a {
     text-align: left;
   }
   
-  
-  
-  // WEBPACK FOOTER //
-  // ./src/components/filters/language-filter/styles.css
+  /* landign page */
+      /* Resets */
+hr {
+  margin-left: 0;
+  max-width: 40px;
+}
+/* Jumbotron (hero) */
+.jumbotron {
+  position: relative;
+  background: url(/landing-background.jpeg) no-repeat bottom center / cover;
+}
+.jumbotron:before {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, .5);
+}
+.jumbotron .container {
+  padding: 75px 0;
+}
+.jumbotron h1, .jumbotron .lead {
+  color: #fff;
+}
+/* Bustom button */
+.btn-primary {
+  background: #1096fc;
+  border: 0;
+}
+.btn-primary:hover {
+  background: #0384e5;
+}
+/* Features */
+.sec-features .row:nth-of-type(n+2) {
+  margin-top: 160px;
+}
+.sec-features .row:last-of-type {
+  margin-bottom: 160px;
+}
+.sec-features .feature-icon {
+  max-width: 150px;
+}
+/* Footer */
+.footer {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  background: #212121;
+}
+.footer li:nth-of-type(n+2) {
+  margin-left: 8px;
+}
+.footer a {
+  font-size: 18px;
+  color: rgba(255, 255, 255, .5);
+  transition: color 0.235s ease-in-out;
+}
+.footer {
+  color: #fff;
+}
+
+#explore-button {
+  padding: .5rem 1rem;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  border-radius: .3rem;
+}
