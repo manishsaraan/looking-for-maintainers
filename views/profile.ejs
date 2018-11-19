@@ -122,7 +122,7 @@ input:checked + .slider:before {
 .search-body{
     padding:0.3rem 1rem;
 }
-            </style>
+    </style>
 </head>
 <body>
     	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -172,6 +172,17 @@ input:checked + .slider:before {
                     <div><h2 class="text-left"><%= user.name %></h2></div>
                     <div><h4 class="text-left"><%= user.username %></h4></div>
                     <div><p><%= user.bio%></p></div>        
+                    <div class="container">
+                        <div class="row">
+                                <% for(var i=0; i < user.orgs.length; i++) { %>
+                                    <div class="col-4">
+                                        <a href="/profile?q=<%= user.orgs[i].login %>">
+                                            <img class="img-thumbnail rounded" src="<%= user.orgs[i].avatar_url %>"> 
+                                        </a>
+                                    </div>
+                                <% } %>
+                          </div>
+                    </div>        
                 </div></hr><br>
             
                       
@@ -200,7 +211,7 @@ input:checked + .slider:before {
                                                                                     </div>
                                                                                     <!--end of col-->
                                                                                     <div class="col">
-                                                                                        <input class="form-control form-control-lg form-control-borderless" id="search" type="search" placeholder="Search repostories">
+                                                                                        <input class="form-control form-control-lg form-control-borderless" id="search" type="search" placeholder="<%= placeHolder %>">
                                                                                     </div>
                                                                                     <!--end of col-->
                                                                                     <div class="col-auto">
@@ -258,10 +269,11 @@ input:checked + .slider:before {
                 </div>
                 <script>
                         function publishRepo(e, repoName){
-                          
+                            var urlParams = new URLSearchParams(window.location.search);
+                            var publishUrl = urlParams.has('q') ? `/publish/${repoName}?q=${urlParams.get('q')}` : `/publish/${repoName}`;
                             var isChecked = jQuery(e).prop('checked');
                             var request = $.ajax({
-                            url:isChecked ? `/publish/${repoName}` : `/delete/${repoName}`,
+                            url:isChecked ? publishUrl : `/delete/${repoName}`,
                             type: isChecked ? "GET" : "DELETE",
                             data: {},
                             dataType: "json",
@@ -280,7 +292,13 @@ input:checked + .slider:before {
                         });
                             //fetch(`/publish/${repo}`).then(data => data.json()).then(data => console.log(data));
                         }
-                    
+                        
+                        var serachOrg = false;
+                        var orgname;
+                        function searchOgr(org){
+                            serachOrg = true;
+                            orgname=  org;
+                        }
                         
                         function createRepoList(repo){
                             return `
@@ -306,12 +324,14 @@ input:checked + .slider:before {
 
                         document.querySelector("#searchForm").addEventListener("submit", function(event){
                             event.preventDefault();
-                    
+
+                            var urlParams = new URLSearchParams(window.location.search);
+
                             var repoName = document.querySelector("input").value;
                             $(".spinner").show();
                             $(".spinner").parent().find('span').hide();
                             var request = $.ajax({
-                            url: `/search/${repoName}`,
+                            url: urlParams.has('q') ? `/search/${repoName}?q=${urlParams.get('q')}` : `/search/${repoName}`,
                             type: "GET",
                             data: {},
                             dataType: "json",

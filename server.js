@@ -16,12 +16,16 @@ passport.use(new Strategy({
     clientSecret,
     callbackURL: '/login/github/return'
   },
-  function(accessToken, refreshToken, profile, cb) {
-    console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&', profile);
+  async function(accessToken, refreshToken, profile, cb) {
     const {  username, displayName, _json: {
       id, avatar_url, html_url, blog, location, email, bio, public_repos, public_gists, followers,following, created_at
     } } = profile;
-    const userData = {
+
+    const apiUrl = `${baseUrl}/users/${username}/orgs?client_id=${clientID}&client_secret=${clientSecret}`;
+    const {body: orgs} = await got(apiUrl, {json: true, method: 'GET'});
+  
+     console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&', orgs);
+     const userData = {
       github_id: id,
       name: displayName,
       username,
@@ -35,13 +39,13 @@ passport.use(new Strategy({
       public_gists,
       followers,
       following,
-      created_at
+      created_at,
+      orgs,
     };
-
     Users.findOneAndUpdate({ github_id: id}, userData , { upsert: true, new: true, setDefaultsOnInsert: true }, function(error, savedData) {
       if (error) console.log(error);
-    console.log("mainuaerasdfsdf&&&&&&&&&&&&&&&&&&&&&&&&&&",savedData);
-    return cb(null, { ...userData, id: savedData._id, accessToken, refreshToken });
+    //console.log("mainuaerasdfsdf&&&&&&&&&&&&&&&&&&&&&&&&&&",savedData);
+      return cb(null, { ...userData, id: savedData._id, accessToken, refreshToken });
       // do something with the document
     });
    
@@ -82,7 +86,7 @@ app.get('/', (req, res) => {
   UserRepos.find({}).populate('userId').sort({stargazers_count: -1 }).limit(20).exec(function(err, repos) {
     if (err) throw err;
     console.log(repos);
-     res.render('landing', { user: req.user, repos });
+     res.render('landing', { user: req.user });
 
   });
 });
@@ -117,10 +121,12 @@ app.get('/profile',
   async (req, res) => {
     req.session.user  = req.user;
     const { id } = req.user;
+    const { q  } = req.query;
+    const placeHolder = q ? `Search in ${q}` : `Search repositories`;
 
     UserRepos.find({userId: id}).populate('userId').sort({ name: -1 }).exec(function(err, repos) { 
-      console.log("--------**************------repos", repos);
-       res.render('profile', { user: req.user, repos });
+       console.log('************************************req.user', req.user);
+       res.render('profile', { user: req.user, repos, placeHolder });
     });
     
   });
@@ -128,18 +134,16 @@ app.get('/profile',
 
 app.get('/search/:repoName', require('connect-ensure-login').ensureLoggedIn(), 
 async (req, res) => {
-  
-  console.log("---------req.user----------",req.user)
-  // const { accessToken,  username } = req.user;
-  const { repoName } = req.params;
-  console.log("--------------req.user------------",req.session );
 
-      const { accessToken, username, public_repos, id } = req.session.user ;
-    
-    const apiUrl = `${baseUrl}/search/repositories?q=${repoName}+user:${username}&client_id=${clientID}&client_secret=${clientSecret}`;
-    console.log("--------------apdd------------",apiUrl);
-    const {body: repos} = await got(apiUrl, {json: true, method: 'GET'});
-    res.json({ repo: repos});
+  const { repoName } = req.params;
+  const { q  } = req.query;
+  const { username } = req.session.user ;
+  const searchParam = q ? `org:${q}` : `user:${username}`;
+  
+  const apiUrl = `${baseUrl}/search/repositories?q=${repoName}+${searchParam}&client_id=${clientID}&client_secret=${clientSecret}`;
+  console.log("--------------apdd------------",apiUrl);
+  const {body: repos} = await got(apiUrl, {json: true, method: 'GET'});
+  res.json({ repo: repos});
   
 });
  
@@ -160,15 +164,15 @@ async (req, res) => {
   app.get('/publish/:repoName', async (req, res) => {
     require('connect-ensure-login').ensureLoggedIn();
     const { repoName } = req.params;
-    // console.log("--------------req.user------------",req.session );
-  
-        const { accessToken, username, public_repos, id } = req.session.user ;
-      
-      const apiUrl = `${baseUrl}/repos/${username}/${repoName}?client_id=${clientID}&client_secret=${clientSecret}`;
-      // console.log("--------------apdd------------",apiUrl);
-      const {body: repos} = await got(apiUrl, {json: true, method: 'GET'});
-      console.log(repos);    
-      libs.saveUserRepo({repo: repos, userId: id}, (err, savedRepo) => res.json({ repo: savedRepo}));    
+    const { q  } = req.query;
+    const searchUrl = q ? `${q}` : `${username}`;
+    const { username, id } = req.session.user ;
+    
+    const apiUrl = `${baseUrl}/repos/${searchUrl}/${repoName}?client_id=${clientID}&client_secret=${clientSecret}`;
+    console.log("--------------apdd------------",apiUrl);
+    const {body: repos} = await got(apiUrl, {json: true, method: 'GET'});
+    console.log(repos);    
+    libs.saveUserRepo({repo: repos, userId: id}, (err, savedRepo) => res.json({ repo: savedRepo}));    
     
   });
   
