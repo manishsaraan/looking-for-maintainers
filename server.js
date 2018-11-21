@@ -86,7 +86,7 @@ app.get('/', (req, res) => {
   UserRepos.find({}).populate('userId').sort({stargazers_count: -1 }).limit(20).exec(function(err, repos) {
     if (err) throw err;
     console.log(repos);
-     res.render('landing', { user: req.user });
+     res.render('index', { user: req.user });
 
   });
 });
@@ -96,7 +96,7 @@ app.get('/explore',
     UserRepos.find({}).populate('userId').sort({stargazers_count: -1 }).limit(20).exec(function(err, repos) {
       if (err) throw err;
       console.log(repos);
-       res.render('home', { user: req.user, repos });
+       res.render('explore', { user: req.user, repos });
 
     });
   });
@@ -123,7 +123,7 @@ app.get('/profile',
     const { id } = req.user;
     const { q  } = req.query;
     const placeHolder = q ? `Search in ${q}` : `Search repositories`;
-
+  
     UserRepos.find({userId: id}).populate('userId').sort({ name: -1 }).exec(function(err, repos) { 
        console.log('************************************req.user', req.user);
        res.render('profile', { user: req.user, repos, placeHolder });
@@ -165,9 +165,14 @@ async (req, res) => {
     require('connect-ensure-login').ensureLoggedIn();
     const { repoName } = req.params;
     const { q  } = req.query;
+    const { username, id, orgs } = req.session.user ;
+
+    const isUserOwnOrg = orgs.filter( ({ login }) => {
+      console.log(login +'==='+ q);
+      return login === q;
+    });
     const searchUrl = q ? `${q}` : `${username}`;
-    const { username, id } = req.session.user ;
-    
+    console.log('-------------------sdfdsfdsf--------------:',isUserOwnOrg);
     const apiUrl = `${baseUrl}/repos/${searchUrl}/${repoName}?client_id=${clientID}&client_secret=${clientSecret}`;
     console.log("--------------apdd------------",apiUrl);
     const {body: repos} = await got(apiUrl, {json: true, method: 'GET'});

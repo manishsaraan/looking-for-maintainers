@@ -1,62 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Looking for maintainers for your open source projects.</title>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />    
-    <link rel="stylesheet" href="/global.css" />    
-        <link rel="shortcut icon" href="img/emoji.png">
-        <meta name="og:title" content="Looking for maintainers for your open source projects or want to be a contributor.">
-        <meta name="twitter:title" content="Looking for maintainers for your open source projects or want to be a contributor.">
-        <meta name="og:description" content="A place where you can publish your open source projects and let other people know, you are looking for maintainers/contributors for your project.">
-        <meta name="twitter:description" content="A place where you can publish your open source projects and let other people know, you are looking for maintainers/contributors for your project.">
-        <meta name="twitter:site" content="@manish_saraan">
-        <meta name="description" content="A place where you can publish your open source projects and let other people know, you are looking for maintainers/contributors for your project.">
+   <% include ./partials/head %>
 </head>
 <body>
         <div class="wrapper">
-          	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <div class="container">
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <a href="https://github.com/manishsaraan/looking-for-maintainers" rel="noopener noreferrer" target="_blank" class="navbar-brand">
-                <div class="logo-text">
-                  <h4>LFM</h4>
-                </div>
-              </a>
-          
-                  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">							
-                    </ul>				
-                          <% if (user) { %>
-                    <ul class="navbar-nav ">
-                      <!-- PROFILE DROPDOWN - scrolling off the page to the right -->
-                      <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" id="navDropDownLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <%= user.username %>
-                            </a>
-                        <div class="dropdown-menu" aria-labelledby="navDropDownLink">
-                          <a class="dropdown-item" href="/profile">Profile</a>
-                          <div class="dropdown-divider"></div>
-                          <a class="dropdown-item" href="/logout">Logout</a>
-                        </div>
-                      </li>
-                    </ul>
-                    <% } else { %>
-                      <a href="/login/github" rel="noopener noreferrer" class="btn btn-light language-filter shadowed">
-                        <i class="fa fa-github mr-1"></i> Login
-                      </a>
-                    <% } %>
-                  </div>
-                </div>
-              
-            </nav>
+          <% include ./partials/header %>
                 <section class="hero">
                   <div class="jumbotron jumbotron-fluid mb-0">
                     <div class="container">
@@ -143,12 +92,7 @@
             
                   </div>
                 </section>     
-              
-                <footer class="footer">
-                  <div class="container">
-                    <div>© Manish Saraan 2018</div>
-                  </div>
-                </footer>
+              <% include ./partials/footer %>
               </div>
 </body>
 </html>
