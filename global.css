@@ -18,7 +18,7 @@ a {
 }
 
 .shadowed {
-  box-shadow: 0 9px 62px -13px rgba(0, 0, 0, 0.20) !important;
+  box-shadow: 0 9px 62px -13px rgba(0, 0, 0, 0.2) !important;
 }
 
 .btn-primary {
@@ -27,14 +27,14 @@ a {
 }
 
 .grid-container {
-    margin-top: 15px;
-    padding: 0 5px;
-  }
+  margin-top: 15px;
+  padding: 0 5px;
+}
 
-  .list-container {
-    background: white;
-    padding: 25px;
-    margin: 25px 0 0;
-    border-radius: 8px;
-    box-shadow: -5px 10px 60px -13px rgba(0, 0, 0, 0.20);
-  }
+.list-container {
+  background: white;
+  padding: 25px;
+  margin: 25px 0 0;
+  border-radius: 8px;
+  box-shadow: -5px 10px 60px -13px rgba(0, 0, 0, 0.2);
+}
