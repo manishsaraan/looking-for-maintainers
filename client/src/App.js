@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import GitHubLogin from "react-github-login";
+import { clientId, redirectUri } from "./config/index";
 import logo from "./logo.svg";
 import "./App.css";
 
 const onSuccess = response => console.log(response);
-const onFailure = response => console.error("--", response);
+const onFailure = response => console.error("-ss-", response);
 
 class App extends Component {
   render() {
@@ -16,8 +17,8 @@ class App extends Component {
             Edit <code>src/App.js</code> and safsdfds
           </p>
           <GitHubLogin
-            clientId="b2464a59102ba2db9cb1"
-            redirectUri="http://localhost:3000/login/github/return"
+            clientId={clientId}
+            redirectUri={redirectUri}
             onSuccess={onSuccess}
             onFailure={onFailure}
           />
