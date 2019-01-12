@@ -6,7 +6,10 @@ const mongoose = require("mongoose");
 const libs = require("./libs");
 const { db, clientID, clientSecret, PORT } = require("./config");
 
-const baseUrl = "https://api.github.com";
+const baseUrl = "https://github.com";
+const client = got.extend({
+  baseUrl
+});
 mongoose.connect(
   db,
   { useNewUrlParser: true }
@@ -115,8 +118,8 @@ app.use(
 app.use(express.static("assets"));
 // Initialize Passport and restore authentication state, if any, from the
 // session.
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 // Define routes.
 
@@ -152,15 +155,22 @@ app.get("/login", function(req, res) {
   res.render("login");
 });
 
-app.get("/login/github", passport.authenticate("github"));
+app.get("/login/github/:code", async (request, response) => {
+  const resp = await got.post("https://github.com/login/oauth/access_token", {
+    client_id: clientID,
+    client_secret: clientSecret,
+    code: request.params.code
+  });
+  response.json({ code: resp });
+});
 
-app.get(
-  "/login/github/return",
-  passport.authenticate("github", { failureRedirect: "/" }),
-  function(req, res) {
-    res.redirect("/profile");
-  }
-);
+// app.get(
+//   "/login/github/return",
+//   passport.authenticate("github", { failureRedirect: "/" }),
+//   function(req, res) {
+//     res.redirect("/profile");
+//   }
+// );
 
 app.get(
   "/profile",
