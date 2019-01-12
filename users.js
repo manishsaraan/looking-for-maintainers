@@ -15,6 +15,9 @@ const userSchema = new Schema({
     public_gists: { type: String, required: true },
     followers: { type: String, required: true },
     following: { type: String, required: true },
+    orgs: {
+        type: Array,
+    },
     created_at: Date,
 });
 

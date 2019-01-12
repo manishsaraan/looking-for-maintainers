@@ -1,5 +1,16 @@
 const UserRepos = require("./user-repos");
 const dateFns = require("date-fns");
+const got = require("got");
+const baseUrl = "https://api.github.com";
+const { clientID, clientSecret } = require("./config");
+
+
+
+// module.exports.request = async () => {
+//     const apiUrl = `${baseUrl}/search/repositories?q=${repoName}+user:${username}&client_id=${clientID}&client_secret=${clientSecret}`;
+//     console.log("--------------apdd------------",apiUrl);
+//     const {body: repos} = await got(apiUrl, {json: true, method: 'GET'});
+// }
 
 module.exports.saveUserRepo = ({ repo, userId }, cb) => {
     const {

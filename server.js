@@ -93,11 +93,16 @@ app.get('/', (req, res) => {
 
 app.get('/explore',
   function(req, res) {
-    UserRepos.find({}).populate('userId').sort({stargazers_count: -1 }).limit(20).exec(function(err, repos) {
+    const { q } = req.query;
+    let query = {};
+    if(q){
+      query = { ...query, language: q }
+    }
+
+    UserRepos.find(query).populate('userId').sort({stargazers_count: -1 }).exec(function(err, repos) {
       if (err) throw err;
       console.log(repos);
        res.render('explore', { user: req.user, repos });
-
     });
   });
 

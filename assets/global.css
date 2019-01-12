@@ -62,11 +62,13 @@ a {
     margin-top: 10px;
   }
   
-  .top-nav .logo-text h4 {
-    margin: 3px 0 0;
-    font-weight: 700;
-    color: #2d2d2d;
+  .top-nav .logo-text img {
+    width: 50px;
   }
+
+  .logo-text img {
+    width: 50px;
+}
   
   .top-nav .logo-text p {
     margin-bottom: 0;
