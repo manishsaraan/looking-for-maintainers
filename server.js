@@ -2,6 +2,7 @@ const express = require("express");
 const got = require("got");
 const mongoose = require("mongoose");
 const libs = require("./libs");
+const request = require("request");
 const { db, clientID, clientSecret, PORT } = require("./config");
 
 const baseUrl = "https://github.com";
@@ -68,13 +69,25 @@ app.get("/login", function(req, res) {
   res.render("login");
 });
 
-app.get("/login/github/:code", async (request, response) => {
-  const resp = await got.post("https://github.com/login/oauth/access_token", {
-    client_id: clientID,
-    client_secret: clientSecret,
-    code: request.params.code
-  });
-  response.json({ code: resp });
+app.get("/login/github/:code", (req, response) => {
+  request.post(
+    {
+      url: "https://github.com/login/oauth/access_token",
+      form: {
+        client_id: clientID,
+        client_secret: clientSecret,
+        code: req.params.code
+      }
+    },
+    function(error, res, body) {
+      if (body.includes("access_token")) {
+        console.log(error, "--------", body);
+        response.json({ body });
+      } else {
+        response.status(401).json({ error: "wrong code" });
+      }
+    }
+  );
 });
 
 app.get(
