@@ -1,100 +1,17 @@
 const express = require("express");
-const passport = require("passport");
-const Strategy = require("passport-github").Strategy;
 const got = require("got");
 const mongoose = require("mongoose");
 const libs = require("./libs");
 const { db, clientID, clientSecret, PORT } = require("./config");
 
 const baseUrl = "https://github.com";
-const client = got.extend({
-  baseUrl
-});
+
 mongoose.connect(
   db,
   { useNewUrlParser: true }
 );
 const UserRepos = require("./user-repos");
 const Users = require("./users");
-
-passport.use(
-  new Strategy(
-    {
-      clientID,
-      clientSecret,
-      callbackURL: "/login/github/return"
-    },
-    async function(accessToken, refreshToken, profile, cb) {
-      const {
-        username,
-        displayName,
-        _json: {
-          id,
-          avatar_url,
-          html_url,
-          blog,
-          location,
-          email,
-          bio,
-          public_repos,
-          public_gists,
-          followers,
-          following,
-          created_at
-        }
-      } = profile;
-
-      const apiUrl = `${baseUrl}/users/${username}/orgs?client_id=${clientID}&client_secret=${clientSecret}`;
-      const { body: orgs } = await got(apiUrl, { json: true, method: "GET" });
-
-      console.log(
-        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&",
-        orgs
-      );
-      const userData = {
-        github_id: id,
-        name: displayName,
-        username,
-        email,
-        avatar_url,
-        html_url,
-        blog,
-        location,
-        bio,
-        public_repos,
-        public_gists,
-        followers,
-        following,
-        created_at,
-        orgs
-      };
-      Users.findOneAndUpdate(
-        { github_id: id },
-        userData,
-        { upsert: true, new: true, setDefaultsOnInsert: true },
-        function(error, savedData) {
-          if (error) console.log(error);
-          //console.log("mainuaerasdfsdf&&&&&&&&&&&&&&&&&&&&&&&&&&",savedData);
-          return cb(null, {
-            ...userData,
-            id: savedData._id,
-            accessToken,
-            refreshToken
-          });
-          // do something with the document
-        }
-      );
-    }
-  )
-);
-
-passport.serializeUser(function(user, cb) {
-  cb(null, user);
-});
-
-passport.deserializeUser(function(obj, cb) {
-  cb(null, obj);
-});
 
 // Create a new Express application.
 const app = express();
@@ -116,10 +33,6 @@ app.use(
   })
 );
 app.use(express.static("assets"));
-// Initialize Passport and restore authentication state, if any, from the
-// session.
-// app.use(passport.initialize());
-// app.use(passport.session());
 
 // Define routes.
 
@@ -163,14 +76,6 @@ app.get("/login/github/:code", async (request, response) => {
   });
   response.json({ code: resp });
 });
-
-// app.get(
-//   "/login/github/return",
-//   passport.authenticate("github", { failureRedirect: "/" }),
-//   function(req, res) {
-//     res.redirect("/profile");
-//   }
-// );
 
 app.get(
   "/profile",
