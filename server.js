@@ -81,8 +81,23 @@ app.get("/login/github/:code", (req, response) => {
     },
     function(error, res, body) {
       if (body.includes("access_token")) {
-        console.log(error, "--------", body);
-        response.json({ body });
+        const [, tokenObj] = body.split("=");
+        const [token] = tokenObj.split("&");
+        console.log(error, "--------", token);
+        request.get(
+          {
+            url: ` https://api.github.com/user`,
+            headers: {
+              Authorization: `token ${token}`,
+              "User-Agent": "github-login"
+            },
+            json: true
+          },
+          function(error, req, user) {
+            console.log("-----------sdf", user);
+            response.json(user);
+          }
+        );
       } else {
         response.status(401).json({ error: "wrong code" });
       }
