@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import GitHubLogin from "react-github-login";
 import { clientId, redirectUri } from "./config/index";
+import axios from "axios";
 import logo from "./logo.svg";
 import "./App.css";
 
-const onSuccess = response => console.log(response);
+const onSuccess = async ({ code }) => {
+  const user = await axios.get(`/login/github/${code}`);
+  console.log(user);
+};
 const onFailure = response => console.error("-ss-", response);
 
 class App extends Component {
