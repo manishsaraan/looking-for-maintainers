@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
+import GithubLogin from "./GithubLogin";
 import * as serviceWorker from "./serviceWorker";
 import {
   BrowserRouter as Router,
@@ -9,12 +10,13 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
-const data = localStorage.getItem("user");
+let data = localStorage.getItem("user");
 let authed = false;
 if (data) {
   authed = true;
+  data = JSON.parse(data);
 }
-console.log(data);
+
 const Login = () => <div>Lgin</div>;
 const Profile = () => <div>profkel</div>;
 
@@ -38,8 +40,8 @@ function PrivateRoute({ component: Component, authed, ...rest }) {
 ReactDOM.render(
   <Router>
     <Switch>
-      <Route path="/" exact component={App} />
-      <Route path="/login/github/return" component={App} />
+      <Route path="/" exact render={props => <App user={data} {...props} />} />
+      <Route path="/login/github/return" component={GithubLogin} />
       <Route path="/login" component={Login} />
       <PrivateRoute authed={authed} path="/profile" component={Profile} />
     </Switch>
