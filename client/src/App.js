@@ -21,7 +21,7 @@ class App extends Component {
         {!!user && <button onClick={this.logout}>Logout</button>}
         <header className="App-header">
           {/* <img src={logo} className="App-logo" alt="logo" /> */}
-          <GithubLogin clientID="test" />
+          <GithubLogin clientID="tste" />
         </header>
       </div>
     );

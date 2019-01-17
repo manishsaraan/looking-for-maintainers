@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
+import store from "./store/index";
+import { addArticle } from "./actions/index";
 import GithubLogin from "./GithubLogin";
 import * as serviceWorker from "./serviceWorker";
 import {
@@ -10,6 +12,8 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
+window.store = store;
+window.addArticle = addArticle;
 let data = localStorage.getItem("user");
 let authed = false;
 if (data) {
