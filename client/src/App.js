@@ -2,16 +2,20 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import GithubLogin from "./lib";
 import Form from "./Form";
+import { getData } from "./actions/index";
 // import { clientId, redirectUri } from "./config/index";
 import axios from "axios";
 import logo from "./logo.svg";
 import "./App.css";
 
 const mapStateToProps = state => {
-  return { articles: state.articles };
+  return { articles: state.remoteArticles.slice(0, 10) };
 };
 
 class App extends Component {
+  componentDidMount() {
+    this.props.getData();
+  }
   logout = () => {
     localStorage.setItem("user", null);
     this.props.history.push("/");
@@ -34,4 +38,7 @@ class App extends Component {
   }
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(
+  mapStateToProps,
+  { getData }
+)(App);
