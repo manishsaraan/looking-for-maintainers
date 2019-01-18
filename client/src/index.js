@@ -5,7 +5,6 @@ import "./index.css";
 import App from "./App";
 import Explore from "./components/explore";
 import store from "./store/index";
-import { addArticle } from "./actions/index";
 import GithubLogin from "./GithubLogin";
 import * as serviceWorker from "./serviceWorker";
 import {
@@ -18,7 +17,6 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/global.css";
 
 window.store = store;
-window.addArticle = addArticle;
 let data = localStorage.getItem("user");
 let authed = false;
 if (data) {

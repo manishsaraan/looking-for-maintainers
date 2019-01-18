@@ -1,2 +1,3 @@
 // src/js/constants/action-types.js
-export const ADD_ARTICLE = "ADD_ARTICLE";
+export const GET_REPOS = "GET_REPOS";
+export const REPOS_FETCHED = "REPOS_FETCHED";

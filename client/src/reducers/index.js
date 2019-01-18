@@ -1,22 +1,14 @@
-import { ADD_ARTICLE } from "../constants/action-types";
+import { REPOS_FETCHED } from "../constants/action-types";
 
 const initialState = {
-  articles: [],
-  remoteArticles: []
+  repos: []
 };
-function rootReducer(state = initialState, action) {
-  if (action.type === ADD_ARTICLE) {
-    return Object.assign({}, state, {
-      articles: state.articles.concat(action.payload)
-    });
+function rootReducer(state = initialState, { type, payload }) {
+  switch (type) {
+    case REPOS_FETCHED:
+      return { ...state, repos: payload };
+    default:
+      return { ...state };
   }
-
-  if (action.type === "DATA_LOADED") {
-    return Object.assign({}, state, {
-      remoteArticles: state.remoteArticles.concat(action.payload)
-    });
-  }
-
-  return state;
 }
 export default rootReducer;

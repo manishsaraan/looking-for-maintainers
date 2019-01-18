@@ -1,15 +1,12 @@
-import { ADD_ARTICLE } from "../constants/action-types";
+import { REPOS_FETCHED } from "../constants/action-types";
 
-export function addArticle(payload) {
-  return { type: ADD_ARTICLE, payload };
-}
-
-export function getData() {
+export function getRepos() {
   return function(dispatch) {
-    return fetch("https://jsonplaceholder.typicode.com/posts")
+    return fetch("/explore")
       .then(response => response.json())
       .then(json => {
-        dispatch({ type: "DATA_LOADED", payload: json });
+        console.log(json);
+        dispatch({ type: REPOS_FETCHED, payload: json });
       });
   };
 }

@@ -1,8 +1,14 @@
 import React from "react";
+import { connect } from "react-redux";
+import { getRepos } from "../actions/index";
 
 class Explore extends React.Component {
+  componentDidMount() {
+    this.props.getRepos();
+  }
   render() {
-    const { user } = this.props;
+    console.log(this.props);
+    const { user, repos } = this.props;
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container">
@@ -73,4 +79,11 @@ class Explore extends React.Component {
   }
 }
 
-export default Explore;
+const mapStateToProps = state => {
+  return { repos: state.repos };
+};
+
+export default connect(
+  mapStateToProps,
+  { getRepos }
+)(Explore);
