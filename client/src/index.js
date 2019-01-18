@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import "./index.css";
 import App from "./App";
-import Form from "./Form";
+import Explore from "./components/explore";
 import store from "./store/index";
 import { addArticle } from "./actions/index";
 import GithubLogin from "./GithubLogin";
@@ -14,6 +14,9 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "./assets/css/global.css";
+
 window.store = store;
 window.addArticle = addArticle;
 let data = localStorage.getItem("user");
@@ -23,8 +26,7 @@ if (data) {
   data = JSON.parse(data);
 }
 
-const Login = () => <div>Lgin</div>;
-const Profile = () => <div>profkel</div>;
+const Profile = () => <div>profile</div>;
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
   return (
@@ -34,9 +36,7 @@ function PrivateRoute({ component: Component, authed, ...rest }) {
         authed === true ? (
           <Component {...props} />
         ) : (
-          <Redirect
-            to={{ pathname: "/login", state: { from: props.location } }}
-          />
+          <Redirect to={{ pathname: "/", state: { from: props.location } }} />
         )
       }
     />
@@ -53,8 +53,10 @@ ReactDOM.render(
           render={props => <App user={data} {...props} />}
         />
         <Route path="/login/github/return" component={GithubLogin} />
-        <Route path="/form" component={Form} />
-        <Route path="/login" component={Login} />
+        <Route
+          path="/explore"
+          render={props => <Explore {...props} user={data} />}
+        />
         <PrivateRoute authed={authed} path="/profile" component={Profile} />
       </Switch>
     </Router>
