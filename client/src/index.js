@@ -1,7 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 import "./index.css";
 import App from "./App";
+import Form from "./Form";
 import store from "./store/index";
 import { addArticle } from "./actions/index";
 import GithubLogin from "./GithubLogin";
@@ -42,14 +44,21 @@ function PrivateRoute({ component: Component, authed, ...rest }) {
 }
 
 ReactDOM.render(
-  <Router>
-    <Switch>
-      <Route path="/" exact render={props => <App user={data} {...props} />} />
-      <Route path="/login/github/return" component={GithubLogin} />
-      <Route path="/login" component={Login} />
-      <PrivateRoute authed={authed} path="/profile" component={Profile} />
-    </Switch>
-  </Router>,
+  <Provider store={store}>
+    <Router>
+      <Switch>
+        <Route
+          path="/"
+          exact
+          render={props => <App user={data} {...props} />}
+        />
+        <Route path="/login/github/return" component={GithubLogin} />
+        <Route path="/form" component={Form} />
+        <Route path="/login" component={Login} />
+        <PrivateRoute authed={authed} path="/profile" component={Profile} />
+      </Switch>
+    </Router>
+  </Provider>,
   document.getElementById("root")
 );
 

@@ -1,9 +1,15 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import GithubLogin from "./lib";
+import Form from "./Form";
 // import { clientId, redirectUri } from "./config/index";
 import axios from "axios";
 import logo from "./logo.svg";
 import "./App.css";
+
+const mapStateToProps = state => {
+  return { articles: state.articles };
+};
 
 class App extends Component {
   logout = () => {
@@ -12,9 +18,8 @@ class App extends Component {
   };
 
   render() {
-    const { search } = this.props.location;
-    const { user } = this.props;
-    console.log("---user---", user);
+    const { user, articles } = this.props;
+    console.log("---user---", articles);
 
     return (
       <div className="App">
@@ -23,9 +28,10 @@ class App extends Component {
           {/* <img src={logo} className="App-logo" alt="logo" /> */}
           <GithubLogin clientID="tste" />
         </header>
+        <Form />
       </div>
     );
   }
 }
 
-export default App;
+export default connect(mapStateToProps)(App);
