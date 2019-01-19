@@ -106,24 +106,21 @@ app.get("/login/github/:code", (req, response) => {
   );
 });
 
-app.get(
-  "/profile",
-  require("connect-ensure-login").ensureLoggedIn(),
-  async (req, res) => {
-    req.session.user = req.user;
-    const { id } = req.user;
-    const { q } = req.query;
-    const placeHolder = q ? `Search in ${q}` : `Search repositories`;
+app.get("/repos/:userId", async (req, res) => {
+  const { userId } = req.params;
 
-    UserRepos.find({ userId: id })
-      .populate("userId")
-      .sort({ name: -1 })
-      .exec(function(err, repos) {
-        console.log("************************************req.user", req.user);
-        res.render("profile", { user: req.user, repos, placeHolder });
-      });
-  }
-);
+  UserRepos.find({ userId })
+    .populate("userId")
+    .sort({ name: -1 })
+    .exec(function(err, repos) {
+      console.log(
+        userId,
+        "************************************req.user",
+        repos
+      );
+      res.json(repos);
+    });
+});
 
 app.get(
   "/search/:repoName",
