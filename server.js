@@ -3,6 +3,7 @@ const got = require("got");
 const mongoose = require("mongoose");
 const libs = require("./libs");
 const request = require("request");
+const cors = require("cors");
 const { db, clientID, clientSecret, PORT } = require("./config");
 
 const baseUrl = "https://github.com";
@@ -34,7 +35,7 @@ app.use(
   })
 );
 app.use(express.static("assets"));
-
+app.use(cors());
 // Define routes.
 
 app.get("/", (req, res) => {
