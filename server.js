@@ -118,7 +118,7 @@ app.get("/repos/:userId", async (req, res) => {
         "************************************req.user",
         repos
       );
-      res.json(repos);
+      res.json(repos ? repos : []);
     });
 });
 

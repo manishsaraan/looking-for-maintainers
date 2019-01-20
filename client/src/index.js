@@ -3,7 +3,8 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import "./index.css";
 import App from "./App";
-import Explore from "./components/explore";
+import Explore from "./components/Explore";
+import Profile from "./components/Profile";
 import store from "./store/index";
 import GithubLogin from "./GithubLogin";
 import * as serviceWorker from "./serviceWorker";
@@ -24,15 +25,13 @@ if (data) {
   data = JSON.parse(data);
 }
 
-const Profile = () => <div>profile</div>;
-
 function PrivateRoute({ component: Component, authed, ...rest }) {
   return (
     <Route
       {...rest}
       render={props =>
         authed === true ? (
-          <Component {...props} />
+          <Component user={data} {...props} />
         ) : (
           <Redirect to={{ pathname: "/", state: { from: props.location } }} />
         )
