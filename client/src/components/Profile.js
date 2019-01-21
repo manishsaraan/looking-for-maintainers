@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import Header from "./partials/Header";
 import UserRepo from "./partials/UserRepo";
-import { fetchUserRepos } from "../actions/index";
+import { fetchUserRepos, fetchUserGithubRepos } from "../actions/index";
 
 class Profile extends React.Component {
   state = {
@@ -10,7 +10,7 @@ class Profile extends React.Component {
   };
 
   componentDidMount() {
-    this.props.fetchUserRepos(this.props.user.id);
+    // this.props.fetchUserRepos(this.props.user.id);
   }
 
   onChange = event => {
@@ -22,12 +22,16 @@ class Profile extends React.Component {
   findRepos = event => {
     event.preventDefault();
     const { search } = this.state;
-    this.props.fetchUserGithubRepos(this.props.user.id, search);
+    this.props.fetchUserGithubRepos(this.props.user.login, search);
   };
 
   render() {
-    const { user, userRepos } = this.props;
-    console.log("user", user);
+    const { user, userPublishedRepos, userGithubRepos } = this.props;
+    let showRepos = [...userPublishedRepos];
+    if (userGithubRepos.items) {
+      showRepos = [...userGithubRepos.items];
+    }
+    console.log("user", user, this.props);
     return (
       <div>
         <div className="page-wrap">
@@ -120,8 +124,8 @@ class Profile extends React.Component {
                         </form>
                         <div className="repo-container mt-3">
                           <ul className="list-group" id="repos">
-                            {userRepos.length > 0 ? (
-                              userRepos.map(repo => (
+                            {showRepos.length > 0 ? (
+                              showRepos.map(repo => (
                                 <UserRepo repo={repo} key={repo.id} />
                               ))
                             ) : (
@@ -146,12 +150,14 @@ class Profile extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  userRepos: state.userRepos
+  userPublishedRepos: state.userPublishedRepos,
+  userGithubRepos: state.userGithubRepos
 });
 
 export default connect(
   mapStateToProps,
   {
-    fetchUserRepos
+    fetchUserRepos,
+    fetchUserGithubRepos
   }
 )(Profile);

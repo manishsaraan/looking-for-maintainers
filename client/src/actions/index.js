@@ -1,4 +1,8 @@
-import { REPOS_FETCHED, USER_REPOS_FETCHED } from "../constants/action-types";
+import {
+  REPOS_FETCHED,
+  USER_REPOS_FETCHED,
+  USER_GITHUB_REPOS_FETCHED
+} from "../constants/action-types";
 import { apiEndPoint } from "../config";
 
 export function getRepos() {
@@ -23,11 +27,16 @@ export function fetchUserRepos(userId) {
   };
 }
 
-export function fetchUserGithubRepos(userId, repoName) {
+export function fetchUserGithubRepos(userName, repoName) {
   return function(dispatch) {
     console.log(repoName);
-    return fetch(`${apiEndPoint}/user-repo/${repoName}`)
+    return fetch(`${apiEndPoint}/user-repo/${userName}/${repoName}`)
       .then(response => response.json())
-      .then(json => console.log(json));
+      .then(jsonResp => {
+        dispatch({
+          type: USER_GITHUB_REPOS_FETCHED,
+          payload: jsonResp
+        });
+      });
   };
 }
