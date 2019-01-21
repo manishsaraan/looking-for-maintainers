@@ -122,21 +122,13 @@ app.get("/repos/:userId", async (req, res) => {
     });
 });
 
-app.get(
-  "/search/:repoName",
-  require("connect-ensure-login").ensureLoggedIn(),
-  async (req, res) => {
-    const { repoName } = req.params;
-    const { q } = req.query;
-    const { username } = req.session.user;
-    const searchParam = q ? `org:${q}` : `user:${username}`;
-
-    const apiUrl = `${baseUrl}/search/repositories?q=${repoName}+${searchParam}&client_id=${clientID}&client_secret=${clientSecret}`;
-    console.log("--------------apdd------------", apiUrl);
-    const { body: repos } = await got(apiUrl, { json: true, method: "GET" });
-    res.json({ repo: repos });
-  }
-);
+app.get("/user-repo/:username/:repoName", async (req, res) => {
+  const { repoName, username } = req.params;
+  const apiUrl = `https://api.github.com/search/repositories?q=${repoName}+user:${username}&client_id=${clientID}&client_secret=${clientSecret}`;
+  console.log("--------------apdd------------", apiUrl);
+  const { body: repos } = await got(apiUrl, { json: true, method: "GET" });
+  res.json(repos);
+});
 
 app.delete("/delete/:repoName", (req, res) => {
   require("connect-ensure-login").ensureLoggedIn();
