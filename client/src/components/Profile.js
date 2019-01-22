@@ -126,7 +126,11 @@ class Profile extends React.Component {
                           <ul className="list-group" id="repos">
                             {showRepos.length > 0 ? (
                               showRepos.map(repo => (
-                                <UserRepo repo={repo} key={repo.id} />
+                                <UserRepo
+                                  updateRepoStatus={e => console.log(e)}
+                                  repo={repo}
+                                  key={repo.id}
+                                />
                               ))
                             ) : (
                               <div>No Repos Found</div>

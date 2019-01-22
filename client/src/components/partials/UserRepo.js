@@ -2,16 +2,16 @@ import React from "react";
 
 const UserRepo = ({ repo, updateRepoStatus }) => {
   return (
-    <li class="list-group-item">
-      <div class="row">
-        <div class="col-1">
-          <i class="fa fa-book" />
+    <li className="list-group-item">
+      <div className="row">
+        <div className="col-1">
+          <i className="fa fa-book" />
         </div>
-        <div class="col-8">{repo.name}</div>
-        <div class="col-3">
-          <label class="switch">
-            <input type="checkbox" onchange={updateRepoStatus(repo)} checked />
-            <span class="slider round" />
+        <div className="col-8">{repo.name}</div>
+        <div className="col-3">
+          <label className="switch">
+            <input type="checkbox" onChange={updateRepoStatus(repo)} />
+            <span className="slider round" />
           </label>
         </div>
       </div>
