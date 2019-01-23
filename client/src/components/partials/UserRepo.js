@@ -1,22 +1,34 @@
 import React from "react";
+import "../../assets/css/profile.css";
+import Toggle from "./Toggle";
 
-const UserRepo = ({ repo, updateRepoStatus }) => {
-  return (
-    <li className="list-group-item">
-      <div className="row">
-        <div className="col-1">
-          <i className="fa fa-book" />
+class UserRepo extends React.Component {
+  state = {
+    isChecked: false
+  };
+  onChange = () => {
+    this.setState({ isChecked: !this.state.isChecked });
+    this.props.updateRepoStatus(this.props.repo);
+  };
+  render() {
+    const { repo } = this.props;
+    return (
+      <li className="list-group-item">
+        <div className="row">
+          <div className="col-1">
+            <i className="fa fa-book" />
+          </div>
+          <div className="col-8">{repo.name}</div>
+          <div className="col-3">
+            <Toggle
+              isChecked={this.state.isChecked}
+              updateRepoStatus={this.onChange}
+            />
+          </div>
         </div>
-        <div className="col-8">{repo.name}</div>
-        <div className="col-3">
-          <label className="switch">
-            <input type="checkbox" onChange={updateRepoStatus(repo)} />
-            <span className="slider round" />
-          </label>
-        </div>
-      </div>
-    </li>
-  );
-};
+      </li>
+    );
+  }
+}
 
 export default UserRepo;

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import Header from "./partials/Header";
 import UserRepo from "./partials/UserRepo";
 import { fetchUserRepos, fetchUserGithubRepos } from "../actions/index";
+import Spinner from "./partials/Spinner";
 
 class Profile extends React.Component {
   state = {
@@ -24,6 +25,8 @@ class Profile extends React.Component {
     const { search } = this.state;
     this.props.fetchUserGithubRepos(this.props.user.login, search);
   };
+
+  updateRepoStatus = repo => console.log(repo);
 
   render() {
     const { user, userPublishedRepos, userGithubRepos } = this.props;
@@ -112,30 +115,28 @@ class Profile extends React.Component {
                                 className="btn btn-lg btn-success"
                                 type="submit"
                               >
-                                <div className="spinner">
-                                  <div className="bounce1" />
-                                  <div className="bounce2" />
-                                  <div className="bounce3" />
-                                </div>
+                                <Spinner />
                                 <span>Search</span>
                               </button>
                             </div>
                           </div>
                         </form>
                         <div className="repo-container mt-3">
-                          <ul className="list-group" id="repos">
-                            {showRepos.length > 0 ? (
-                              showRepos.map(repo => (
-                                <UserRepo
-                                  updateRepoStatus={e => console.log(e)}
-                                  repo={repo}
-                                  key={repo.id}
-                                />
-                              ))
-                            ) : (
-                              <div>No Repos Found</div>
-                            )}
-                          </ul>
+                          <form>
+                            <ul className="list-group" id="repos">
+                              {showRepos.length > 0 ? (
+                                showRepos.map(repo => (
+                                  <UserRepo
+                                    updateRepoStatus={this.updateRepoStatus}
+                                    repo={repo}
+                                    key={repo.id}
+                                  />
+                                ))
+                              ) : (
+                                <div>No Repos Found</div>
+                              )}
+                            </ul>
+                          </form>
                         </div>
                       </div>
                     </div>
