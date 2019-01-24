@@ -1,7 +1,7 @@
 const express = require("express");
 const got = require("got");
 const mongoose = require("mongoose");
-const libs = require("./libs");
+const bodyParser = require("body-parser");
 const request = require("request");
 const cors = require("cors");
 const { db, clientID, clientSecret, PORT } = require("./config");
@@ -26,7 +26,13 @@ app.set("view engine", "ejs");
 // logging, parsing, and session handling.
 app.use(require("morgan")("combined"));
 app.use(require("cookie-parser")());
-app.use(require("body-parser").urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    // to support URL-encoded bodies
+    extended: true
+  })
+);
 app.use(
   require("express-session")({
     secret: "keyboard cat",
@@ -144,25 +150,16 @@ app.delete("/delete/:repoName", (req, res) => {
   });
 });
 
-app.get("/publish/:repoName", async (req, res) => {
-  require("connect-ensure-login").ensureLoggedIn();
-  const { repoName } = req.params;
-  const { q } = req.query;
-  const { username, id, orgs } = req.session.user;
-
-  const isUserOwnOrg = orgs.filter(({ login }) => {
-    console.log(login + "===" + q);
-    return login === q;
-  });
-  const searchUrl = q ? `${q}` : `${username}`;
-  console.log("-------------------sdfdsfdsf--------------:", isUserOwnOrg);
-  const apiUrl = `${baseUrl}/repos/${searchUrl}/${repoName}?client_id=${clientID}&client_secret=${clientSecret}`;
-  console.log("--------------apdd------------", apiUrl);
-  const { body: repos } = await got(apiUrl, { json: true, method: "GET" });
-  console.log(repos);
-  libs.saveUserRepo({ repo: repos, userId: id }, (err, savedRepo) =>
-    res.json({ repo: savedRepo })
-  );
+app.post("/publish", async (req, res) => {
+  console.log(req.body);
+  console.log("-------------------sdfdsfdsf--------------:");
+  // const apiUrl = `${baseUrl}/repos/${searchUrl}/${repoName}?client_id=${clientID}&client_secret=${clientSecret}`;
+  // console.log("----------, ----apdd------------", apiUrl);
+  // const { body: repos } = await got(apiUrl, { json: true, method: "GET" });
+  // console.log(repos);
+  // libs.saveUserRepo({ repo: repos, userId: id }, (err, savedRepo) =>
+  //   res.json({ repo: savedRepo })
+  // );
 });
 
 app.get("/logout", function(req, res) {
