@@ -6,8 +6,6 @@ const request = require("request");
 const cors = require("cors");
 const { db, clientID, clientSecret, PORT } = require("./config");
 
-const baseUrl = "https://github.com";
-
 mongoose.connect(
   db,
   { useNewUrlParser: true }
@@ -35,7 +33,7 @@ app.use(
 );
 app.use(
   require("express-session")({
-    secret: "keyboard cat",
+    secret: "looking-for-maintainers",
     resave: true,
     saveUninitialized: true
   })
@@ -70,10 +68,6 @@ app.get("/explore", function(req, res) {
       if (err) throw err;
       res.json(repos);
     });
-});
-
-app.get("/login", function(req, res) {
-  res.render("login");
 });
 
 app.get("/login/github/:code", (req, response) => {
