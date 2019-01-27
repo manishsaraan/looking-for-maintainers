@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const request = require("request");
 const cors = require("cors");
 const { db, clientID, clientSecret, PORT } = require("./config");
-
+const libs = require("./libs");
 mongoose.connect(
   db,
   { useNewUrlParser: true }
@@ -146,14 +146,21 @@ app.delete("/delete/:repoName", (req, res) => {
 
 app.post("/publish", async (req, res) => {
   console.log(req.body);
-  console.log("-------------------sdfdsfdsf--------------:");
-  // const apiUrl = `${baseUrl}/repos/${searchUrl}/${repoName}?client_id=${clientID}&client_secret=${clientSecret}`;
-  // console.log("----------, ----apdd------------", apiUrl);
-  // const { body: repos } = await got(apiUrl, { json: true, method: "GET" });
-  // console.log(repos);
-  // libs.saveUserRepo({ repo: repos, userId: id }, (err, savedRepo) =>
-  //   res.json({ repo: savedRepo })
-  // );
+  const {
+    owner: { login: username },
+    name: repoName
+  } = req.body;
+  const apiUrl = `https://api.github.com/repos/${username}/${repoName}/languages?client_id=${clientID}&client_secret=${clientSecret}`;
+  console.log("----------, ----apdd------------", apiUrl);
+  const { body: languageResponse } = await got(apiUrl, {
+    json: true,
+    method: "GET"
+  });
+
+  libs.saveUserRepo(
+    { repo: { ...req.body, languages: Object.keys(languageResponse) } },
+    (err, savedRepo) => res.json(savedRepo)
+  );
 });
 
 app.get("/logout", function(req, res) {

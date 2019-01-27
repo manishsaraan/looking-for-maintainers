@@ -10,7 +10,7 @@ const { clientID, clientSecret } = require("./config");
 //     const {body: repos} = await got(apiUrl, {json: true, method: 'GET'});
 // }
 
-module.exports.saveUserRepo = ({ repo, userId }, cb) => {
+module.exports.saveUserRepo = ({ repo }, cb) => {
   const {
     name,
     stargazers_count,
@@ -20,16 +20,15 @@ module.exports.saveUserRepo = ({ repo, userId }, cb) => {
     forks_count,
     description,
     html_url,
-    language,
+    languages,
     owner,
     id
   } = repo;
   const { html_url: userProfileUrl, avatar_url, login } = owner;
-  console.log("********saving", name);
+  console.log("********created_at", created_at);
   UserRepos.findOneAndUpdate(
     { github_id: id },
     {
-      userId: userId,
       name: name,
       github_id: id,
       stargazers_count,
@@ -38,7 +37,7 @@ module.exports.saveUserRepo = ({ repo, userId }, cb) => {
       forks_count,
       description,
       html_url,
-      language,
+      languages,
       owner: {
         userProfileUrl,
         avatar_url,
