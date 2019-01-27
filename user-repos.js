@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const userReposSchema = new Schema({
+const ReposSchema = new Schema({
   github_id: { type: Number, required: true },
-  userId: { type: Schema.Types.ObjectId, ref: "Users", required: true },
   name: String,
   stargazers_count: { type: Number, required: true },
   watchers_count: { type: Number, required: true },
@@ -11,7 +10,7 @@ const userReposSchema = new Schema({
   forks_count: { type: Number, required: true },
   html_url: { type: String },
   description: { type: String },
-  language: { type: String },
+  languages: { type: Array },
   created_at: Date,
   formated_date: { type: String, required: true },
   owner: {
@@ -19,6 +18,6 @@ const userReposSchema = new Schema({
   }
 });
 
-const UserRepos = mongoose.model("UserRepos", userReposSchema);
+const UserRepos = mongoose.model("Repos", ReposSchema);
 
 module.exports = UserRepos;
