@@ -1,4 +1,4 @@
-const Repos = require("./user-repos");
+const Repos = require("./repos");
 const dateFns = require("date-fns");
 
 module.exports.saveUserRepo = ({ repo }, cb) => {

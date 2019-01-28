@@ -18,6 +18,6 @@ const ReposSchema = new Schema({
   }
 });
 
-const UserRepos = mongoose.model("Repos", ReposSchema);
+const Repos = mongoose.model("Repos", ReposSchema);
 
-module.exports = UserRepos;
+module.exports = Repos;

@@ -10,7 +10,7 @@ mongoose.connect(
   db,
   { useNewUrlParser: true }
 );
-const UserRepos = require("./user-repos");
+const Repos = require("./repos");
 const app = express();
 
 app.use(require("morgan")("combined"));
@@ -40,7 +40,7 @@ app.get("/explore", function(req, res) {
     query = { ...query, language: q };
   }
 
-  UserRepos.find(query)
+  Repos.find(query)
     .populate("userId")
     .sort({ stargazers_count: -1 })
     .exec(function(err, repos) {
@@ -88,7 +88,7 @@ app.get("/login/github/:code", (req, response) => {
 app.get("/repos/:userId", async (req, res) => {
   const { userId } = req.params;
 
-  UserRepos.find({ userId })
+  Repos.find({ userId })
     .populate("userId")
     .sort({ name: -1 })
     .exec(function(err, repos) {
@@ -114,7 +114,7 @@ app.delete("/delete/:repoName", (req, res) => {
   const { repoName } = req.params;
   const { id } = req.user;
 
-  UserRepos.remove({ userId: id, name: repoName }, function(err) {
+  Repos.remove({ userId: id, name: repoName }, function(err) {
     if (err) {
       res.json({ ok: false });
     } else {
