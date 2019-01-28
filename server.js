@@ -11,17 +11,8 @@ mongoose.connect(
   { useNewUrlParser: true }
 );
 const UserRepos = require("./user-repos");
-const Users = require("./users");
-
-// Create a new Express application.
 const app = express();
-
-// Configure view engine to render EJS templates.
-app.set("views", __dirname + "/views");
-app.set("view engine", "ejs");
-
-// Use application-level middleware for common functionality, including
-// logging, parsing, and session handling.
+.
 app.use(require("morgan")("combined"));
 app.use(require("cookie-parser")());
 app.use(bodyParser.json());
@@ -40,20 +31,8 @@ app.use(
 );
 app.use(express.static("assets"));
 app.use(cors());
+
 // Define routes.
-
-app.get("/", (req, res) => {
-  UserRepos.find({})
-    .populate("userId")
-    .sort({ stargazers_count: -1 })
-    .limit(20)
-    .exec(function(err, repos) {
-      if (err) throw err;
-      console.log(repos);
-      res.render("index", { user: req.user });
-    });
-});
-
 app.get("/explore", function(req, res) {
   const { q } = req.query;
   let query = {};
@@ -151,7 +130,7 @@ app.post("/publish", async (req, res) => {
     name: repoName
   } = req.body;
   const apiUrl = `https://api.github.com/repos/${username}/${repoName}/languages?client_id=${clientID}&client_secret=${clientSecret}`;
-  console.log("----------, ----apdd------------", apiUrl);
+
   const { body: languageResponse } = await got(apiUrl, {
     json: true,
     method: "GET"
@@ -163,10 +142,6 @@ app.post("/publish", async (req, res) => {
   );
 });
 
-app.get("/logout", function(req, res) {
-  req.logout();
-  res.redirect("/");
-});
 app.listen(PORT, () =>
   console.log(`app is running at port: ${PORT} in ${process.env.NODE_ENV} mode`)
 );
