@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import GithubLoginButton from "./lib";
-import { Redirect } from "react-router-dom";
-// import { clientId, redirectUri } from "./config/index";
+import { apiEndPoint } from "./config/index";
 import axios from "axios";
-import logo from "./logo.svg";
 import "./App.css";
 
 class GithubLogin extends Component {
   onSuccess = async code => {
-    const { data, status } = await axios.get(`/login/github/${code}`);
+    const { data, status } = await axios.get(
+      `${apiEndPoint}/login/github/${code}`
+    );
     if (status === 200) {
       console.log(data);
       localStorage.setItem("user", JSON.stringify(data));
