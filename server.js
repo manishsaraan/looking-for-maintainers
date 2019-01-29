@@ -30,10 +30,12 @@ app.use(
   })
 );
 app.use(express.static("assets"));
+app.use(express.static("./client/build"));
 app.use(cors());
 
 // Define routes.
-app.get("/explore", function(req, res) {
+
+app.get("/api/explore", function(req, res) {
   const { q } = req.query;
   let query = {};
   if (q) {
@@ -49,7 +51,7 @@ app.get("/explore", function(req, res) {
     });
 });
 
-app.get("/login/github/:code", (req, response) => {
+app.get("/api/login/github/:code", (req, response) => {
   request.post(
     {
       url: "https://github.com/login/oauth/access_token",
@@ -85,7 +87,7 @@ app.get("/login/github/:code", (req, response) => {
   );
 });
 
-app.get("/repos/:userId", async (req, res) => {
+app.get("/api/repos/:userId", async (req, res) => {
   const { userId } = req.params;
 
   Repos.find({ userId })
@@ -101,7 +103,7 @@ app.get("/repos/:userId", async (req, res) => {
     });
 });
 
-app.get("/user-repo/:username/:repoName", async (req, res) => {
+app.get("/api/user-repo/:username/:repoName", async (req, res) => {
   const { repoName, username } = req.params;
   const apiUrl = `https://api.github.com/search/repositories?q=${repoName}+user:${username}&client_id=${clientID}&client_secret=${clientSecret}`;
   console.log("--------------apdd------------", apiUrl);
@@ -109,7 +111,7 @@ app.get("/user-repo/:username/:repoName", async (req, res) => {
   res.json(repos);
 });
 
-app.delete("/delete/:repoName", (req, res) => {
+app.delete("/api/delete/:repoName", (req, res) => {
   require("connect-ensure-login").ensureLoggedIn();
   const { repoName } = req.params;
   const { id } = req.user;
@@ -123,7 +125,7 @@ app.delete("/delete/:repoName", (req, res) => {
   });
 });
 
-app.post("/publish", async (req, res) => {
+app.post("/api/publish", async (req, res) => {
   console.log(req.body);
   const {
     owner: { login: username },
@@ -142,6 +144,9 @@ app.post("/publish", async (req, res) => {
   );
 });
 
+app.get("*", function(req, res) {
+  res.sendfile("./client/build/index.html");
+});
 app.listen(PORT, () =>
   console.log(`app is running at port: ${PORT} in ${process.env.NODE_ENV} mode`)
 );
