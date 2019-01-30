@@ -111,12 +111,10 @@ app.get("/api/user-repo/:username/:repoName", async (req, res) => {
   res.json(repos);
 });
 
-app.delete("/api/delete/:repoName", (req, res) => {
-  require("connect-ensure-login").ensureLoggedIn();
-  const { repoName } = req.params;
-  const { id } = req.user;
+app.delete("/api/delete/:repoId", (req, res) => {
+  const { repoId } = req.params;
 
-  Repos.remove({ userId: id, name: repoName }, function(err) {
+  Repos.remove({ _id: repoId }, function(err) {
     if (err) {
       res.json({ ok: false });
     } else {
@@ -147,6 +145,7 @@ app.post("/api/publish", async (req, res) => {
 app.get("*", function(req, res) {
   res.sendfile("./client/build/index.html");
 });
+
 app.listen(PORT, () =>
   console.log(`app is running at port: ${PORT} in ${process.env.NODE_ENV} mode`)
 );
