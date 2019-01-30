@@ -31,6 +31,7 @@
     "express": "^4.13.1",
     "express-session": "^1.15.6",
     "got": "^9.2.2",
+    "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.3.7",
     "morgan": "^1.6.1",
     "passport": "^0.2.2",

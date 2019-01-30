@@ -1,5 +1,7 @@
-const Repos = require("./repos");
 const dateFns = require("date-fns");
+const jwt = require("jsonwebtoken");
+const Repos = require("./repos");
+const SECRET = "test";
 
 module.exports.saveUserRepo = ({ repo }, cb) => {
   const {
@@ -43,4 +45,18 @@ module.exports.saveUserRepo = ({ repo }, cb) => {
       cb(null, savedData);
     }
   );
+};
+
+module.exports.createToken = username => {
+  return jwt.sign({ username }, SECRET, {
+    expiresIn: 86400 // expires in 24 hours
+  });
+};
+
+module.exports.verifyToken = token => {
+  jwt.verify(token, SECRET, function(err, decoded) {
+    if (err) return { auth: false, message: "Failed to authenticate token." };
+
+    return { auth: true, data: decoded };
+  });
 };
