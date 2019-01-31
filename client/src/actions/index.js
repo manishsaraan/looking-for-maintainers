@@ -30,7 +30,14 @@ export function fetchUserRepos(userId) {
 export function fetchUserGithubRepos(userName, repoName) {
   return function(dispatch) {
     console.log(repoName);
-    return fetch(`${apiEndPoint}/user-repo/${userName}/${repoName}`)
+    return fetch(`${apiEndPoint}/user-repo/${userName}/${repoName}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+        Authentication: `Bearer test`
+      }
+    })
       .then(response => response.json())
       .then(jsonResp => {
         dispatch({
@@ -46,8 +53,8 @@ export function publishRepo(user, repo) {
     return fetch(`${apiEndPoint}/publish`, {
       method: "POST",
       headers: {
-        'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json'
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({ user, repo })
     })
