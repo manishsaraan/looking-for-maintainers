@@ -76,8 +76,9 @@ app.get("/api/login/github/:code", (req, response) => {
             json: true
           },
           function(error, req, user) {
-            console.log("-----------sdf", user);
-            response.json(user);
+            const jwtToken = libs.createToken(user.login);
+            console.log("-----------sdf", { ...user, jwtToken });
+            response.json({ ...user, jwtToken });
           }
         );
       } else {
@@ -105,6 +106,7 @@ app.get("/api/repos/:userId", async (req, res) => {
 
 app.get("/api/user-repo/:username/:repoName", async (req, res) => {
   const { repoName, username } = req.params;
+
   const apiUrl = `https://api.github.com/search/repositories?q=${repoName}+user:${username}&client_id=${clientID}&client_secret=${clientSecret}`;
   console.log("--------------apdd------------", apiUrl);
   const { body: repos } = await got(apiUrl, { json: true, method: "GET" });
@@ -142,9 +144,9 @@ app.post("/api/publish", async (req, res) => {
   );
 });
 
-app.get("*", function(req, res) {
-  res.sendfile("./client/build/index.html");
-});
+// app.get("*", function(req, res) {
+//   res.sendfile("./client/build/index.html");
+// });
 
 app.listen(PORT, () =>
   console.log(`app is running at port: ${PORT} in ${process.env.NODE_ENV} mode`)
