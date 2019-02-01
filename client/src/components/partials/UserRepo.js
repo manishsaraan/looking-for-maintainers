@@ -1,15 +1,13 @@
 import React from "react";
+import Toggle from "react-toggle-component";
 import "../../assets/css/profile.css";
-import Toggle from "./Toggle";
+import "react-toggle-component/styles.css";
 
 class UserRepo extends React.Component {
   state = {
     isChecked: false
   };
-  onChange = () => {
-    this.setState({ isChecked: !this.state.isChecked });
-    this.props.updateRepoStatus(this.props.repo);
-  };
+
   render() {
     const { repo } = this.props;
     return (
@@ -21,8 +19,11 @@ class UserRepo extends React.Component {
           <div className="col-8">{repo.name}</div>
           <div className="col-3">
             <Toggle
-              isChecked={this.state.isChecked}
-              updateRepoStatus={this.onChange}
+              checked={this.state.isChecked}
+              onToggle={value => {
+                this.setState({ isChecked: !this.state.isChecked });
+                this.props.updateRepoStatus(this.props.repo);
+              }}
             />
           </div>
         </div>

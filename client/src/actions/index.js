@@ -49,6 +49,7 @@ export function fetchUserGithubRepos(userName, repoName) {
 }
 
 export function publishRepo(user, repo) {
+  console.log(repo);
   return function(dispatch) {
     return fetch(`${apiEndPoint}/publish`, {
       method: "POST",
@@ -56,7 +57,7 @@ export function publishRepo(user, repo) {
         Accept: "application/json, text/plain, */*",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ user, repo })
+      body: JSON.stringify(repo)
     })
       .then(response => response.json())
       .then(jsonResp => console.log(jsonResp));

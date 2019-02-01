@@ -2,7 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import Header from "./partials/Header";
 import UserRepo from "./partials/UserRepo";
-import { fetchUserRepos, fetchUserGithubRepos, publishRepo} from "../actions/index";
+import {
+  fetchUserRepos,
+  fetchUserGithubRepos,
+  publishRepo
+} from "../actions/index";
 import Spinner from "./partials/Spinner";
 
 class Profile extends React.Component {
@@ -26,8 +30,8 @@ class Profile extends React.Component {
     this.props.fetchUserGithubRepos(this.props.user.login, search);
   };
 
-  updateRepoStatus = repo =>{
-    this.props.publishRepo(this.props.user,repo);
+  updateRepoStatus = repo => {
+    this.props.publishRepo(this.props.user, repo);
   };
 
   render() {
