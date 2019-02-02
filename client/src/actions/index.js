@@ -49,6 +49,10 @@ export function fetchUserGithubRepos(userName, repoName) {
 }
 
 export function publishRepo(user, repo) {
+  if(repo._id){
+    delete repo.id;
+    delete repo._id;
+  }
   console.log(repo);
   return function(dispatch) {
     return fetch(`${apiEndPoint}/publish`, {
@@ -58,6 +62,21 @@ export function publishRepo(user, repo) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(repo)
+    })
+      .then(response => response.json())
+      .then(jsonResp => console.log(jsonResp));
+  };
+}
+
+export function unpublishRepo(repoId) {
+  console.log(repoId);
+  return function(dispatch) {
+    return fetch(`${apiEndPoint}/delete/${repoId}`, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      }
     })
       .then(response => response.json())
       .then(jsonResp => console.log(jsonResp));

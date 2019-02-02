@@ -5,7 +5,8 @@ import UserRepo from "./partials/UserRepo";
 import {
   fetchUserRepos,
   fetchUserGithubRepos,
-  publishRepo
+  publishRepo,
+  unpublishRepo
 } from "../actions/index";
 import Spinner from "./partials/Spinner";
 
@@ -30,8 +31,11 @@ class Profile extends React.Component {
     this.props.fetchUserGithubRepos(this.props.user.login, search);
   };
 
-  updateRepoStatus = repo => {
-    this.props.publishRepo(this.props.user, repo);
+  updateRepoStatus = (repo, status) => {
+    console.log(status);
+    status
+      ? this.props.publishRepo(this.props.user, repo)
+      : this.props.unpublishRepo(repo._id);
   };
 
   render() {
@@ -171,6 +175,7 @@ export default connect(
   {
     fetchUserRepos,
     fetchUserGithubRepos,
-    publishRepo
+    publishRepo,
+    unpublishRepo
   }
 )(Profile);

@@ -23,7 +23,7 @@ class UserRepo extends React.Component {
               name={repo.name}
               onToggle={value => {
                 this.setState({ isChecked: !this.state.isChecked });
-                this.props.updateRepoStatus(this.props.repo);
+                this.props.updateRepoStatus(this.props.repo, value);
               }}
             />
           </div>

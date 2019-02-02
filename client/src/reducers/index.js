@@ -16,7 +16,11 @@ function rootReducer(state = initialState, { type, payload }) {
     case USER_REPOS_FETCHED:
       return {
         ...state,
-        userPublishedRepos: payload.map(repo => ({ ...repo, isChecked: true }))
+        userPublishedRepos: payload.map(repo => ({
+          ...repo,
+          id: repo._id,
+          isChecked: true
+        }))
       };
     case USER_GITHUB_REPOS_FETCHED:
       return { ...state, userGithubRepos: payload };
