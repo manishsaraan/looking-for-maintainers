@@ -15,7 +15,7 @@ class Profile extends React.Component {
   };
 
   componentDidMount() {
-    // this.props.fetchUserRepos(this.props.user.id);
+    this.props.fetchUserRepos(this.props.user.login);
   }
 
   onChange = event => {
@@ -40,7 +40,7 @@ class Profile extends React.Component {
     if (userGithubRepos.items) {
       showRepos = [...userGithubRepos.items];
     }
-    console.log("user", user, this.props);
+    console.log("user", showRepos);
     return (
       <div>
         <div className="page-wrap">
@@ -136,6 +136,7 @@ class Profile extends React.Component {
                                     updateRepoStatus={this.updateRepoStatus}
                                     repo={repo}
                                     key={repo.id}
+                                    isChecked={repo.isChecked}
                                   />
                                 ))
                               ) : (

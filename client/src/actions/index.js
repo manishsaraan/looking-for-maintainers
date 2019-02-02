@@ -16,10 +16,10 @@ export function getRepos() {
   };
 }
 
-export function fetchUserRepos(userId) {
+export function fetchUserRepos(userName) {
   return function(dispatch) {
-    console.log("--------------", userId);
-    return fetch(`${apiEndPoint}/repos/${userId}`)
+    console.log("--------------", userName);
+    return fetch(`${apiEndPoint}/repos/${userName}`)
       .then(response => response.json())
       .then(jsonResp => {
         dispatch({ type: USER_REPOS_FETCHED, payload: jsonResp });

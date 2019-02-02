@@ -5,7 +5,7 @@ import "react-toggle-component/styles.css";
 
 class UserRepo extends React.Component {
   state = {
-    isChecked: false
+    isChecked: this.props.isChecked
   };
 
   render() {
@@ -20,6 +20,7 @@ class UserRepo extends React.Component {
           <div className="col-3">
             <Toggle
               checked={this.state.isChecked}
+              name={repo.name}
               onToggle={value => {
                 this.setState({ isChecked: !this.state.isChecked });
                 this.props.updateRepoStatus(this.props.repo);
