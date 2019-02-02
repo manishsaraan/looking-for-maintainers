@@ -88,18 +88,12 @@ app.get("/api/login/github/:code", (req, response) => {
   );
 });
 
-app.get("/api/repos/:userId", async (req, res) => {
-  const { userId } = req.params;
+app.get("/api/repos/:username", async (req, res) => {
+  const { username } = req.params;
 
-  Repos.find({ userId })
-    .populate("userId")
+  Repos.find({ "owner.username": username })
     .sort({ name: -1 })
     .exec(function(err, repos) {
-      console.log(
-        userId,
-        "************************************req.user",
-        repos
-      );
       res.json(repos ? repos : []);
     });
 });
@@ -126,20 +120,26 @@ app.delete("/api/delete/:repoId", (req, res) => {
 });
 
 app.post("/api/publish", async (req, res) => {
-  console.log(req.body);
-  const {
-    owner: { login: username },
-    name: repoName
-  } = req.body;
-  const apiUrl = `https://api.github.com/repos/${username}/${repoName}/languages?client_id=${clientID}&client_secret=${clientSecret}`;
+  console.log("-----------------", req.body);
 
+  const { owner, name: repoName } = req.body;
+  const username = owner.login ? owner.login : owner.username;
+  const html_url = owner.html_url ? owner.html_url : owner.userProfileUrl;
+
+  const apiUrl = `https://api.github.com/repos/${username}/${repoName}/languages?client_id=${clientID}&client_secret=${clientSecret}`;
+  console.log("-------apiUrl----", apiUrl);
   const { body: languageResponse } = await got(apiUrl, {
     json: true,
     method: "GET"
   });
-
   libs.saveUserRepo(
-    { repo: { ...req.body, languages: Object.keys(languageResponse) } },
+    {
+      repo: {
+        ...req.body,
+        owner: { ...req.body.owner, html_url, login: username },
+        languages: Object.keys(languageResponse)
+      }
+    },
     (err, savedRepo) => res.json(savedRepo)
   );
 });
