@@ -9,11 +9,17 @@ import {
   unpublishRepo
 } from "../actions/index";
 import Spinner from "./partials/Spinner";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 
 class Profile extends React.Component {
-  state = {
-    search: ""
-  };
+  constructor(props) {
+    super(props);
+    this.notificationDOMRef = React.createRef();
+    this.state = {
+      search: ""
+    };
+  }
 
   componentDidMount() {
     this.props.fetchUserRepos(this.props.user.login);
@@ -36,6 +42,17 @@ class Profile extends React.Component {
     status
       ? this.props.publishRepo(this.props.user, repo)
       : this.props.unpublishRepo(repo._id);
+    this.notificationDOMRef.current.addNotification({
+      title: repo.name,
+      message: `${repo.name} successfully un-published`,
+      type: "success",
+      insert: "top",
+      container: "top-right",
+      animationIn: ["animated", "fadeIn"],
+      animationOut: ["animated", "fadeOut"],
+      dismiss: { duration: 2000 },
+      dismissable: { click: true }
+    });
   };
 
   render() {
@@ -49,6 +66,7 @@ class Profile extends React.Component {
       <div>
         <div className="page-wrap">
           <Header user={user} />
+          <ReactNotification ref={this.notificationDOMRef} />
         </div>
         <div className="container bootstrap snippet mt-5">
           <div className="row">
