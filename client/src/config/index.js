@@ -1,3 +1,3 @@
-export const clientId = process.env.CLIENT_ID;
-export const redirectUri = process.env.REDIRECT_URI;
-export const apiEndPoint = process.env.API_ENDPOINT;
+export const clientId = process.env.REACT_APP_CLIENT_ID;
+export const redirectUri = process.env.REACT_APP_REDIRECT_URI;
+export const apiEndPoint = process.env.REACT_APP_API_ENDPOINT;
