@@ -56,12 +56,17 @@ class Profile extends React.Component {
   };
 
   render() {
-    const { user, userPublishedRepos, userGithubRepos } = this.props;
+    const {
+      user,
+      userPublishedRepos,
+      userGithubRepos,
+      userGithubRepoPublished
+    } = this.props;
     let showRepos = [...userPublishedRepos];
     if (userGithubRepos.items) {
       showRepos = [...userGithubRepos.items];
     }
-    console.log("user", showRepos);
+    console.log("user-------", this.props.userGithubRepoPublished);
     return (
       <div>
         <div className="page-wrap">
@@ -185,7 +190,8 @@ class Profile extends React.Component {
 
 const mapStateToProps = state => ({
   userPublishedRepos: state.userPublishedRepos,
-  userGithubRepos: state.userGithubRepos
+  userGithubRepos: state.userGithubRepos,
+  userGithubRepoPublished: state.userGithubRepoPublished
 });
 
 export default connect(

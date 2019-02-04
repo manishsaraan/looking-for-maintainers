@@ -1,13 +1,15 @@
 import {
   REPOS_FETCHED,
   USER_REPOS_FETCHED,
-  USER_GITHUB_REPOS_FETCHED
+  USER_GITHUB_REPOS_FETCHED,
+  USER_GITHUB_REPOS_PUBLISHED
 } from "../constants/action-types";
 
 const initialState = {
   repos: [],
   userPublishedRepos: [],
-  userGithubRepos: []
+  userGithubRepos: [],
+  userGithubRepoPublished: false
 };
 function rootReducer(state = initialState, { type, payload }) {
   switch (type) {
@@ -24,6 +26,8 @@ function rootReducer(state = initialState, { type, payload }) {
       };
     case USER_GITHUB_REPOS_FETCHED:
       return { ...state, userGithubRepos: payload };
+    case USER_GITHUB_REPOS_PUBLISHED:
+      return { ...state, userGithubRepoPublished: true };
     default:
       return { ...state };
   }

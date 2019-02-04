@@ -1,7 +1,8 @@
 import {
   REPOS_FETCHED,
   USER_REPOS_FETCHED,
-  USER_GITHUB_REPOS_FETCHED
+  USER_GITHUB_REPOS_FETCHED,
+  USER_GITHUB_REPOS_PUBLISHED
 } from "../constants/action-types";
 import { apiEndPoint } from "../config";
 
@@ -49,10 +50,11 @@ export function fetchUserGithubRepos(userName, repoName) {
 }
 
 export function publishRepo(user, repo) {
-  if(repo._id){
+  if (repo._id) {
     delete repo.id;
     delete repo._id;
   }
+
   console.log(repo);
   return function(dispatch) {
     return fetch(`${apiEndPoint}/publish`, {
@@ -64,7 +66,11 @@ export function publishRepo(user, repo) {
       body: JSON.stringify(repo)
     })
       .then(response => response.json())
-      .then(jsonResp => console.log(jsonResp));
+      .then(jsonResp =>
+        dispatch({
+          type: USER_GITHUB_REPOS_PUBLISHED
+        })
+      );
   };
 }
 
