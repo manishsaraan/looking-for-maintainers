@@ -49,14 +49,14 @@ export function fetchUserGithubRepos(userName, repoName) {
   };
 }
 
-export function publishRepo(user, repo) {
+export function publishRepo(repo) {
   if (repo._id) {
     delete repo.id;
     delete repo._id;
   }
 
-  console.log(repo);
-  return function(dispatch) {
+  return function(dispatch, getState) {
+    console.log("----------------", getState());
     return fetch(`${apiEndPoint}/publish`, {
       method: "POST",
       headers: {
@@ -71,7 +71,8 @@ export function publishRepo(user, repo) {
           type: SUCCESS_MESSAGE,
           payload: {
             repo: repo.name,
-            msg: `${repo.name} successfully published`
+            msg: `${repo.name} successfully published`,
+            data: jsonResp
           }
         })
       );

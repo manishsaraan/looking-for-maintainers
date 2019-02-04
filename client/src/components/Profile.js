@@ -40,8 +40,8 @@ class Profile extends React.Component {
   updateRepoStatus = (repo, status) => {
     console.log(status);
     status
-      ? this.props.publishRepo(this.props.user, repo)
-      : this.props.unpublishRepo(repo._id);
+      ? this.props.publishRepo(repo)
+      : this.props.unpublishRepo(repo.name, repo._id);
   };
 
   showToaster = ({ repo, msg }) => {
@@ -59,6 +59,7 @@ class Profile extends React.Component {
   };
 
   render() {
+    console.log("--------------sdfsdfds", this.props);
     const {
       user,
       userPublishedRepos,
@@ -66,12 +67,13 @@ class Profile extends React.Component {
       successMessage
     } = this.props;
     let showRepos = [...userPublishedRepos];
-    if (userGithubRepos.items) {
-      showRepos = [...userGithubRepos.items];
+
+    if (userGithubRepos) {
+      showRepos = [...userGithubRepos];
     }
     console.log("user-------", this.props.successMessage);
 
-    if (!!Object.keys(successMessage)) {
+    if (!!Object.keys(successMessage).length) {
       this.showToaster(successMessage);
     }
     return (
