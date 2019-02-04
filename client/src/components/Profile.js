@@ -42,9 +42,12 @@ class Profile extends React.Component {
     status
       ? this.props.publishRepo(this.props.user, repo)
       : this.props.unpublishRepo(repo._id);
+  };
+
+  showToaster = ({ repo, msg }) => {
     this.notificationDOMRef.current.addNotification({
-      title: repo.name,
-      message: `${repo.name} successfully un-published`,
+      title: repo,
+      message: msg,
       type: "success",
       insert: "top",
       container: "top-right",
@@ -60,13 +63,17 @@ class Profile extends React.Component {
       user,
       userPublishedRepos,
       userGithubRepos,
-      userGithubRepoPublished
+      successMessage
     } = this.props;
     let showRepos = [...userPublishedRepos];
     if (userGithubRepos.items) {
       showRepos = [...userGithubRepos.items];
     }
-    console.log("user-------", this.props.userGithubRepoPublished);
+    console.log("user-------", this.props.successMessage);
+
+    if (!!Object.keys(successMessage)) {
+      this.showToaster(successMessage);
+    }
     return (
       <div>
         <div className="page-wrap">
@@ -191,7 +198,7 @@ class Profile extends React.Component {
 const mapStateToProps = state => ({
   userPublishedRepos: state.userPublishedRepos,
   userGithubRepos: state.userGithubRepos,
-  userGithubRepoPublished: state.userGithubRepoPublished
+  successMessage: state.successMessage
 });
 
 export default connect(

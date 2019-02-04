@@ -9,12 +9,12 @@ const initialState = {
   repos: [],
   userPublishedRepos: [],
   userGithubRepos: [],
-  userGithubRepoPublished: false
+  successMessage: {}
 };
 function rootReducer(state = initialState, { type, payload }) {
   switch (type) {
     case REPOS_FETCHED:
-      return { ...state, repos: payload };
+      return { ...state, repos: payload, successMessage: {} };
     case USER_REPOS_FETCHED:
       return {
         ...state,
@@ -22,12 +22,13 @@ function rootReducer(state = initialState, { type, payload }) {
           ...repo,
           id: repo._id,
           isChecked: true
-        }))
+        })),
+        successMessage: {}
       };
     case USER_GITHUB_REPOS_FETCHED:
-      return { ...state, userGithubRepos: payload };
-    case USER_GITHUB_REPOS_PUBLISHED:
-      return { ...state, userGithubRepoPublished: true };
+      return { ...state, userGithubRepos: payload, successMessage: {} };
+    case SUCCESS_MESSAGE:
+      return { ...state, successMessage: { ...payload } };
     default:
       return { ...state };
   }

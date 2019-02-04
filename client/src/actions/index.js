@@ -2,7 +2,7 @@ import {
   REPOS_FETCHED,
   USER_REPOS_FETCHED,
   USER_GITHUB_REPOS_FETCHED,
-  USER_GITHUB_REPOS_PUBLISHED
+  SUCCESS_MESSAGE
 } from "../constants/action-types";
 import { apiEndPoint } from "../config";
 
@@ -68,13 +68,17 @@ export function publishRepo(user, repo) {
       .then(response => response.json())
       .then(jsonResp =>
         dispatch({
-          type: USER_GITHUB_REPOS_PUBLISHED
+          type: SUCCESS_MESSAGE,
+          payload: {
+            repo: repo.name,
+            msg: `${repo.name} successfully published`
+          }
         })
       );
   };
 }
 
-export function unpublishRepo(repoId) {
+export function unpublishRepo(repoName, repoId) {
   console.log(repoId);
   return function(dispatch) {
     return fetch(`${apiEndPoint}/delete/${repoId}`, {
@@ -85,6 +89,12 @@ export function unpublishRepo(repoId) {
       }
     })
       .then(response => response.json())
-      .then(jsonResp => console.log(jsonResp));
+      .then(jsonResp => ({
+        type: SUCCESS_MESSAGE,
+        payload: {
+          repo: repoName,
+          msg: `${repoName} successfully un-published`
+        }
+      }));
   };
 }
