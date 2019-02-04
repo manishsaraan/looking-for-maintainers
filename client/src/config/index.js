@@ -1,3 +1,3 @@
-export const clientId = "b2464a59102ba2db9cb1";
-export const redirectUri = "http://localhost:3000/login/github/return";
-export const apiEndPoint = "http://localhost:3011/api";
+export const clientId = process.env.CLIENT_ID;
+export const redirectUri = process.env.REDIRECT_URI;
+export const apiEndPoint = process.env.API_ENDPOINT;
