@@ -7,6 +7,15 @@ import {
 } from "../constants/action-types";
 import { apiEndPoint } from "../config";
 
+function createHeaders() {
+  const { jwtToken } = JSON.parse(localStorage.getItem("user"));
+  return {
+    Accept: "application/json, text/plain, */*",
+    "Content-Type": "application/json",
+    "x-access-token": jwtToken
+  };
+}
+
 export function getRepos() {
   return function(dispatch) {
     return fetch(`${apiEndPoint}/explore`)
@@ -20,7 +29,10 @@ export function getRepos() {
 
 export function fetchUserRepos(userName) {
   return function(dispatch) {
-    return fetch(`${apiEndPoint}/repos/${userName}`)
+    return fetch(`${apiEndPoint}/repos/${userName}`, {
+      method: "GET",
+      headers: createHeaders()
+    })
       .then(response => response.json())
       .then(jsonResp => {
         dispatch({ type: USER_REPOS_FETCHED, payload: jsonResp });
@@ -32,11 +44,7 @@ export function fetchUserGithubRepos(userName, repoName) {
   return function(dispatch) {
     return fetch(`${apiEndPoint}/user-repo/${userName}/${repoName}`, {
       method: "GET",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-        Authentication: `Bearer test`
-      }
+      headers: createHeaders()
     })
       .then(response => response.json())
       .then(jsonResp => {
@@ -57,10 +65,7 @@ export function publishRepo(repo) {
   return function(dispatch, getState) {
     return fetch(`${apiEndPoint}/publish`, {
       method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      },
+      headers: createHeaders(),
       body: JSON.stringify(repo)
     })
       .then(response => response.json())
@@ -107,10 +112,7 @@ export function unpublishRepo(repoName, repoId) {
   return function(dispatch) {
     return fetch(`${apiEndPoint}/delete/${repoId}`, {
       method: "DELETE",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      }
+      headers: createHeaders()
     })
       .then(response => response.json())
       .then(jsonResp => {
