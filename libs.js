@@ -53,10 +53,12 @@ module.exports.createToken = username => {
   });
 };
 
-module.exports.verifyToken = token => {
-  jwt.verify(token, SECRET, function(err, decoded) {
-    if (err) return { auth: false, message: "Failed to authenticate token." };
+module.exports.verifyToken = (token, cb) => {
+  return new Promise(resolve => {
+    jwt.verify(token, SECRET, function(err, decoded) {
+      if (err) resolve({ auth: false });
 
-    return { auth: true, data: decoded };
+      resolve({ auth: true, data: decoded });
+    });
   });
 };

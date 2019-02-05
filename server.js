@@ -6,10 +6,7 @@ const request = require("request");
 const cors = require("cors");
 const { db, clientID, clientSecret, PORT } = require("./config");
 const libs = require("./libs");
-mongoose.connect(
-  db,
-  { useNewUrlParser: true }
-);
+mongoose.connect(db, { useNewUrlParser: true });
 const Repos = require("./repos");
 const app = express();
 
@@ -32,6 +29,31 @@ app.use(
 app.use(express.static("assets"));
 app.use(express.static("./client/build"));
 app.use(cors());
+
+async function authenticateUser(req, res, next) {
+  const token =
+    req.body.token || req.query.token || req.headers["x-access-token"];
+  // decode token
+  if (token) {
+    // verifies secret and checks exp
+    const { auth, decoded } = await libs.verifyToken(token);
+    if (!auth) {
+      res.status(401).json({
+        message: "Failed to authenticate token."
+      });
+    } else {
+      // if everything is good, save to request for use in other routes
+      req.decoded = decoded;
+      next();
+    }
+  } else {
+    // if there is no token
+    // return an error
+    res.status(401).json({
+      message: "No token provided."
+    });
+  }
+}
 
 // Define routes.
 
@@ -88,7 +110,7 @@ app.get("/api/login/github/:code", (req, response) => {
   );
 });
 
-app.get("/api/repos/:username", async (req, res) => {
+app.get("/api/repos/:username", authenticateUser, async (req, res) => {
   const { username } = req.params;
 
   Repos.find({ "owner.username": username })
@@ -98,16 +120,20 @@ app.get("/api/repos/:username", async (req, res) => {
     });
 });
 
-app.get("/api/user-repo/:username/:repoName", async (req, res) => {
-  const { repoName, username } = req.params;
+app.get(
+  "/api/user-repo/:username/:repoName",
+  authenticateUser,
+  async (req, res) => {
+    const { repoName, username } = req.params;
 
-  const apiUrl = `https://api.github.com/search/repositories?q=${repoName}+user:${username}&client_id=${clientID}&client_secret=${clientSecret}`;
-  console.log("--------------apdd------------", apiUrl);
-  const { body: repos } = await got(apiUrl, { json: true, method: "GET" });
-  res.json(repos);
-});
+    const apiUrl = `https://api.github.com/search/repositories?q=${repoName}+user:${username}&client_id=${clientID}&client_secret=${clientSecret}`;
+    console.log("--------------apdd------------", apiUrl);
+    const { body: repos } = await got(apiUrl, { json: true, method: "GET" });
+    res.json(repos);
+  }
+);
 
-app.delete("/api/delete/:repoId", (req, res) => {
+app.delete("/api/delete/:repoId", authenticateUser, (req, res) => {
   const { repoId } = req.params;
 
   Repos.remove({ _id: repoId }, function(err) {
@@ -119,7 +145,7 @@ app.delete("/api/delete/:repoId", (req, res) => {
   });
 });
 
-app.post("/api/publish", async (req, res) => {
+app.post("/api/publish", authenticateUser, async (req, res) => {
   console.log("-----------------", req.body);
 
   const { owner, name: repoName } = req.body;
@@ -143,10 +169,6 @@ app.post("/api/publish", async (req, res) => {
     (err, savedRepo) => res.json(savedRepo)
   );
 });
-
-// app.get("*", function(req, res) {
-//   res.sendfile("./client/build/index.html");
-// });
 
 app.listen(PORT, () =>
   console.log(`app is running at port: ${PORT} in ${process.env.NODE_ENV} mode`)
