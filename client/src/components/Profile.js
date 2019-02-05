@@ -38,7 +38,7 @@ class Profile extends React.Component {
   };
 
   updateRepoStatus = (repo, status) => {
-    console.log(status);
+    // console.log(status);
     status
       ? this.props.publishRepo(repo)
       : this.props.unpublishRepo(repo.name, repo._id);
@@ -59,7 +59,6 @@ class Profile extends React.Component {
   };
 
   render() {
-    console.log("--------------sdfsdfds", this.props);
     const {
       user,
       userPublishedRepos,
@@ -68,10 +67,9 @@ class Profile extends React.Component {
     } = this.props;
     let showRepos = [...userPublishedRepos];
 
-    if (userGithubRepos) {
+    if (!!userGithubRepos.length) {
       showRepos = [...userGithubRepos];
     }
-    console.log("user-------", this.props.successMessage);
 
     if (!!Object.keys(successMessage).length) {
       this.showToaster(successMessage);
@@ -87,7 +85,7 @@ class Profile extends React.Component {
             <div className="col-sm-3">
               <div className="text-left">
                 <img
-                  src={user.avatar_url}
+                  src={"user.avatar_url"}
                   className="avatar rounded-circle img-thumbnail"
                   alt="avatar"
                 />

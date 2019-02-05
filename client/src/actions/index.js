@@ -2,7 +2,8 @@ import {
   REPOS_FETCHED,
   USER_REPOS_FETCHED,
   USER_GITHUB_REPOS_FETCHED,
-  SUCCESS_MESSAGE
+  USER_GITHUB_REPOS_PUBLISHED,
+  USER_GITHUB_REPOS_REMOVED
 } from "../constants/action-types";
 import { apiEndPoint } from "../config";
 
@@ -19,7 +20,6 @@ export function getRepos() {
 
 export function fetchUserRepos(userName) {
   return function(dispatch) {
-    console.log("--------------", userName);
     return fetch(`${apiEndPoint}/repos/${userName}`)
       .then(response => response.json())
       .then(jsonResp => {
@@ -30,7 +30,6 @@ export function fetchUserRepos(userName) {
 
 export function fetchUserGithubRepos(userName, repoName) {
   return function(dispatch) {
-    console.log(repoName);
     return fetch(`${apiEndPoint}/user-repo/${userName}/${repoName}`, {
       method: "GET",
       headers: {
@@ -56,7 +55,6 @@ export function publishRepo(repo) {
   }
 
   return function(dispatch, getState) {
-    console.log("----------------", getState());
     return fetch(`${apiEndPoint}/publish`, {
       method: "POST",
       headers: {
@@ -66,21 +64,46 @@ export function publishRepo(repo) {
       body: JSON.stringify(repo)
     })
       .then(response => response.json())
-      .then(jsonResp =>
+      .then(jsonResp => {
+        const { userGithubRepos, userPublishedRepos } = getState();
+        const dataIndex = userGithubRepos.findIndex(
+          repo => repo.github_id === jsonResp.github_id
+        );
+
+        const publishedRepoIndex = userPublishedRepos.findIndex(
+          repo => repo.github_id === jsonResp.github_id
+        );
+
+        if (dataIndex !== -1) {
+          userGithubRepos[dataIndex] = {
+            ...userGithubRepos[dataIndex],
+            ...jsonResp
+          };
+        }
+
+        if (publishedRepoIndex !== -1) {
+          userPublishedRepos[publishedRepoIndex] = {
+            ...userPublishedRepos[publishedRepoIndex],
+            ...jsonResp
+          };
+        }
+
         dispatch({
-          type: SUCCESS_MESSAGE,
+          type: USER_GITHUB_REPOS_PUBLISHED,
           payload: {
-            repo: repo.name,
-            msg: `${repo.name} successfully published`,
-            data: jsonResp
+            userGithubRepos,
+            userPublishedRepos,
+            success: {
+              repo: repo.name,
+              msg: `${repo.name} successfully published`
+            }
           }
-        })
-      );
+        });
+      });
   };
 }
 
 export function unpublishRepo(repoName, repoId) {
-  console.log(repoId);
   return function(dispatch) {
     return fetch(`${apiEndPoint}/delete/${repoId}`, {
       method: "DELETE",
@@ -90,12 +113,14 @@ export function unpublishRepo(repoName, repoId) {
       }
     })
       .then(response => response.json())
-      .then(jsonResp => ({
-        type: SUCCESS_MESSAGE,
-        payload: {
-          repo: repoName,
-          msg: `${repoName} successfully un-published`
-        }
-      }));
+      .then(jsonResp => {
+        dispatch({
+          type: USER_GITHUB_REPOS_REMOVED,
+          payload: {
+            repo: repoName,
+            msg: `${repoName} successfully un-published`
+          }
+        });
+      });
   };
 }

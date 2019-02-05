@@ -2,9 +2,9 @@ import {
   REPOS_FETCHED,
   USER_REPOS_FETCHED,
   USER_GITHUB_REPOS_FETCHED,
-  SUCCESS_MESSAGE
+  USER_GITHUB_REPOS_PUBLISHED,
+  USER_GITHUB_REPOS_REMOVED
 } from "../constants/action-types";
-import { stat } from "fs";
 
 const initialState = {
   repos: [],
@@ -48,12 +48,8 @@ const processGithubSearchResponse = repo => {
   };
 };
 
-const updatePublishedRepoData = (repo, state) => {
-  // const githubRepoIndex = state.userPublishedRepos.findIndex( repo => repo.github_id === )
-  // return state;
-};
-
 function rootReducer(state = initialState, { type, payload }) {
+  console.log("---------", payload);
   switch (type) {
     case REPOS_FETCHED:
       return { ...state, repos: payload, successMessage: {} };
@@ -73,9 +69,16 @@ function rootReducer(state = initialState, { type, payload }) {
         userGithubRepos: payload.items.map(processGithubSearchResponse),
         successMessage: {}
       };
-    case SUCCESS_MESSAGE:
+    case USER_GITHUB_REPOS_PUBLISHED:
       return {
-        ...updatePublishedRepoData(payload.data, state),
+        ...state,
+        userGithubRepos: [...payload.userGithubRepos],
+        userPublishedRepos: [...payload.userPublishedRepos],
+        successMessage: { ...payload.success }
+      };
+    case USER_GITHUB_REPOS_REMOVED:
+      return {
+        ...state,
         successMessage: { ...payload }
       };
     default:
