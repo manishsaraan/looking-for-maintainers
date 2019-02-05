@@ -15,15 +15,15 @@ module.exports.saveUserRepo = ({ repo }, cb) => {
     html_url,
     languages,
     owner,
-    id
+    github_id
   } = repo;
   const { html_url: userProfileUrl, avatar_url, login } = owner;
 
   Repos.findOneAndUpdate(
-    { github_id: id },
+    { github_id },
     {
       name: name,
-      github_id: id,
+      github_id,
       stargazers_count,
       watchers_count,
       open_issues_count,
