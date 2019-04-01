@@ -8,6 +8,7 @@ const { db, clientID, clientSecret, PORT } = require("./config");
 const libs = require("./libs");
 mongoose.connect(db, { useNewUrlParser: true });
 const Repos = require("./repos");
+const logger = require("./logger").logger;
 const app = express();
 
 app.use(require("morgan")("combined"));
@@ -171,5 +172,5 @@ app.post("/api/publish", authenticateUser, async (req, res) => {
 });
 
 app.listen(PORT, () =>
-  console.log(`app is running at port: ${PORT} in ${process.env.NODE_ENV} mode`)
+  logger.warn(`app is running at port: ${PORT} in ${process.env.NODE_ENV} mode`)
 );
