@@ -171,6 +171,17 @@ app.post("/api/publish", authenticateUser, async (req, res) => {
   );
 });
 
+app.post("/subscribe", (req, res) => {
+  libs.subscribeUser(req.body, (err, response) => {
+    if (err) {
+      logger.error(err);
+      res.status(400).json({ error: err });
+    } else {
+      res.status(200).json(response);
+    }
+  });
+});
+
 app.listen(PORT, () =>
   logger.warn(`app is running at port: ${PORT} in ${process.env.NODE_ENV} mode`)
 );

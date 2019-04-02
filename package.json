@@ -37,7 +37,8 @@
     "passport": "^0.2.2",
     "passport-facebook": "^2.0.0",
     "passport-github": "^1.1.0",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "eslint-config-airbnb-base": "^13.1.0",

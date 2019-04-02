@@ -1,6 +1,7 @@
 const dateFns = require("date-fns");
 const jwt = require("jsonwebtoken");
 const Repos = require("./repos");
+const request = require("request");
 const SECRET = "test";
 
 module.exports.saveUserRepo = ({ repo }, cb) => {
@@ -61,4 +62,38 @@ module.exports.verifyToken = (token, cb) => {
       resolve({ auth: true, data: decoded });
     });
   });
+};
+
+module.exports.subscribeUser = ({ email, fname, lname }, cb) => {
+  request.post(
+    {
+      headers: {
+        "content-type": "application/json",
+        Authorization:
+          "Basic " +
+          new Buffer("any:" + process.env.MAILCHIMP_KEY).toString("base64")
+      },
+      url:
+        "https://" +
+        process.env.MAILCHIMP_INSTANCE +
+        ".api.mailchimp.com/3.0/lists/" +
+        process.env.MAILCHIMP_LIST +
+        "/members/",
+      body: JSON.stringify({
+        email_address: email,
+        status: "subscribed",
+        merge_fields: {
+          FNAME: fname,
+          LNAME: lname
+        }
+      })
+    },
+    function(error, response, body) {
+      if (response.statusCode === 200) {
+        cb(null, body);
+      } else {
+        cb(error);
+      }
+    }
+  );
 };
