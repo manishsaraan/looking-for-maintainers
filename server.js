@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const got = require("got");
 const mongoose = require("mongoose");
@@ -173,11 +175,12 @@ app.post("/api/publish", authenticateUser, async (req, res) => {
 
 app.post("/subscribe", (req, res) => {
   libs.subscribeUser(req.body, (err, response) => {
+    console.log(response);
     if (err) {
       logger.error(err);
-      res.status(400).json({ error: err });
+      res.status(400).send({ error: err });
     } else {
-      res.status(200).json(response);
+      res.status(200).send(response);
     }
   });
 });

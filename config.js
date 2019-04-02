@@ -1,15 +1,16 @@
 const production = {
-    db: process.env.DB || "mongodb://localhost/looking-for-maintainers",
-    PORT: process.env.PORT || 3000,
-    clientID: process.env.clientID,
-    clientSecret: process.env.clientSecret,
+  db: process.env.DB,
+  PORT: process.env.PORT || 3000,
+  clientID: process.env.CLIENT_ID,
+  clientSecret: process.env.CILENT_SECRET
 };
 
 const development = {
-    db: process.env.DB || "mongodb://localhost/repos",
-    PORT: process.env.PORT || 3011,
-    clientID: "b2464a59102ba2db9cb1",
-    clientSecret: "4e265ceaa7bfc09315438f9d9e3d795302bca1ce",
+  db: process.env.DB,
+  PORT: process.env.PORT || 3011,
+  clientID: process.env.CLIENT_ID,
+  clientSecret: process.env.CILENT_SECRET
 };
 
-module.exports = process.env.NODE_ENV === "production" ? production : development;
+module.exports =
+  process.env.NODE_ENV === "production" ? production : development;
