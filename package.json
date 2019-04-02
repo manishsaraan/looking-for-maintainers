@@ -1,24 +1,26 @@
 {
-  "name": "express-4.x-facebook-example",
+  "name": "looking-for-maintainers-backend",
   "version": "0.0.0",
-  "description": "Express 4.x app using Passport for authentication with Facebook.",
+  "description": "Looking for maintainers application backend",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint server.js"
+    "lint": "./node_modules/.bin/eslint server.js",
+    "dev": "node .",
+    "start": "pm2 start index.js -i max --name=lfm",
+    "reload": "pm2 reload lfm"
   },
   "keywords": [
-    "example",
-    "express",
-    "passport"
+    "github",
+    "express"
   ],
-  "author": "Jared Hanson",
+  "author": "Manish Saraan",
   "license": "Unlicense",
-  "homepage": "https://github.com/passport/express-4.x-facebook-example",
+  "homepage": "https://github.com/manishsaraan/looking-for-maintainers",
   "repository": {
     "type": "git",
-    "url": "git://github.com/passport/express-4.x-facebook-example.git"
+    "url": "https://github.com/manishsaraan/looking-for-maintainers.git"
   },
   "bugs": {
-    "url": "https://github.com/passport/express-4.x-facebook-example/issues"
+    "url": "https://github.com/manishsaraan/looking-for-maintainers/issues"
   },
   "dependencies": {
     "async": "^2.6.1",
@@ -35,9 +37,6 @@
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.3.7",
     "morgan": "^1.6.1",
-    "passport": "^0.2.2",
-    "passport-facebook": "^2.0.0",
-    "passport-github": "^1.1.0",
     "request": "^2.88.0",
     "winston": "^3.2.1"
   },

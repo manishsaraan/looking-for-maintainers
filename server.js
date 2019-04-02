@@ -185,6 +185,4 @@ app.post("/subscribe", (req, res) => {
   });
 });
 
-app.listen(PORT, () =>
-  logger.warn(`app is running at port: ${PORT} in ${process.env.NODE_ENV} mode`)
-);
+module.exports = app;
