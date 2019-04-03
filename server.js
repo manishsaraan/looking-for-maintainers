@@ -9,12 +9,15 @@ const heapdump = require("heapdump");
 const cors = require("cors");
 const fs = require("fs");
 const rateLimit = require("express-rate-limit");
+const jwt = require("express-jwt");
+const blacklist = require("express-jwt-blacklist");
 const { db, clientID, clientSecret, PORT } = require("./config");
 const libs = require("./libs");
-mongoose.connect(db, { useNewUrlParser: true });
 const Repos = require("./repos");
 const logger = require("./logger").logger;
+
 const app = express();
+mongoose.connect(db, { useNewUrlParser: true });
 
 app.use(require("morgan")("combined"));
 app.use(require("cookie-parser")());
@@ -32,6 +35,14 @@ app.use(
     saveUninitialized: true
   })
 );
+
+app.use(
+  jwt({
+    secret: "looking-for-maintainers",
+    isRevoked: blacklist.isRevoked
+  })
+);
+
 app.use(express.static("assets"));
 app.use(express.static("./client/build"));
 app.use(cors());
@@ -204,6 +215,11 @@ app.get("/heapdump", (req, res, next) => {
       res.end(data);
     });
   });
+});
+
+app.get("/logout", authenticateUser, function(req, res) {
+  blacklist.revoke(req.user);
+  res.sendStatus(200);
 });
 
 module.exports = app;
