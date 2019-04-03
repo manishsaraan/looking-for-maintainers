@@ -21,7 +21,7 @@ mongoose.connect(db, { useNewUrlParser: true });
 
 app.use(require("morgan")("combined"));
 app.use(require("cookie-parser")());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "300kb" }));
 app.use(
   bodyParser.urlencoded({
     // to support URL-encoded bodies
@@ -32,7 +32,12 @@ app.use(
   require("express-session")({
     secret: "looking-for-maintainers",
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {
+      httpOnly: true, // minimize risk of XSS attacks by restricting the client from reading the cookie
+      secure: true, // only send cookie over https
+      maxAge: 60000 * 60 * 24 // set cookie expiry length in ms
+    }
   })
 );
 
