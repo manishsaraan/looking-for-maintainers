@@ -5,7 +5,10 @@ const got = require("got");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const request = require("request");
+const heapdump = require("heapdump");
 const cors = require("cors");
+const fs = require("fs");
+const rateLimit = require("express-rate-limit");
 const { db, clientID, clientSecret, PORT } = require("./config");
 const libs = require("./libs");
 mongoose.connect(db, { useNewUrlParser: true });
@@ -58,9 +61,16 @@ async function authenticateUser(req, res, next) {
   }
 }
 
+const createAccountLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour window
+  max: 100, // start blocking after 5 requests
+  message:
+    "Too many accounts created from this IP, please try again after an hour"
+});
+
 // Define routes.
 
-app.get("/api/explore", function(req, res) {
+app.get("/api/explore", createAccountLimiter, function(req, res) {
   const { q } = req.query;
   let query = {};
   if (q) {
@@ -182,6 +192,17 @@ app.post("/subscribe", (req, res) => {
     } else {
       res.status(200).send(response);
     }
+  });
+});
+
+app.get("/heapdump", (req, res, next) => {
+  logger.info("About to generate heapdump");
+
+  heapdump.writeSnapshot((err, filename) => {
+    logger.warn("heapdump file is ready to be sent to the caller", filename);
+    fs.readFile(filename, "utf-8", (err, data) => {
+      res.end(data);
+    });
   });
 });
 
