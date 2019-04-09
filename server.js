@@ -40,12 +40,12 @@ app.use(
   })
 );
 
-app.use(
-  jwt({
-    secret: "looking-for-maintainers",
-    isRevoked: blacklist.isRevoked
-  })
-);
+// app.use(
+//   jwt({
+//     secret: "looking-for-maintainers",
+//     isRevoked: blacklist.isRevoked
+//   })
+// );
 
 app.use(express.static("assets"));
 app.use(express.static("./client/build"));
