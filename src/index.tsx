@@ -47,7 +47,7 @@ ReactDOM.render(
         <Route
           path="/"
           exact
-          render={props => <App user={data} {...props} />}
+          render={(props: any) => <App user={data} {...props} />}
         />
         <Route path="/login/github/return" component={GithubLogin} />
         <Route

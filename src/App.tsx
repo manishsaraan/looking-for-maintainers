@@ -3,9 +3,15 @@ import GithubLogin from "./lib";
 import { clientId } from "./config/index";
 import "./App.css";
 
-class App extends Component {
+type AppProps = {
+  history: any,
+  user: any,
+  articles: any
+}
+
+class App extends Component<AppProps> {
   logout = () => {
-    localStorage.setItem("user", null);
+    localStorage.setItem("user", "");
     this.props.history.push("/");
   };
 

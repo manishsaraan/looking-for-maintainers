@@ -1,6 +1,7 @@
 import React from "react";
 
-const Header = ({ user }) => {
+const Header = (props: any) => {
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
@@ -28,7 +29,7 @@ const Header = ({ user }) => {
 
         <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0" />
-          {user ? (
+          {props.user ? (
             <ul className="navbar-nav ">
               <li className="nav-item dropdown">
                 <a
@@ -39,7 +40,7 @@ const Header = ({ user }) => {
                   aria-haspopup="true"
                   aria-expanded="false"
                 >
-                  {user.username}
+                  {props.user.username}
                 </a>
                 <div
                   className="dropdown-menu"
@@ -56,14 +57,14 @@ const Header = ({ user }) => {
               </li>
             </ul>
           ) : (
-            <a
-              href="/login/github"
-              rel="noopener noreferrer"
-              className="btn btn-light language-filter shadowed"
-            >
-              <i className="fa fa-github mr-1" /> Login
+              <a
+                href="/login/github"
+                rel="noopener noreferrer"
+                className="btn btn-light language-filter shadowed"
+              >
+                <i className="fa fa-github mr-1" /> Login
             </a>
-          )}
+            )}
         </div>
       </div>
     </nav>

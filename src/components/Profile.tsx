@@ -12,8 +12,29 @@ import Spinner from "./partials/Spinner";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
-class Profile extends React.Component {
-  constructor(props) {
+type ProfileProps = {
+  fetchUserRepos: any,
+  fetchUserGithubRepos: any,
+  user: any,
+  publishRepo: any,
+  unpublishRepo: any,
+  userPublishedRepos: any,
+  userGithubRepos: any,
+  successMessage: any
+}
+
+type ProfileState = {
+  search: string
+}
+
+type Notification = {
+  current: any
+}
+
+class Profile extends React.Component<ProfileProps, ProfileState> {
+  private notificationDOMRef: Notification;
+
+  constructor(props: any) {
     super(props);
     this.notificationDOMRef = React.createRef();
     this.state = {
@@ -25,26 +46,26 @@ class Profile extends React.Component {
     this.props.fetchUserRepos(this.props.user.login);
   }
 
-  onChange = event => {
+  onChange = (event: any) => {
     this.setState({
       search: event.target.value
     });
   };
 
-  findRepos = event => {
+  findRepos = (event: any) => {
     event.preventDefault();
     const { search } = this.state;
     this.props.fetchUserGithubRepos(this.props.user.login, search);
   };
 
-  updateRepoStatus = (repo, status) => {
+  updateRepoStatus = (repo: any, status: any) => {
     // console.log(status);
     status
       ? this.props.publishRepo(repo)
       : this.props.unpublishRepo(repo.name, repo._id);
   };
 
-  showToaster = ({ repo, msg }) => {
+  showToaster = ({ repo, msg }: { repo: any, msg: any }) => {
     this.notificationDOMRef.current.addNotification({
       title: repo,
       message: msg,
@@ -174,8 +195,8 @@ class Profile extends React.Component {
                                   />
                                 ))
                               ) : (
-                                <div>No Repos Found</div>
-                              )}
+                                  <div>No Repos Found</div>
+                                )}
                             </ul>
                           </form>
                         </div>
@@ -195,7 +216,7 @@ class Profile extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
   userPublishedRepos: state.userPublishedRepos,
   userGithubRepos: state.userGithubRepos,
   successMessage: state.successMessage
