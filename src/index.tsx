@@ -24,14 +24,13 @@ if (data) {
   authed = true;
   data = JSON.parse(data);
 }
-
-function PrivateRoute(input: any) {
+console.log("-autohod", authed)
+function PrivateRoute({ component: Component, authed, path }: { component: any, authed: any, path: string }) {
   return (
     <Route
-      {...input}
       render={props =>
-        authed === true ? (
-          <input.component user={data} {...props} />
+        authed ? (
+          <Component path={path} user={data} {...props} />
         ) : (
             <Redirect to={{ pathname: "/", state: { from: props.location } }} />
           )

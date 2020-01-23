@@ -12,7 +12,7 @@ type GithubLoginProps = {
 class GithubLogin extends Component<GithubLoginProps> {
   onSuccess = async (code: string) => {
     const { data, status } = await axios.get(
-      `${apiEndPoint}/login/github/${code}`
+      `${apiEndPoint}/api/login/github/${code}`
     );
     if (status === 200) {
       console.log(data);

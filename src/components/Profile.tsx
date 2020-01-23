@@ -95,6 +95,8 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
     if (!!Object.keys(successMessage).length) {
       this.showToaster(successMessage);
     }
+
+    console.log("----------this.props, proifile", this.props)
     return (
       <div>
         <div className="page-wrap">
@@ -106,7 +108,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
             <div className="col-sm-3">
               <div className="text-left">
                 <img
-                  src={"user.avatar_url"}
+                  src={user.avatar_url}
                   className="avatar rounded-circle img-thumbnail"
                   alt="avatar"
                 />

@@ -1,7 +1,7 @@
 import React from "react";
 
 const Header = (props: any) => {
-
+  console.log("---------props header", props)
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
@@ -40,7 +40,7 @@ const Header = (props: any) => {
                   aria-haspopup="true"
                   aria-expanded="false"
                 >
-                  {props.user.username}
+                  {props.user.login}
                 </a>
                 <div
                   className="dropdown-menu"
