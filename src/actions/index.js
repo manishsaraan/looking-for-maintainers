@@ -27,9 +27,9 @@ export function getRepos() {
   };
 }
 
-export function fetchUserRepos(userName) {
+export function fetchUserRepos(userId) {
   return function (dispatch) {
-    return fetch(`${apiEndPoint}/api/repos/${userName}`, {
+    return fetch(`${apiEndPoint}/api/repos/${userId}`, {
       method: "GET",
       headers: createHeaders()
     })

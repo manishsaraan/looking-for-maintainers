@@ -43,7 +43,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
   }
 
   componentDidMount() {
-    this.props.fetchUserRepos(this.props.user.login);
+    this.props.fetchUserRepos(this.props.user.id);
   }
 
   onChange = (event: any) => {
@@ -59,9 +59,10 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
   };
 
   updateRepoStatus = (repo: any, status: any) => {
-    // console.log(status);
+    const { user: { id } } = this.props;
+
     status
-      ? this.props.publishRepo(repo)
+      ? this.props.publishRepo({ ...repo, userId: id })
       : this.props.unpublishRepo(repo.name, repo._id);
   };
 

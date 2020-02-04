@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from 'react-router-dom';
 
 const Header = (props: any) => {
-  console.log("---------props header", props)
+  const [showDropdrown, updateShowDropdown] = useState(false);
+
+  const updateMenuDropDown = () => {
+    updateShowDropdown(!showDropdrown);
+  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
         <button
+          onClick={updateMenuDropDown}
           className="navbar-toggler"
           type="button"
           data-toggle="collapse"
@@ -27,13 +34,13 @@ const Header = (props: any) => {
           </div>
         </a>
 
-        <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <div className={showDropdrown ? "navbar-collapse" : "collapse navbar-collapse"} id="navbarTogglerDemo01">
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0" />
           {props.user ? (
             <ul className="navbar-nav ">
               <li className="nav-item dropdown">
-                <a
-                  href="#"
+                <span
+                  onClick={updateMenuDropDown}
                   className="nav-link dropdown-toggle"
                   id="navDropDownLink"
                   data-toggle="dropdown"
@@ -41,18 +48,14 @@ const Header = (props: any) => {
                   aria-expanded="false"
                 >
                   {props.user.login}
-                </a>
+                </span>
                 <div
-                  className="dropdown-menu"
+                  className={showDropdrown ? "dropdown-menu show" : "dropdown-menu"}
                   aria-labelledby="navDropDownLink"
                 >
-                  <a className="dropdown-item" href="/profile">
-                    Profile
-                  </a>
+                  <Link to="/profile" className="dropdown-item">Profile</Link>
                   <div className="dropdown-divider" />
-                  <a className="dropdown-item" href="/logout">
-                    Logout
-                  </a>
+                  <Link to="/logout" className="dropdown-item">Logout</Link>
                 </div>
               </li>
             </ul>
