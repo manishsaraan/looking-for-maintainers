@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import "./index.css";
 import App from "./App";
 import Explore from "./components/Explore";
 import Profile from "./components/Profile";
@@ -14,7 +13,7 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+// import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/global.css";
 
 let data = localStorage.getItem("user");
