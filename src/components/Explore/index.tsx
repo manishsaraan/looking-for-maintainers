@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getRepos } from "../actions/index";
-import Header from "./partials/Header";
-import RepoContainer from "./partials/RepoContainer";
+import { getRepos } from "../../actions/index";
+import Header from "../partials/Header";
+import RepoContainer from "../partials/RepoContainer";
+import './style.css';
 
 type ExploreProps = {
   user: any,
@@ -21,12 +22,12 @@ class Explore extends React.Component<ExploreProps> {
     return (
       <div>
         <div className="page-wrap">
-          <Header user={user} />
+
         </div>
         <div className="container mb-5 pb-4">
           <div className="body-row">
             <div className="repositories-grid">
-              <div className="row grid-container">
+              <div className="grid-container grid-row">
                 {repos.map((repo: any) => {
                   console.log(repo);
                   return <RepoContainer repo={repo} key={repo.id} />;

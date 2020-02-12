@@ -1,9 +1,10 @@
 import React from "react";
+import "./RepoContainer.css";
 
 const RepoContainer = (props: any) => {
   console.log("-=", props.repo);
   return (
-    <div className="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 grid-item-container">
+    <div className="grid-item grid-item-container">
       <div className="grid-item-body">
         <div className="author-header clearfix">
           <a href={props.repo.owner.userProfileUrl} target="_blank">

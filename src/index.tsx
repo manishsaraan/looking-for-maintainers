@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import App from "./App";
-import Explore from "./components/Explore";
+import Explore from "./components/Explore/index";
 import Profile from "./components/Profile";
 import store from "./store/index";
 import GithubLogin from "./GithubLogin";
@@ -13,7 +13,6 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
-// import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/global.css";
 
 let data = localStorage.getItem("user");
