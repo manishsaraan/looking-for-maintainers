@@ -22,13 +22,13 @@ const RepoContainer = (props: any) => {
         </div>
         <div className="repo-header">
           <h5>
-            <a href="<%= repos[i].html_url %>" target="_blank">
+            <a href={props.repo.html_url} target="_blank">
               <span className="repo-name">{props.repo.name}</span>
             </a>
           </h5>
           <p className="repo-meta text-muted small">
             Built by ·{" "}
-            <a target="_blank" href="<%= repos[i].owner.userProfileUrl %>">
+            <a target="_blank" href={props.repo.owner.userProfileUrl}>
               {props.repo.owner.username}
             </a>{" "}
             · {props.repo.formated_date}
@@ -38,13 +38,13 @@ const RepoContainer = (props: any) => {
           <p>{props.repo.description || "No description given."}</p>
         </div>
         <div className="repo-footer">
-          <span className="d-inline-block mr-3">
+          <span className="d-inline-block mr-3 footer-language">
             <span className="repo-language-color ml-0" />
-            <span>{props.repo.language}</span>
+            <span>{props.repo.languages[0] || "N/A"}</span>
           </span>
           <a
             className="muted-link d-inline-block mr-3"
-            href="<%= repos[i].html_url %>/stargazers"
+            href={props.repo.html_url}
             target="_blank"
           >
             <svg
@@ -63,7 +63,7 @@ const RepoContainer = (props: any) => {
           </a>
           <a
             className="muted-link d-inline-block mr-3"
-            href="<%= repos[i].html_url %>/network/members"
+            href={props.repo.html_url + "/network/members"}
             target="_blank"
           >
             <svg
@@ -82,7 +82,7 @@ const RepoContainer = (props: any) => {
           </a>
           <a
             className="muted-link d-inline-block mr-3"
-            href="<%= repos[i].html_url %>/watchers"
+            href={props.repo.html_url + "/watchers"}
             target="_blank"
           >
             <svg
