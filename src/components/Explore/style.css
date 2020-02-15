@@ -13,6 +13,19 @@
     box-sizing: border-box;
   }
 
+  .body-row{
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  .repositories-container{
+      padding-top: 60px;
+  }
+
+  .homepage-link{
+    text-decoration: none;
+    color: #555;
+  }
 
   @media(max-width: 1333px) {
     .grid-item {
@@ -38,7 +51,3 @@
     }
   }
 
-  .body-row{
-    width: 90%;
-    margin: 0 auto;
-  }

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getRepos } from "../../actions/index";
-import Header from "../partials/Header";
+import { Link } from 'react-router-dom';
 import RepoContainer from "../partials/RepoContainer";
 import './style.css';
 
@@ -22,9 +22,15 @@ class Explore extends React.Component<ExploreProps> {
     return (
       <div>
         <div className="page-wrap">
-
+          <section className="menu-section ">
+            <div className="menu-section-container">
+              <span className="biggest flex-item-center txtcenter">
+                <Link className="homepage-link" to="/">Looking For Maintainers</Link>
+              </span>
+            </div>
+          </section>
         </div>
-        <div className="container mb-5 pb-4">
+        <div className="repositories-container">
           <div className="body-row">
             <div className="repositories-grid">
               <div className="grid-container grid-row">
