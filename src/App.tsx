@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import GithubLogin from "./lib";
-import { clientId } from "./config/index";
+import { Link } from 'react-router-dom';
 import "./all.css";
 
 type AppProps = {
@@ -16,9 +15,6 @@ class App extends Component<AppProps> {
   };
 
   render() {
-    const { user, articles } = this.props;
-    console.log("---user---", articles);
-
     return (
       <div className="page-content">
         <div className="page-content-container">
@@ -28,6 +24,10 @@ class App extends Component<AppProps> {
                 <h1 className="xlbiggest flex-item-center txtcenter">Looking For Maintainers</h1>
                 <p className="biggest flex-item-center h2-like txtcenter">Web app to find projects to contribute</p>
                 <p className="biggest flex-item-center h2-like txtcenter"></p>
+                <div className="flex-item-center">
+                  <div className="mtxl w150p"></div>
+                  <Link className="button-primary txtcenter main-cta" to="/explore"><button className="button-primary txtcenter main-cta" >Explore Projects</button></Link>
+                </div>
               </div>
             </section>
             <section className="explanation-section">
@@ -42,14 +42,14 @@ class App extends Component<AppProps> {
               <strong>new contributors</strong> and contributors to find exciting projects.</p>
                 <p className="flex-item-center h3-like txtcenter mts"> &nbsp; </p>
                 <div className="flex-item-center">
-                  <a className=" button flex-item-center mtxl" href="https://github.com/manishsaraan/looking-for-maintainers"> View it on GitHub</a>
+                  <a className=" button flex-item-center mtxl no-margin" href="https://github.com/manishsaraan/looking-for-maintainers"> View it on GitHub</a>
                 </div>
               </div>
             </section>
-            <section className="contact-section mtxl">
+            <section className="contact-section mtxl no-margin">
               <div className="wrapper w960p flex-container flex-container-v">
                 <div className="separator w10"></div>
-                <h1 className="xbiggest flex-item-center txtcenter mtxl">Let's keep in touch</h1>
+                <h1 className="xbiggest flex-item-center txtcenter mtxl">Subscribe Newsletter</h1>
                 <p className="flex-item-center h3-like txtcenter mts">If you want to get notifications about new projects, please subscribe.</p>
                 <p className="flex-item-center h3-like txtcenter mts">Zero spam of course, unsubscribe any time.</p>
                 <div className="contact-container mtxl">
