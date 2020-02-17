@@ -1,40 +1,4 @@
 @charset "UTF-8";
-/*
-*
-*
-* KNACSS
-*
-*
-*/
-/*
-* www.KNACSS.com V6.0.5 (1er décembre 2016) @author: Alsacreations, Raphael Goetter
-* Licence WTFPL http://www.wtfpl.net/
-*/
-/* ----------------------------- */
-/* ==Table Of Content            */
-/* ----------------------------- */
-/* 1- Normalize (basic reset) */
-/* 2- Base (basic styles) */
-/* 3- Print (print quick reset) */
-/* 4- Stylings (minor stylings) */
-/* 5- Misc (skip links, hyphens) */
-/* 6- Tables (data tables consistency) */
-/* 7- Forms (forms consistency) */
-/* 8- Media object */
-/* 9- Autogrid object */
-/* 10- Global Layout (alignment, modules, positionning) */
-/* 11- Helpers (width and spacers helpers) */
-/* (12- WordPress reset (disabled by default)) */
-/* 13- Responsive (Responsive Web Design helpers) */
-/* 14- Grid Layout (grillade) */
-/* ---------------------------------- */
-/* ==Normalize (basic reset)          */
-/* ---------------------------------- */
-/* normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
-/**
- * 1. Change the default font family in all browsers (opinionated).
- * 2. Prevent adjustments of font size after orientation changes in IE and iOS.
- */
 html {
   font-family: sans-serif;
   /* 1 */
@@ -1986,7 +1950,7 @@ h1, .h1-like {
   justify-content: center; }
   @media screen and (max-width: 767px) {
     .menu-section {
-      height: 1vh; } }
+      height: 60px; } }
 
 .menu-section-container {
   display: flex;

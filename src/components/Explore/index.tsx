@@ -16,6 +16,14 @@ class Explore extends React.Component<ExploreProps> {
     this.props.getRepos();
   }
 
+  renderRepos = (repos: any) => {
+    if (repos.length === 0) {
+      return (<p className="biggest flex-item-center h2-like txtcenter">No Project Found</p>)
+    }
+
+    return repos.map((repo: any) => (<RepoContainer repo={repo} key={repo.id} />))
+  }
+
   render() {
     console.log(this.props);
     const { user, repos } = this.props;
@@ -34,10 +42,7 @@ class Explore extends React.Component<ExploreProps> {
           <div className="body-row">
             <div className="repositories-grid">
               <div className="grid-container grid-row">
-                {repos.map((repo: any) => {
-                  console.log(repo);
-                  return <RepoContainer repo={repo} key={repo.id} />;
-                })}
+                {this.renderRepos(repos)}
               </div>
             </div>
           </div>
