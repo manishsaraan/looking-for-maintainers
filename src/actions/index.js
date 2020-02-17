@@ -21,7 +21,6 @@ export function getRepos() {
     return fetch(`${apiEndPoint}/api/explore`)
       .then(response => response.json())
       .then(json => {
-        console.log(json);
         dispatch({ type: REPOS_FETCHED, payload: json });
       });
   };

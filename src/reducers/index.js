@@ -49,7 +49,6 @@ const processGithubSearchResponse = repo => {
 };
 
 function rootReducer(state = initialState, { type, payload }) {
-  console.log("---------", payload);
   switch (type) {
     case REPOS_FETCHED:
       return { ...state, repos: payload, successMessage: {} };

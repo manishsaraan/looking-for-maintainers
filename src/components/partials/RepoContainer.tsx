@@ -2,7 +2,6 @@ import React from "react";
 import "./RepoContainer.css";
 
 const RepoContainer = (props: any) => {
-  console.log("-=", props.repo);
   return (
     <div className="grid-item grid-item-container">
       <div className="grid-item-body">

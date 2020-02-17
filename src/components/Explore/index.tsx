@@ -21,11 +21,10 @@ class Explore extends React.Component<ExploreProps> {
       return (<p className="biggest flex-item-center h2-like txtcenter">No Project Found</p>)
     }
 
-    return repos.map((repo: any) => (<RepoContainer repo={repo} key={repo.id} />))
+    return repos.map((repo: any) => (<RepoContainer key={repo.id} repo={repo} />))
   }
 
   render() {
-    console.log(this.props);
     const { user, repos } = this.props;
     return (
       <div>

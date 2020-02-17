@@ -1,19 +1,30 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+import { createBrowserHistory } from 'history';
+import {
+  Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
 import App from "./App";
 import Explore from "./components/Explore/index";
 import Profile from "./components/Profile";
 import store from "./store/index";
 import GithubLogin from "./GithubLogin";
+import GA from './ga';
+import { gaKey } from './config';
 import * as serviceWorker from "./serviceWorker";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect
-} from "react-router-dom";
 import "./assets/css/global.css";
+
+const history = createBrowserHistory();
+
+GA.init(gaKey);
+
+history.listen((location: any) => {
+  GA.pageView(location.pathname);
+});
 
 let data = localStorage.getItem("user");
 let authed = false;
@@ -22,7 +33,7 @@ if (data) {
   authed = true;
   data = JSON.parse(data);
 }
-console.log("-autohod", authed)
+
 function PrivateRoute({ component: Component, authed, path }: { component: any, authed: any, path: string }) {
   return (
     <Route
@@ -39,7 +50,7 @@ function PrivateRoute({ component: Component, authed, path }: { component: any, 
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router>
+    <Router history={history}>
       <Switch>
         <Route
           path="/"
