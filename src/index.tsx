@@ -22,6 +22,8 @@ const history = createBrowserHistory();
 
 GA.init(gaKey);
 
+GA.pageView("/");
+
 history.listen((location: any) => {
   GA.pageView(location.pathname);
 });
