@@ -17,8 +17,8 @@ function createHeaders() {
 }
 
 export function getRepos() {
-  return function(dispatch) {
-    return fetch(`${apiEndPoint}/explore`)
+  return function (dispatch) {
+    return fetch(`${apiEndPoint}/api/explore`)
       .then(response => response.json())
       .then(json => {
         console.log(json);
@@ -27,9 +27,9 @@ export function getRepos() {
   };
 }
 
-export function fetchUserRepos(userName) {
-  return function(dispatch) {
-    return fetch(`${apiEndPoint}/repos/${userName}`, {
+export function fetchUserRepos(userId) {
+  return function (dispatch) {
+    return fetch(`${apiEndPoint}/api/repos/${userId}`, {
       method: "GET",
       headers: createHeaders()
     })
@@ -41,8 +41,8 @@ export function fetchUserRepos(userName) {
 }
 
 export function fetchUserGithubRepos(userName, repoName) {
-  return function(dispatch) {
-    return fetch(`${apiEndPoint}/user-repo/${userName}/${repoName}`, {
+  return function (dispatch) {
+    return fetch(`${apiEndPoint}/api/user-repo/${userName}/${repoName}`, {
       method: "GET",
       headers: createHeaders()
     })
@@ -62,8 +62,8 @@ export function publishRepo(repo) {
     delete repo._id;
   }
 
-  return function(dispatch, getState) {
-    return fetch(`${apiEndPoint}/publish`, {
+  return function (dispatch, getState) {
+    return fetch(`${apiEndPoint}/api/publish`, {
       method: "POST",
       headers: createHeaders(),
       body: JSON.stringify(repo)
@@ -109,7 +109,7 @@ export function publishRepo(repo) {
 }
 
 export function unpublishRepo(repoName, repoId) {
-  return function(dispatch) {
+  return function (dispatch) {
     return fetch(`${apiEndPoint}/delete/${repoId}`, {
       method: "DELETE",
       headers: createHeaders()

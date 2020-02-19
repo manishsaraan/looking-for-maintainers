@@ -3,10 +3,16 @@ import { apiEndPoint } from "./config/index";
 import axios from "axios";
 import "./App.css";
 
-class GithubLogin extends Component {
-  onSuccess = async code => {
+type GithubLoginProps = {
+  history: any,
+  user: any,
+  location: any
+}
+
+class GithubLogin extends Component<GithubLoginProps> {
+  onSuccess = async (code: string) => {
     const { data, status } = await axios.get(
-      `${apiEndPoint}/login/github/${code}`
+      `${apiEndPoint}/api/login/github/${code}`
     );
     if (status === 200) {
       console.log(data);

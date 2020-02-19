@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import "./index.css";
 import App from "./App";
 import Explore from "./components/Explore";
 import Profile from "./components/Profile";
@@ -14,7 +13,7 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+// import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/global.css";
 
 let data = localStorage.getItem("user");
@@ -24,14 +23,13 @@ if (data) {
   authed = true;
   data = JSON.parse(data);
 }
-
-function PrivateRoute(input: any) {
+console.log("-autohod", authed)
+function PrivateRoute({ component: Component, authed, path }: { component: any, authed: any, path: string }) {
   return (
     <Route
-      {...input}
       render={props =>
-        authed === true ? (
-          <input.component user={data} {...props} />
+        authed ? (
+          <Component path={path} user={data} {...props} />
         ) : (
             <Redirect to={{ pathname: "/", state: { from: props.location } }} />
           )
@@ -47,7 +45,7 @@ ReactDOM.render(
         <Route
           path="/"
           exact
-          render={props => <App user={data} {...props} />}
+          render={(props: any) => <App user={data} {...props} />}
         />
         <Route path="/login/github/return" component={GithubLogin} />
         <Route
