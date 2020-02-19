@@ -101,7 +101,6 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
     return (
       <div>
         <div className="page-wrap">
-          <Header user={user} />
           <ReactNotification ref={this.notificationDOMRef} />
         </div>
         <div className="container bootstrap snippet mt-5">

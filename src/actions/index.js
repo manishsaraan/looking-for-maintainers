@@ -34,6 +34,7 @@ export function fetchUserRepos(userId) {
     })
       .then(response => response.json())
       .then(jsonResp => {
+        console.log("---123456789", jsonResp)
         dispatch({ type: USER_REPOS_FETCHED, payload: jsonResp });
       });
   };
@@ -109,7 +110,7 @@ export function publishRepo(repo) {
 
 export function unpublishRepo(repoName, repoId) {
   return function (dispatch) {
-    return fetch(`${apiEndPoint}/delete/${repoId}`, {
+    return fetch(`${apiEndPoint}/api/delete/${repoId}`, {
       method: "DELETE",
       headers: createHeaders()
     })

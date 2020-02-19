@@ -38,8 +38,8 @@ class App extends Component<AppProps> {
                 <p className="flex-item-center h3-like txtcenter mts"> &nbsp; </p>
                 <p className="flex-item-center h3-like txtcenter mts">
                   <strong>Looking For Maintainers</strong> will help
-              <strong>project</strong> owners to find
-              <strong>new contributors</strong> and contributors to find exciting projects.</p>
+              <strong> project</strong> owners to find
+              <strong> new contributors</strong> and contributors to find exciting projects.</p>
                 <p className="flex-item-center h3-like txtcenter mts"> &nbsp; </p>
                 <div className="flex-item-center">
                   <a className=" button flex-item-center mtxl no-margin" href="https://github.com/manishsaraan/looking-for-maintainers"> View it on GitHub</a>
