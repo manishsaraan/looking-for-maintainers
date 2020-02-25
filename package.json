@@ -11,7 +11,7 @@
     "axios": "^0.18.0",
     "bootstrap": "^4.2.1",
     "react": "^16.7.0",
-    "react-dom": "^16.7.0",
+    "react-dom": "^16.12.0",
     "react-github-login": "^1.0.3",
     "react-notifications-component": "^1.0.1",
     "react-redux": "^6.0.0",
