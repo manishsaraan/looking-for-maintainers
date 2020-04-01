@@ -5,6 +5,7 @@ import {
   USER_GITHUB_REPOS_PUBLISHED,
   USER_GITHUB_REPOS_REMOVED
 } from "../constants/action-types";
+import { RepoRef, OwnerRef } from '../interface'
 
 const initialState = {
   repos: [],
@@ -13,7 +14,9 @@ const initialState = {
   successMessage: {}
 };
 
-const processGithubSearchResponse = repo => {
+type processGithubSearchResponseType = (repo: RepoRef) => any;
+
+const processGithubSearchResponse: processGithubSearchResponseType = (repo) => {
   const {
     name,
     stargazers_count,
@@ -27,7 +30,8 @@ const processGithubSearchResponse = repo => {
     owner,
     id
   } = repo;
-  const { html_url: userProfileUrl, avatar_url, login } = owner;
+
+  const { html_url: userProfileUrl, avatar_url, login }: OwnerRef = owner;
 
   return {
     name,
@@ -48,14 +52,15 @@ const processGithubSearchResponse = repo => {
   };
 };
 
-function rootReducer(state = initialState, { type, payload }) {
+
+function rootReducer(state = initialState, { type, payload }: { type: any, payload: any }) {
   switch (type) {
     case REPOS_FETCHED:
       return { ...state, repos: payload, successMessage: {} };
     case USER_REPOS_FETCHED:
       return {
         ...state,
-        userPublishedRepos: payload.map(repo => ({
+        userPublishedRepos: payload.map((repo: RepoRef) => ({
           ...repo,
           id: repo._id,
           isChecked: true

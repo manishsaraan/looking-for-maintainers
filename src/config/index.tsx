@@ -1,5 +1,5 @@
-export const clientId = process.env.REACT_APP_CLIENT_ID;
+export const clientId = "13f5b2407b9f1ff4657b";
 export const redirectUri =
   process.env.REACT_APP_REDIRECT_URI || "/login/github/return";
-export const apiEndPoint = process.env.REACT_APP_API_ENDPOINT;
-export const gaKey = process.env.REACT_APP_GA_KEY
+export const apiEndPoint = "http://localhost:3002";
+export const gaKey = ""

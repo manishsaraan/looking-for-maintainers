@@ -6,9 +6,18 @@ import {
   USER_GITHUB_REPOS_REMOVED
 } from "../constants/action-types";
 import { apiEndPoint } from "../config";
+import { RepoRef } from "../interface";
 
-function createHeaders() {
-  const { jwtToken } = JSON.parse(localStorage.getItem("user"));
+type HeaderRef = {
+  Accept: string,
+  "Content-Type": string,
+  "x-access-token": string
+}
+
+function createHeaders(): HeaderRef {
+  const user: any = localStorage.getItem("user");
+
+  const { jwtToken }: { jwtToken: string } = JSON.parse(user);
   return {
     Accept: "application/json, text/plain, */*",
     "Content-Type": "application/json",
@@ -16,8 +25,8 @@ function createHeaders() {
   };
 }
 
-export function getRepos() {
-  return function (dispatch) {
+export function getRepos(): any {
+  return function (dispatch: any) {
     return fetch(`${apiEndPoint}/api/explore`)
       .then(response => response.json())
       .then(json => {
@@ -26,8 +35,8 @@ export function getRepos() {
   };
 }
 
-export function fetchUserRepos(userId) {
-  return function (dispatch) {
+export function fetchUserRepos(userId: number): any {
+  return function (dispatch: any) {
     return fetch(`${apiEndPoint}/api/repos/${userId}`, {
       method: "GET",
       headers: createHeaders()
@@ -40,8 +49,8 @@ export function fetchUserRepos(userId) {
   };
 }
 
-export function fetchUserGithubRepos(userName, repoName) {
-  return function (dispatch) {
+export function fetchUserGithubRepos(userName: string, repoName: string): any {
+  return function (dispatch: any) {
     return fetch(`${apiEndPoint}/api/user-repo/${userName}/${repoName}`, {
       method: "GET",
       headers: createHeaders()
@@ -56,13 +65,13 @@ export function fetchUserGithubRepos(userName, repoName) {
   };
 }
 
-export function publishRepo(repo) {
+export function publishRepo(repo: RepoRef): any {
   if (repo._id) {
     delete repo.id;
     delete repo._id;
   }
 
-  return function (dispatch, getState) {
+  return function (dispatch: any, getState: any) {
     return fetch(`${apiEndPoint}/api/publish`, {
       method: "POST",
       headers: createHeaders(),
@@ -72,11 +81,11 @@ export function publishRepo(repo) {
       .then(jsonResp => {
         const { userGithubRepos, userPublishedRepos } = getState();
         const dataIndex = userGithubRepos.findIndex(
-          repo => repo.github_id === jsonResp.github_id
+          (repo: RepoRef) => repo.github_id === jsonResp.github_id
         );
 
         const publishedRepoIndex = userPublishedRepos.findIndex(
-          repo => repo.github_id === jsonResp.github_id
+          (repo: RepoRef) => repo.github_id === jsonResp.github_id
         );
 
         if (dataIndex !== -1) {
@@ -108,8 +117,8 @@ export function publishRepo(repo) {
   };
 }
 
-export function unpublishRepo(repoName, repoId) {
-  return function (dispatch) {
+export function unpublishRepo(repoName: string, repoId: number): any {
+  return function (dispatch: any) {
     return fetch(`${apiEndPoint}/api/delete/${repoId}`, {
       method: "DELETE",
       headers: createHeaders()

@@ -1,14 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getRepos } from "../../actions/index";
+import { getRepos } from "../../actions";
 import { Link } from 'react-router-dom';
 import RepoContainer from "../partials/RepoContainer";
+import { UserRef, RepoRef } from '../../interface';
 import './style.css';
 
 type ExploreProps = {
-  user: any,
+  user: UserRef,
   getRepos: any
-  repos: any
+  repos: RepoRef[]
 }
 
 class Explore extends React.Component<ExploreProps> {
@@ -16,12 +17,12 @@ class Explore extends React.Component<ExploreProps> {
     this.props.getRepos();
   }
 
-  renderRepos = (repos: any) => {
+  renderRepos = (repos: RepoRef[]) => {
     if (repos.length === 0) {
       return (<p className="biggest flex-item-center h2-like txtcenter">No Project Found</p>)
     }
 
-    return repos.map((repo: any) => (<RepoContainer key={repo.id} repo={repo} />))
+    return repos.map((repo: RepoRef) => (<RepoContainer key={repo.id} repo={repo} />))
   }
 
   render() {

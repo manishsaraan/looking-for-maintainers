@@ -1,12 +1,13 @@
 import React from "react";
 import Toggle from "react-toggle-component";
+import { RepoRef } from '../../interface'
 import "../../assets/css/profile.css";
 import "react-toggle-component/styles.css";
 
 type userRepoProps = {
   isChecked: boolean,
-  repo: object,
-  updateRepoStatus: any
+  repo: RepoRef,
+  updateRepoStatus: (repo: RepoRef, status: boolean) => void
 }
 
 type userRepoState = {
@@ -20,7 +21,7 @@ class UserRepo extends React.Component<userRepoProps, userRepoState> {
   };
 
   render() {
-    const repo: any = this.props.repo;
+    const repo: RepoRef = this.props.repo;
     return (
       <li className="list-group-item">
         <div className="row">

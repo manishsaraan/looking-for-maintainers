@@ -1,7 +1,8 @@
-import React from "react";
+import React, { memo } from "react";
+import { RepoRef } from '../../interface';
 import "./RepoContainer.css";
 
-const RepoContainer = (props: any) => {
+const RepoContainer: React.FunctionComponent<{ repo: RepoRef }> = (props) => {
   return (
     <div className="grid-item grid-item-container">
       <div className="grid-item-body">
@@ -104,4 +105,4 @@ const RepoContainer = (props: any) => {
   );
 };
 
-export default RepoContainer;
+export default memo(RepoContainer);

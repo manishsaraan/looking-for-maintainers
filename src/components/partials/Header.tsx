@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
+import { UserRef } from '../../interface';
 
-const Header = (props: any) => {
+const Header: React.FunctionComponent<{ user: UserRef }> = (props) => {
   const [showDropdrown, updateShowDropdown] = useState(false);
 
   const updateMenuDropDown = () => {

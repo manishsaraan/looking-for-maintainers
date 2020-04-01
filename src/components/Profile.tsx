@@ -7,19 +7,21 @@ import {
   fetchUserGithubRepos,
   publishRepo,
   unpublishRepo
-} from "../actions/index";
+} from "../actions";
 import Spinner from "./partials/Spinner";
+import { UserRef, RepoRef } from '../interface';
+
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 
 type ProfileProps = {
-  fetchUserRepos: any,
-  fetchUserGithubRepos: any,
-  user: any,
-  publishRepo: any,
-  unpublishRepo: any,
-  userPublishedRepos: any,
-  userGithubRepos: any,
+  fetchUserRepos: (userId: number) => any,
+  fetchUserGithubRepos: (userName: string, repoName: string) => any,
+  user: UserRef,
+  publishRepo: (repo: RepoRef) => any,
+  unpublishRepo: (repoName: string, repoId: number) => any,
+  userPublishedRepos: RepoRef[],
+  userGithubRepos: RepoRef[],
   successMessage: any
 }
 
@@ -32,15 +34,11 @@ type Notification = {
 }
 
 class Profile extends React.Component<ProfileProps, ProfileState> {
-  private notificationDOMRef: Notification;
+  private notificationDOMRef: Notification = React.createRef();
 
-  constructor(props: any) {
-    super(props);
-    this.notificationDOMRef = React.createRef();
-    this.state = {
-      search: ""
-    };
-  }
+  state = {
+    search: ""
+  };
 
   componentDidMount() {
     this.props.fetchUserRepos(this.props.user.id);
@@ -58,7 +56,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
     this.props.fetchUserGithubRepos(this.props.user.login, search);
   };
 
-  updateRepoStatus = (repo: any, status: any) => {
+  updateRepoStatus = (repo: RepoRef, status: boolean) => {
     const { user: { id } } = this.props;
 
     status
@@ -66,7 +64,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
       : this.props.unpublishRepo(repo.name, repo._id);
   };
 
-  showToaster = ({ repo, msg }: { repo: any, msg: any }) => {
+  showToaster = ({ repo, msg }: { repo: RepoRef, msg: any }) => {
     this.notificationDOMRef.current.addNotification({
       title: repo,
       message: msg,
@@ -97,7 +95,6 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
       this.showToaster(successMessage);
     }
 
-    console.log("----------this.props, proifile", this.props)
     return (
       <div>
         <div className="page-wrap">

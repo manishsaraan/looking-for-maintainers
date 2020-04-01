@@ -1,21 +1,22 @@
 import React, { Component } from "react";
-import { apiEndPoint } from "./config/index";
 import axios from "axios";
+import { apiEndPoint } from "./config";
+import { History } from 'history';
+import { UserRef } from './interface/user';
 import "./App.css";
 
 type GithubLoginProps = {
-  history: any,
-  user: any,
+  history: History,
+  user: UserRef,
   location: any
 }
 
-class GithubLogin extends Component<GithubLoginProps> {
+class GithubLogin extends Component<GithubLoginProps, {}> {
   onSuccess = async (code: string) => {
     const { data, status } = await axios.get(
       `${apiEndPoint}/api/login/github/${code}`
     );
     if (status === 200) {
-      console.log(data);
       localStorage.setItem("user", JSON.stringify(data));
       this.props.history.push("/");
     } else {
@@ -25,8 +26,9 @@ class GithubLogin extends Component<GithubLoginProps> {
 
   render() {
     const { search } = this.props.location;
-    const { user } = this.props;
-    console.log("---user---", this.props);
+    let user: UserRef;
+    ({ user } = this.props);
+
     if (search) {
       const [, code] = search.split("=");
       this.onSuccess(code);

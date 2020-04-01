@@ -9,12 +9,13 @@ import {
   Redirect
 } from "react-router-dom";
 import App from "./App";
-import Explore from "./components/Explore/index";
+import Explore from "./components/Explore";
 import Profile from "./components/Profile";
-import store from "./store/index";
+import store from "./store";
 import GithubLogin from "./GithubLogin";
 import GA from './ga';
 import { gaKey } from './config';
+import { UserRef } from './interface'
 import * as serviceWorker from "./serviceWorker";
 import "./assets/css/global.css";
 
@@ -28,15 +29,16 @@ history.listen((location: any) => {
   GA.pageView(location.pathname);
 });
 
-let data = localStorage.getItem("user");
-let authed = false;
+let data: (string | null) = localStorage.getItem("user");
+let authed: boolean = false;
+let userData: UserRef;
 
 if (data) {
   authed = true;
-  data = JSON.parse(data);
+  userData = JSON.parse(data);
 }
 
-function PrivateRoute({ component: Component, authed, path }: { component: any, authed: any, path: string }) {
+function PrivateRoute({ component: Component, authed, path }: { component: any, authed: boolean, path: string }) {
   return (
     <Route
       render={props =>
@@ -57,12 +59,12 @@ ReactDOM.render(
         <Route
           path="/"
           exact
-          render={(props: any) => <App user={data} {...props} />}
+          render={(props: any) => <App user={userData} {...props} />}
         />
         <Route path="/login/github/return" component={GithubLogin} />
         <Route
           path="/explore"
-          render={props => <Explore {...props} user={data} />}
+          render={props => <Explore {...props} user={userData} />}
         />
         <PrivateRoute authed={authed} path="/profile" component={Profile} />
       </Switch>
