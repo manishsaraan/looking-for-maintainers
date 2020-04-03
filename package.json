@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/jest": "^24.9.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^10.0.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/jest": "^25.2.1",
     "@types/node": "^13.1.7",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
@@ -11,7 +14,6 @@
     "axios": "^0.18.0",
     "bootstrap": "^4.2.1",
     "history": "^4.10.1",
-    "jest": "^25.2.7",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-ga": "^2.7.0",
@@ -21,13 +23,14 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.3",
     "react-toggle-component": "^1.0.5",
+    "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "typescript": "^3.7.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest -w",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -40,8 +43,6 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@types/react-redux": "^7.1.5",
-    "react-testing-library": "^8.0.1",
-    "redux": "^4.0.1"
+    "@types/react-redux": "^7.1.5"
   }
 }
