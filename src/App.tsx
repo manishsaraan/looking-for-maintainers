@@ -21,10 +21,16 @@ class App extends Component<AppProps> {
           <div className="home">
             <section className="hero-section ">
               <div className="wrapper w960p flex-container flex-container-v">
-                <h1 className="xlbiggest flex-item-center txtcenter">
+                <h1
+                  data-testid="landing-heading"
+                  className="xlbiggest flex-item-center txtcenter"
+                >
                   Looking For Maintainers
                 </h1>
-                <p className="biggest flex-item-center h2-like txtcenter">
+                <p
+                  data-testid="landing-subheading"
+                  className="biggest flex-item-center h2-like txtcenter"
+                >
                   Web app to find projects to contribute
                 </p>
                 <p className="biggest flex-item-center h2-like txtcenter"></p>
