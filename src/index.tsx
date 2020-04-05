@@ -1,37 +1,49 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import "./index.css";
-import App from "./App";
-import Explore from "./components/Explore";
-import Profile from "./components/Profile";
-import store from "./store/index";
-import GithubLogin from "./GithubLogin";
-import * as serviceWorker from "./serviceWorker";
+import { createBrowserHistory } from 'history';
 import {
-  BrowserRouter as Router,
+  Router,
   Route,
   Switch,
   Redirect
 } from "react-router-dom";
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import App from "./App";
+import Explore from "./components/Explore";
+import Profile from "./components/Profile";
+import store from "./store";
+import GithubLogin from "./GithubLogin";
+import GA from './ga';
+import { gaKey } from './config';
+import { UserRef } from './interface'
+import * as serviceWorker from "./serviceWorker";
 import "./assets/css/global.css";
 
-let data = localStorage.getItem("user");
-let authed = false;
+const history = createBrowserHistory();
+
+GA.init(gaKey);
+
+GA.pageView(window.location.pathname + window.location.search);
+
+history.listen((location: any) => {
+  GA.pageView(location.pathname);
+});
+
+let data: (string | null) = localStorage.getItem("user");
+let authed: boolean = false;
+let userData: UserRef;
 
 if (data) {
   authed = true;
-  data = JSON.parse(data);
+  userData = JSON.parse(data);
 }
 
-function PrivateRoute(input: any) {
+function PrivateRoute({ component: Component, authed, path }: { component: any, authed: boolean, path: string }) {
   return (
     <Route
-      {...input}
       render={props =>
-        authed === true ? (
-          <input.component user={data} {...props} />
+        authed ? (
+          <Component path={path} user={data} {...props} />
         ) : (
             <Redirect to={{ pathname: "/", state: { from: props.location } }} />
           )
@@ -42,17 +54,17 @@ function PrivateRoute(input: any) {
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router>
+    <Router history={history}>
       <Switch>
         <Route
           path="/"
           exact
-          render={props => <App user={data} {...props} />}
+          render={(props: any) => <App user={userData} {...props} />}
         />
         <Route path="/login/github/return" component={GithubLogin} />
         <Route
           path="/explore"
-          render={props => <Explore {...props} user={data} />}
+          render={props => <Explore {...props} user={userData} />}
         />
         <PrivateRoute authed={authed} path="/profile" component={Profile} />
       </Switch>
