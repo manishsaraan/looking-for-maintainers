@@ -62,7 +62,10 @@ class App extends Component<AppProps> {
                   {" "}
                   &nbsp;{" "}
                 </p>
-                <p className="flex-item-center h3-like txtcenter mts">
+                <p
+                  data-testid="landing-text"
+                  className="flex-item-center h3-like txtcenter mts"
+                >
                   <strong>Looking For Maintainers</strong> will help
                   <strong> project</strong> owners to find
                   <strong> new contributors</strong> and contributors to find
