@@ -6,6 +6,5 @@ notifications:
   email: false
 script:
   - npm run test
-  - npm run test:coverage
 node_js:
   - "10"
