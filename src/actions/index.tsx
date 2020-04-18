@@ -29,7 +29,7 @@ function createHeaders(): HeaderRef {
 }
 
 export function getRepos(): any {
-  return function (dispatch: any) {
+  return function(dispatch: any) {
     return fetch(`${apiEndPoint}/api/explore?page=1`)
       .then((response) => response.json())
       .then((json) => {
@@ -39,7 +39,7 @@ export function getRepos(): any {
 }
 
 export function fetchUserRepos(userId: number): any {
-  return function (dispatch: any) {
+  return function(dispatch: any) {
     return fetch(`${apiEndPoint}/api/repos/${userId}`, {
       method: "GET",
       headers: createHeaders(),
@@ -53,7 +53,7 @@ export function fetchUserRepos(userId: number): any {
 }
 
 export function fetchUserGithubRepos(userName: string, repoName: string): any {
-  return function (dispatch: any) {
+  return function(dispatch: any) {
     return fetch(`${apiEndPoint}/api/user-repo/${userName}/${repoName}`, {
       method: "GET",
       headers: createHeaders(),
@@ -74,7 +74,7 @@ export function publishRepo(repo: RepoRef): any {
     delete repo._id;
   }
 
-  return function (dispatch: any, getState: any) {
+  return function(dispatch: any, getState: any) {
     return fetch(`${apiEndPoint}/api/publish`, {
       method: "POST",
       headers: createHeaders(),
@@ -121,7 +121,7 @@ export function publishRepo(repo: RepoRef): any {
 }
 
 export function unpublishRepo(repoName: string, repoId: number): any {
-  return function (dispatch: any) {
+  return function(dispatch: any) {
     return fetch(`${apiEndPoint}/api/delete/${repoId}`, {
       method: "DELETE",
       headers: createHeaders(),
@@ -139,20 +139,22 @@ export function unpublishRepo(repoName: string, repoId: number): any {
   };
 }
 
-export function subscribe(email: string, fname: string): any {
-  return async function (dispatch: any) {
+export function subscribe(email: string, cb?: any): any {
+  return async function(dispatch: any) {
+    dispatch({ type: SUBSCRIBE_EMAIL_INIT });
+
     const fetchedResp = await fetch(`${apiEndPoint}/api/subscribe`, {
       method: "POST",
       headers: createHeaders(),
+      body: JSON.stringify({ email }),
     });
 
     const Resp = await fetchedResp.json();
 
+    cb();
     dispatch({
-      type: USER_GITHUB_REPOS_REMOVED,
-      payload: {
-        repo: Resp,
-      },
+      type: SUBSCRIBE_EMAIL_SUCCESS,
+      payload: Resp,
     });
   };
 }

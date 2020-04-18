@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { subscribe } from "./actions";
 import { Link } from "react-router-dom";
+import Subscribe from "./components/partials/Subscribe";
 import "./all.css";
 
 type AppProps = {
@@ -16,28 +17,7 @@ type AppState = {
 };
 
 export class App extends Component<AppProps, AppState> {
-  state = {
-    email: "",
-    fname: "",
-  };
-
-  onChange = (event: any) => {
-    const { target } = event;
-
-    const newState = [target.name];
-
-    this.setState({ [`${newState}`]: target.value });
-  };
-
-  onSubscribeSubmit = (event: any) => {
-    event.preventDefault();
-
-    this.props.subscribe(this.state.email, this.state.fname);
-    console.log("submit");
-  };
-
   render() {
-    const { email } = this.state;
     return (
       <div className="page-content">
         <div className="page-content-container">
@@ -126,27 +106,7 @@ export class App extends Component<AppProps, AppState> {
                   <div className="first-page-email">
                     <div className="first-page-email-content">
                       <div className="first-page-email__input-container">
-                        <form className="load-email__form" id="contact-form">
-                          <div className="load-email__form-item">
-                            <input
-                              className="load-email-enter"
-                              placeholder="Enter your email :)"
-                              type="email"
-                              name="email"
-                              onChange={this.onChange}
-                              value={email}
-                            />
-                          </div>
-                          <div className="load-email__form-item txtcenter">
-                            <button
-                              type="submit"
-                              className="load-email-button button-primary"
-                              onClick={this.onSubscribeSubmit}
-                            >
-                              Subscribe
-                            </button>
-                          </div>
-                        </form>
+                        <Subscribe subscribe={this.props.subscribe} />
                       </div>
                     </div>
                   </div>
