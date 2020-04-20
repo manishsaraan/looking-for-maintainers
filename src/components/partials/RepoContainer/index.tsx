@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { RepoRef } from '../../interface';
+import { RepoRef } from "../../../interface";
 import "./RepoContainer.css";
 
 const RepoContainer: React.FunctionComponent<{ repo: RepoRef }> = (props) => {

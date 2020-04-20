@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
-import { UserRef } from '../../interface';
+import { Link } from "react-router-dom";
+import { UserRef } from "../../../interface";
 
 const Header: React.FunctionComponent<{ user: UserRef }> = (props) => {
   const [showDropdrown, updateShowDropdown] = useState(false);
 
   const updateMenuDropDown = () => {
     updateShowDropdown(!showDropdrown);
-  }
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -35,7 +35,12 @@ const Header: React.FunctionComponent<{ user: UserRef }> = (props) => {
           </div>
         </a>
 
-        <div className={showDropdrown ? "navbar-collapse" : "collapse navbar-collapse"} id="navbarTogglerDemo01">
+        <div
+          className={
+            showDropdrown ? "navbar-collapse" : "collapse navbar-collapse"
+          }
+          id="navbarTogglerDemo01"
+        >
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0" />
           {props.user ? (
             <ul className="navbar-nav ">
@@ -51,24 +56,30 @@ const Header: React.FunctionComponent<{ user: UserRef }> = (props) => {
                   {props.user.login}
                 </span>
                 <div
-                  className={showDropdrown ? "dropdown-menu show" : "dropdown-menu"}
+                  className={
+                    showDropdrown ? "dropdown-menu show" : "dropdown-menu"
+                  }
                   aria-labelledby="navDropDownLink"
                 >
-                  <Link to="/profile" className="dropdown-item">Profile</Link>
+                  <Link to="/profile" className="dropdown-item">
+                    Profile
+                  </Link>
                   <div className="dropdown-divider" />
-                  <Link to="/logout" className="dropdown-item">Logout</Link>
+                  <Link to="/logout" className="dropdown-item">
+                    Logout
+                  </Link>
                 </div>
               </li>
             </ul>
           ) : (
-              <a
-                href="/login/github"
-                rel="noopener noreferrer"
-                className="btn btn-light language-filter shadowed"
-              >
-                <i className="fa fa-github mr-1" /> Login
+            <a
+              href="/login/github"
+              rel="noopener noreferrer"
+              className="btn btn-light language-filter shadowed"
+            >
+              <i className="fa fa-github mr-1" /> Login
             </a>
-            )}
+          )}
         </div>
       </div>
     </nav>

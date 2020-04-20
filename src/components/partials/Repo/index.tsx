@@ -1,23 +1,22 @@
 import React from "react";
 import Toggle from "react-toggle-component";
-import { RepoRef } from '../../interface'
-import "../../assets/css/profile.css";
+import { RepoRef } from "../../../interface";
+import "../../../assets/css/profile.css";
 import "react-toggle-component/styles.css";
 
 type userRepoProps = {
-  isChecked: boolean,
-  repo: RepoRef,
-  updateRepoStatus: (repo: RepoRef, status: boolean) => void
-}
+  isChecked: boolean;
+  repo: RepoRef;
+  updateRepoStatus: (repo: RepoRef, status: boolean) => void;
+};
 
 type userRepoState = {
-  isChecked: boolean,
-}
-
+  isChecked: boolean;
+};
 
 class UserRepo extends React.Component<userRepoProps, userRepoState> {
   state = {
-    isChecked: this.props.isChecked
+    isChecked: this.props.isChecked,
   };
 
   render() {
