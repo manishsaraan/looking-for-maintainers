@@ -1,11 +1,9 @@
-import React from "react";
+import React, { lazy } from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createBrowserHistory } from "history";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 import App from "./App";
-import Explore from "./components/Explore";
-import Profile from "./components/Profile";
 import store from "./store";
 import GithubLogin from "./GithubLogin";
 import GA from "./ga";
@@ -13,6 +11,9 @@ import { gaKey } from "./config";
 import { UserRef } from "./interface";
 import * as serviceWorker from "./serviceWorker";
 import "./assets/css/global.css";
+
+const Explore = lazy(() => import("./components/Explore"));
+const Profile = lazy(() => import("./components/Profile"));
 
 const history = createBrowserHistory();
 
@@ -58,19 +59,21 @@ function PrivateRoute({
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <Switch>
-        <Route
-          path="/"
-          exact
-          render={(props: any) => <App user={userData} {...props} />}
-        />
-        <Route path="/login/github/return" component={GithubLogin} />
-        <Route
-          path="/explore"
-          render={(props) => <Explore {...props} user={userData} />}
-        />
-        <PrivateRoute authed={authed} path="/profile" component={Profile} />
-      </Switch>
+      <React.Suspense fallback={() => <div>Loading...</div>}>
+        <Switch>
+          <Route
+            path="/"
+            exact
+            render={(props: any) => <App user={userData} {...props} />}
+          />
+          <Route path="/login/github/return" component={GithubLogin} />
+          <Route
+            path="/explore"
+            render={(props) => <Explore {...props} user={userData} />}
+          />
+          <PrivateRoute authed={authed} path="/profile" component={Profile} />
+        </Switch>
+      </React.Suspense>
     </Router>
   </Provider>,
   document.getElementById("root")
