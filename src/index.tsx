@@ -1,4 +1,4 @@
-import React, { lazy } from "react";
+import React, { lazy, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createBrowserHistory } from "history";
@@ -9,6 +9,7 @@ import GithubLogin from "./GithubLogin";
 import GA from "./ga";
 import { gaKey } from "./config";
 import { UserRef } from "./interface";
+import { Provider as AuthProvider } from "./context/authContext";
 import * as serviceWorker from "./serviceWorker";
 import "./assets/css/global.css";
 
@@ -25,59 +26,55 @@ history.listen((location: any) => {
   GA.pageView(location.pathname);
 });
 
-let data: string | null = localStorage.getItem("user");
-let authed: boolean = false;
-let userData: UserRef;
+type PrivateRouteType = (component: any, path: string) => any;
 
-if (data) {
-  authed = true;
-  userData = JSON.parse(data);
-}
+const isAuthenticated = () => {
+  let data: string | null = localStorage.getItem("user");
 
-function PrivateRoute({
-  component: Component,
-  authed,
-  path,
-}: {
-  component: any;
-  authed: boolean;
-  path: string;
-}) {
+  return data ? JSON.parse(data) : null;
+};
+
+const PrivateRoute: PrivateRouteType = ({ component: Component, path }) => {
+  const isAuth = isAuthenticated();
   return (
     <Route
       render={(props) =>
-        authed ? (
-          <Component path={path} user={data} {...props} />
+        isAuth ? (
+          <Component {...props} />
         ) : (
           <Redirect to={{ pathname: "/", state: { from: props.location } }} />
         )
       }
     />
   );
-}
+};
 
-ReactDOM.render(
-  <Provider store={store}>
-    <Router history={history}>
-      <React.Suspense fallback={() => <div>Loading...</div>}>
-        <Switch>
-          <Route
-            path="/"
-            exact
-            render={(props: any) => <App user={userData} {...props} />}
-          />
-          <Route path="/login/github/return" component={GithubLogin} />
-          <Route
-            path="/explore"
-            render={(props) => <Explore {...props} user={userData} />}
-          />
-          <PrivateRoute authed={authed} path="/profile" component={Profile} />
-        </Switch>
-      </React.Suspense>
-    </Router>
-  </Provider>,
-  document.getElementById("root")
-);
+const Routes = () => {
+  const [user, updateUser] = React.useState(null);
+
+  useEffect(() => {
+    updateUser(isAuthenticated());
+  }, []);
+
+  return (
+    <Provider store={store}>
+      <Router history={history}>
+        <React.Suspense fallback={() => <div>Loading...</div>}>
+          <AuthProvider value={user}>
+            <Switch>
+              <Route path="/" exact component={App} />
+              <Route path="/login/github/return" component={GithubLogin} />
+              <Route path="/explore" component={Explore} />
+              <PrivateRoute path="/profile" component={Profile} />
+            </Switch>
+          </AuthProvider>
+        </React.Suspense>
+      </Router>
+    </Provider>
+  );
+};
+
+ReactDOM.render(<Routes />, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
