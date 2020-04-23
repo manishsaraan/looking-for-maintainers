@@ -64,7 +64,10 @@ const Routes = () => {
             <Switch>
               <Route path="/" exact component={App} />
               <Route path="/login/github/return" component={GithubLogin} />
-              <Route path="/explore" component={Explore} />
+              <Route
+                path="/explore"
+                component={(props: any) => <Explore {...props} />}
+              />
               <PrivateRoute path="/profile" component={Profile} />
             </Switch>
           </AuthProvider>

@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import useWait from "../../../hooks/useWait";
 
 type SubscribeType = {
   subscribe: (email: string, cb: any) => any;
@@ -7,6 +8,7 @@ type SubscribeType = {
 const Subscribe = (props: SubscribeType) => {
   const [loading, updateLoading] = React.useState(false);
   const emailRef: any = useRef();
+  const useWaitTiem = useWait(3000);
 
   const onSubscribeSubmit = (event: any) => {
     event.preventDefault();
@@ -17,6 +19,10 @@ const Subscribe = (props: SubscribeType) => {
       updateLoading(false);
     });
   };
+
+  if (!useWaitTiem) {
+    return <p>Loading</p>;
+  }
 
   return (
     <form className="load-email__form" id="contact-form">

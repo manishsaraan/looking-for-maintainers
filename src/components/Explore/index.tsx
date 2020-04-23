@@ -27,12 +27,12 @@ class Explore extends React.Component<ExploreProps> {
     }
 
     return repos.map((repo: RepoRef) => (
-      <RepoContainer key={repo.id} repo={repo} />
+      <RepoContainer key={repo._id} repo={repo} />
     ));
   };
 
   render() {
-    const { user, repos } = this.props;
+    const { repos } = this.props;
     return (
       <div>
         <div className="page-wrap">
