@@ -1,13 +1,4 @@
-import {
-  REPOS_FETCHED,
-  USER_REPOS_FETCHED,
-  USER_GITHUB_REPOS_FETCHED,
-  USER_GITHUB_REPOS_PUBLISHED,
-  USER_GITHUB_REPOS_REMOVED,
-  SUBSCRIBE_EMAIL_INIT,
-  SUBSCRIBE_EMAIL_ERROR,
-  SUBSCRIBE_EMAIL_SUCCESS,
-} from "../constants/action-types";
+import * as actionTypes from "../constants/action-types";
 import { apiEndPoint } from "../config";
 import { RepoRef } from "../interface";
 
@@ -30,10 +21,14 @@ function createHeaders(): HeaderRef {
 
 export function getRepos(): any {
   return function(dispatch: any) {
+    dispatch({ type: actionTypes.REPOS_FETCHED_INIT });
     return fetch(`${apiEndPoint}/api/explore?page=1`)
       .then((response) => response.json())
       .then((json) => {
-        dispatch({ type: REPOS_FETCHED, payload: json });
+        dispatch({ type: actionTypes.REPOS_FETCHED_SUCCESS, payload: json });
+      })
+      .catch((error) => {
+        dispatch({ type: actionTypes.REPOS_FETCHED_ERROR, payload: error });
       });
   };
 }
@@ -47,7 +42,7 @@ export function fetchUserRepos(userId: number): any {
       .then((response) => response.json())
       .then((jsonResp) => {
         console.log("---123456789", jsonResp);
-        dispatch({ type: USER_REPOS_FETCHED, payload: jsonResp });
+        dispatch({ type: actionTypes.USER_REPOS_FETCHED, payload: jsonResp });
       });
   };
 }
@@ -61,7 +56,7 @@ export function fetchUserGithubRepos(userName: string, repoName: string): any {
       .then((response) => response.json())
       .then((jsonResp) => {
         dispatch({
-          type: USER_GITHUB_REPOS_FETCHED,
+          type: actionTypes.USER_GITHUB_REPOS_FETCHED,
           payload: jsonResp,
         });
       });
@@ -106,7 +101,7 @@ export function publishRepo(repo: RepoRef): any {
         }
 
         dispatch({
-          type: USER_GITHUB_REPOS_PUBLISHED,
+          type: actionTypes.USER_GITHUB_REPOS_PUBLISHED,
           payload: {
             userGithubRepos,
             userPublishedRepos,
@@ -129,7 +124,7 @@ export function unpublishRepo(repoName: string, repoId: number): any {
       .then((response) => response.json())
       .then((jsonResp) => {
         dispatch({
-          type: USER_GITHUB_REPOS_REMOVED,
+          type: actionTypes.USER_GITHUB_REPOS_REMOVED,
           payload: {
             repo: repoName,
             msg: `${repoName} successfully un-published`,
@@ -141,7 +136,7 @@ export function unpublishRepo(repoName: string, repoId: number): any {
 
 export function subscribe(email: string, cb?: any): any {
   return async function(dispatch: any) {
-    dispatch({ type: SUBSCRIBE_EMAIL_INIT });
+    dispatch({ type: actionTypes.SUBSCRIBE_EMAIL_INIT });
 
     const fetchedResp = await fetch(`${apiEndPoint}/api/subscribe`, {
       method: "POST",
@@ -153,7 +148,7 @@ export function subscribe(email: string, cb?: any): any {
 
     cb();
     dispatch({
-      type: SUBSCRIBE_EMAIL_SUCCESS,
+      type: actionTypes.SUBSCRIBE_EMAIL_SUCCESS,
       payload: Resp,
     });
   };

@@ -1,10 +1,12 @@
 import React from "react";
+import "./Spinner.css";
 
-const Spinner: React.FunctionComponent = () => (
-  <div className="spinner">
-    <div className="bounce1" />
-    <div className="bounce2" />
-    <div className="bounce3" />
+const Spinner: React.FunctionComponent = ({ children }) => (
+  <div id="wave">
+    <span className="dot" />
+    <span className="dot" />
+    <span className="dot" />
+    {children}
   </div>
 );
 

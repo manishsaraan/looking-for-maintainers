@@ -1,17 +1,11 @@
-import {
-  REPOS_FETCHED,
-  USER_REPOS_FETCHED,
-  USER_GITHUB_REPOS_FETCHED,
-  USER_GITHUB_REPOS_PUBLISHED,
-  USER_GITHUB_REPOS_REMOVED
-} from "../constants/action-types";
-import { RepoRef, OwnerRef } from '../interface'
+import * as actionTypes from "../constants/action-types";
+import { RepoRef, OwnerRef } from "../interface";
 
 const initialState = {
   repos: [],
   userPublishedRepos: [],
   userGithubRepos: [],
-  successMessage: {}
+  successMessage: {},
 };
 
 type processGithubSearchResponseType = (repo: RepoRef) => any;
@@ -28,7 +22,7 @@ const processGithubSearchResponse: processGithubSearchResponseType = (repo) => {
     html_url,
     languages,
     owner,
-    id
+    id,
   } = repo;
 
   const { html_url: userProfileUrl, avatar_url, login }: OwnerRef = owner;
@@ -47,43 +41,43 @@ const processGithubSearchResponse: processGithubSearchResponseType = (repo) => {
     owner: {
       userProfileUrl,
       avatar_url,
-      username: login
-    }
+      username: login,
+    },
   };
 };
 
-
-function rootReducer(state = initialState, { type, payload }: { type: any, payload: any }) {
+function rootReducer(
+  state = initialState,
+  { type, payload }: { type: any; payload: any }
+) {
   switch (type) {
-    case REPOS_FETCHED:
-      return { ...state, repos: payload, successMessage: {} };
-    case USER_REPOS_FETCHED:
+    case actionTypes.USER_REPOS_FETCHED:
       return {
         ...state,
         userPublishedRepos: payload.map((repo: RepoRef) => ({
           ...repo,
           id: repo._id,
-          isChecked: true
+          isChecked: true,
         })),
-        successMessage: {}
+        successMessage: {},
       };
-    case USER_GITHUB_REPOS_FETCHED:
+    case actionTypes.USER_GITHUB_REPOS_FETCHED:
       return {
         ...state,
         userGithubRepos: payload.items.map(processGithubSearchResponse),
-        successMessage: {}
+        successMessage: {},
       };
-    case USER_GITHUB_REPOS_PUBLISHED:
+    case actionTypes.USER_GITHUB_REPOS_PUBLISHED:
       return {
         ...state,
         userGithubRepos: [...payload.userGithubRepos],
         userPublishedRepos: [...payload.userPublishedRepos],
-        successMessage: { ...payload.success }
+        successMessage: { ...payload.success },
       };
-    case USER_GITHUB_REPOS_REMOVED:
+    case actionTypes.USER_GITHUB_REPOS_REMOVED:
       return {
         ...state,
-        successMessage: { ...payload }
+        successMessage: { ...payload },
       };
     default:
       return { ...state };
