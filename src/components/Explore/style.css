@@ -4,6 +4,14 @@
   justify-content: flex-start;
 }
 
+.grid-list {
+  background: #fff;
+  padding: 25px;
+  margin: 25px 0 0;
+  border-radius: 8px;
+  box-shadow: -5px 10px 60px -13px rgba(0, 0, 0, 0.2);
+}
+
 .grid-item {
   flex-basis: 33%;
   -ms-flex: auto;

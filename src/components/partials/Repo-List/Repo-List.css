@@ -1,0 +1,79 @@
+.list-item-container {
+  width: 100%;
+  padding: 0 0 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e8e8e8;
+  position: relative;
+}
+
+.list-item-body-main {
+  display: flex;
+  position: relative;
+}
+
+.list-item-body {
+  width: 80%;
+}
+
+img {
+  width: 100px;
+  border-radius: 50%;
+}
+
+.repo-header,
+.repo-body {
+  margin-bottom: 15px;
+}
+.repo-header h3 {
+  margin: 0;
+}
+.repo-header a {
+  text-decoration: none;
+}
+
+.repo-header span {
+  font-weight: 400;
+}
+
+.repo-body p {
+  margin-bottom: 0;
+  display: block;
+  max-width: 80%;
+  word-break: break-all;
+}
+
+.author-link {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.repo-meta {
+  margin: 0;
+}
+
+.repo-meta a {
+  color: #6c7583;
+}
+
+.repo-footer {
+  font-size: 15px;
+  bottom: 20px;
+  left: 20px;
+  right: 25px;
+  background: white;
+}
+
+.repo-footer a {
+  text-decoration: none;
+  color: #6c757d;
+  margin: 0 10px;
+  font-weight: 500;
+}
+
+.repo-footer a svg {
+  position: relative;
+  top: 3px;
+  fill: #6c757d;
+  margin-right: 3px;
+}
