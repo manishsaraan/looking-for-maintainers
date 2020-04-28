@@ -1,12 +1,18 @@
 import ReactGA from 'react-ga';
 
+interface GAInterface {
+    init(trackingId: string): void;
+    pageView(trackingId: string): void;
+    addEvent(data: any): void;
+
+}
+
 export default class GA {
-    static init = (trackingId: any) => {
+    static init = (trackingId: string) => {
         ReactGA.initialize(trackingId);
     }
 
-    static pageView = (page: any) => {
-        console.log(page)
+    static pageView = (page: string) => {
         ReactGA.set({ page });
         ReactGA.pageview(page);
     }
