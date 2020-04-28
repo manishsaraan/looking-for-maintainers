@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import RepoContainer from "../partials/RepoContainer";
 import RepoList from "../partials/Repo-List";
 import Spinner from "../partials/Spinner";
+import Filters from "../partials/Filters";
 import { UserRef, RepoRef, projectsInitialStateType } from "../../interface";
 import "./style.css";
 
@@ -15,15 +16,9 @@ type ExploreProps = {
   loading: boolean;
 };
 
-const ProjectsSpinner = () => (
-  <Spinner>
-    <span className="projects-spinner">Loading Projects</span>
-  </Spinner>
-);
-
 class Explore extends React.Component<ExploreProps> {
   state = {
-    showProject: "list",
+    showProject: "grid",
   };
 
   componentDidMount() {
@@ -35,18 +30,9 @@ class Explore extends React.Component<ExploreProps> {
     }
   }
 
-  renderProjects = (projects: RepoRef[]) => {
-    if (projects.length === 0) {
-      return (
-        <p className="biggest flex-item-center h2-like txtcenter">
-          No Project Found
-        </p>
-      );
-    }
-    const { showProject } = this.state;
-
+  renderProjects = (showProject: string, projects: RepoRef[]) => {
     return projects.map((repo: RepoRef) => {
-      return showProject === "row" ? (
+      return showProject === "grid" ? (
         <RepoContainer key={repo._id} repo={repo} />
       ) : (
         <RepoList key={repo._id} repo={repo} />
@@ -54,9 +40,45 @@ class Explore extends React.Component<ExploreProps> {
     });
   };
 
+  projectsSpinner = () => (
+    <Spinner>
+      <span className="projects-spinner">Loading Projects</span>
+    </Spinner>
+  );
+
+  updateView = (viewType: string) => {
+    this.setState({ showProject: viewType });
+  };
+
+  renderContent = (showProject: string, projects: RepoRef[]) => (
+    <Fragment>
+      <div className="filters">
+        <Filters updateViewFn={this.updateView} />
+      </div>
+      <div className="repositories-grid">
+        <div className={`grid-container grid-${showProject}`}>
+          {this.renderProjects(showProject, projects)}
+        </div>
+      </div>
+    </Fragment>
+  );
+
+  renderNoContent = () => (
+    <p
+      style={{ height: "100vh" }}
+      className="biggest flex-item-center h2-like txtcenter"
+    >
+      No Project Found
+    </p>
+  );
+
   render() {
     const { projects, loading } = this.props;
     const { showProject } = this.state;
+    const content =
+      projects.length === 0
+        ? this.renderNoContent()
+        : this.renderContent(showProject, projects);
 
     return (
       <Fragment>
@@ -73,15 +95,7 @@ class Explore extends React.Component<ExploreProps> {
         </div>
         <div className="repositories-container">
           <div className="body-row">
-            {loading ? (
-              <ProjectsSpinner />
-            ) : (
-              <div className="repositories-grid">
-                <div className={`grid-container grid-${showProject}`}>
-                  {this.renderProjects(projects)}
-                </div>
-              </div>
-            )}
+            {loading ? this.projectsSpinner() : content}
           </div>
         </div>
       </Fragment>
