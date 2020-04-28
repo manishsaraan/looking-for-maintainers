@@ -8,7 +8,7 @@ interface GAInterface {
 }
 
 export default class GA {
-    static init = (trackingId: string) => {
+    static init = (trackingId: any) => {
         ReactGA.initialize(trackingId);
     }
 
