@@ -2,3 +2,7 @@
   display: flex;
   flex-direction: row-reverse;
 }
+
+.language-filter-main {
+  margin-right: 5px;
+}

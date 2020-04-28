@@ -19,10 +19,23 @@ function createHeaders(): HeaderRef {
   };
 }
 
-export function getRepos(): any {
+export function getRepos(lang?: string): any {
   return function(dispatch: any) {
     dispatch({ type: actionTypes.REPOS_FETCHED_INIT });
-    return fetch(`${apiEndPoint}/api/explore?page=1`)
+
+    let exploreEndPoint: string = `${apiEndPoint}/api/explore?page=1`;
+
+    if (lang) {
+      exploreEndPoint += `&lang=${lang}`;
+
+      // dispatch only if language is selected
+      dispatch({
+        type: actionTypes.SELECTED_LANGUAGE,
+        payload: lang,
+      });
+    }
+
+    return fetch(exploreEndPoint)
       .then((response) => response.json())
       .then((json) => {
         dispatch({ type: actionTypes.REPOS_FETCHED_SUCCESS, payload: json });

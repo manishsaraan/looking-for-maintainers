@@ -11,24 +11,31 @@ import "./style.css";
 
 type ExploreProps = {
   user: UserRef;
-  getRepos: () => any;
+  getRepos: (lang?: string) => any;
   projects: RepoRef[];
   loading: boolean;
+  selectedLanguage: string;
 };
 
 class Explore extends React.Component<ExploreProps> {
   state = {
     showProject: "grid",
+    selectedLang: this.props.selectedLanguage,
   };
 
   componentDidMount() {
-    const { projects } = this.props;
+    const { projects, selectedLanguage } = this.props;
 
     // Only load if there are no projects in store
-    if (projects.length === 0) {
+    if (projects.length === 0 && !selectedLanguage) {
       this.props.getRepos();
     }
   }
+
+  handleSelectedLanguage = (lang: string) => {
+    //this.setState({ selectedLang: lang });
+    this.props.getRepos(lang);
+  };
 
   renderProjects = (showProject: string, projects: RepoRef[]) => {
     return projects.map((repo: RepoRef) => {
@@ -51,16 +58,11 @@ class Explore extends React.Component<ExploreProps> {
   };
 
   renderContent = (showProject: string, projects: RepoRef[]) => (
-    <Fragment>
-      <div className="filters">
-        <Filters updateViewFn={this.updateView} />
+    <div className="repositories-grid">
+      <div className={`grid-container grid-${showProject}`}>
+        {this.renderProjects(showProject, projects)}
       </div>
-      <div className="repositories-grid">
-        <div className={`grid-container grid-${showProject}`}>
-          {this.renderProjects(showProject, projects)}
-        </div>
-      </div>
-    </Fragment>
+    </div>
   );
 
   renderNoContent = () => (
@@ -73,7 +75,7 @@ class Explore extends React.Component<ExploreProps> {
   );
 
   render() {
-    const { projects, loading } = this.props;
+    const { projects, loading, selectedLanguage } = this.props;
     const { showProject } = this.state;
     const content =
       projects.length === 0
@@ -95,6 +97,13 @@ class Explore extends React.Component<ExploreProps> {
         </div>
         <div className="repositories-container">
           <div className="body-row">
+            <div className="filters">
+              <Filters
+                handleSelectedLanguage={this.handleSelectedLanguage}
+                selectedLanguage={selectedLanguage}
+                updateViewFn={this.updateView}
+              />
+            </div>
             {loading ? this.projectsSpinner() : content}
           </div>
         </div>
@@ -105,11 +114,14 @@ class Explore extends React.Component<ExploreProps> {
 
 const mapStateToProps = ({
   projects,
+  repos,
 }: {
   projects: projectsInitialStateType;
+  repos: any;
 }) => ({
   projects: projects.projects,
   loading: projects.loading,
+  selectedLanguage: repos.selectedLanguage,
 });
 
 export default connect(mapStateToProps, { getRepos })(Explore);
