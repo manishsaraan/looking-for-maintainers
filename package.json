@@ -28,14 +28,17 @@
     "react-toggle-component": "^1.0.5",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.4",
+    "snyk": "^1.316.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:coverage": "npm test -- --coverage",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -51,5 +54,6 @@
   ],
   "devDependencies": {
     "@types/react-redux": "^7.1.5"
-  }
+  },
+  "snyk": true
 }
