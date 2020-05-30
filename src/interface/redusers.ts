@@ -5,6 +5,7 @@ export type projectsInitialStateType = {
   loading: boolean;
   error: string | null;
   projects: RepoRef[];
+  next: boolean
 };
 
 export type projectsReducderType = (

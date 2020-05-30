@@ -6,6 +6,7 @@ const initialState = {
   userPublishedRepos: [],
   userGithubRepos: [],
   successMessage: {},
+  selectedLanguage: "",
 };
 
 type processGithubSearchResponseType = (repo: RepoRef) => any;
@@ -51,6 +52,11 @@ function rootReducer(
   { type, payload }: { type: any; payload: any }
 ) {
   switch (type) {
+    case actionTypes.SELECTED_LANGUAGE:
+      return {
+        ...state,
+        selectedLanguage: payload,
+      };
     case actionTypes.USER_REPOS_FETCHED:
       return {
         ...state,

@@ -21,9 +21,47 @@ class LangugeFilter extends React.PureComponent<LanguageType> {
   toggleDropdown = () =>
     this.setState({ showDropdown: !this.state.showDropdown });
 
-  hideDropdown = () => {};
-  filterLanguages = () => {};
-  onKeyDown = () => {};
+  hideDropdown = () => {
+    this.setState({
+      showDropdown: false,
+      filterText: "",
+    });
+  };
+
+  filterLanguages = (e: any) => {
+    this.setState({
+      filterText: e.target.value,
+      selectedIndex: 0, // Reset and select the first language
+    });
+  };
+
+  onKeyDown = (e: any) => {
+    const { selectedIndex } = this.state;
+
+    const isEnterKey = e.keyCode === 13;
+    const isUpKey = e.keyCode === 38;
+    const isDownKey = e.keyCode === 40;
+
+    if (!isUpKey && !isDownKey && !isEnterKey) {
+      return;
+    }
+
+    const filteredLanguages = this.getFilteredLanguages();
+    e.preventDefault();
+
+    // arrow up/down button should select next/previous list element
+    if (isUpKey && selectedIndex > 0) {
+      this.setState((prevState: any) => ({
+        selectedIndex: prevState.selectedIndex - 1,
+      }));
+    } else if (isDownKey && selectedIndex < filteredLanguages.length - 1) {
+      this.setState((prevState: any) => ({
+        selectedIndex: prevState.selectedIndex + 1,
+      }));
+    } else if (isEnterKey && filteredLanguages[selectedIndex]) {
+      this.selectLanguage(selectedIndex);
+    }
+  };
 
   getFilteredLanguages() {
     let availableLanguages = [...languages];

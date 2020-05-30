@@ -1,38 +1,73 @@
-import React, { Fragment } from "react";
-import { connect } from "react-redux";
-import { getRepos } from "../../actions";
-import { Link } from "react-router-dom";
-import RepoContainer from "../partials/RepoContainer";
-import RepoList from "../partials/Repo-List";
-import Spinner from "../partials/Spinner";
-import Filters from "../partials/Filters";
-import { UserRef, RepoRef, projectsInitialStateType } from "../../interface";
-import "./style.css";
+import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import { getRepos } from '../../actions';
+import { Link } from 'react-router-dom';
+import RepoContainer from '../partials/RepoContainer';
+import RepoList from '../partials/Repo-List';
+import Spinner from '../partials/Spinner';
+import Filters from '../partials/Filters';
+import Footer from '../partials/Footer';
+import { UserRef, RepoRef, projectsInitialStateType } from '../../interface';
+import './style.css';
 
 type ExploreProps = {
   user: UserRef;
-  getRepos: () => any;
+  getRepos: (lang?: string, page?: number) => any;
   projects: RepoRef[];
   loading: boolean;
+  selectedLanguage: string;
+  next: boolean;
 };
 
 class Explore extends React.Component<ExploreProps> {
   state = {
-    showProject: "grid",
+    showProject: 'grid',
+    selectedLang: this.props.selectedLanguage,
+    page: 1,
   };
 
   componentDidMount() {
-    const { projects } = this.props;
+    const { projects, selectedLanguage } = this.props;
 
     // Only load if there are no projects in store
-    if (projects.length === 0) {
+    if (projects.length === 0 && !selectedLanguage) {
       this.props.getRepos();
+    }
+
+    // // Detect when scrolled to bottom.
+    window.addEventListener('scroll', this.paginationOnScroll);
+  }
+
+  paginationOnScroll = () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      // you're at the bottom of the page
+      console.log('at botom');
+      const { page, selectedLang } = this.state;
+      const nextPage = page + 1;
+      const { loading } = this.props;
+
+      if (!loading) {
+        this.props.getRepos(selectedLang, nextPage);
+        this.setState({ page: nextPage });
+      }
+    }
+  };
+
+  componentDidUpdate(prevProps: ExploreProps) {
+    console.log(this.props.next);
+    if (!this.props.next) {
+      window.removeEventListener('scroll', this.paginationOnScroll);
     }
   }
 
+  handleSelectedLanguage = (lang: string) => {
+    //this.setState({ selectedLang: lang });
+    this.props.getRepos(lang);
+  };
+
   renderProjects = (showProject: string, projects: RepoRef[]) => {
     return projects.map((repo: RepoRef) => {
-      return showProject === "grid" ? (
+      return showProject === 'grid' ? (
         <RepoContainer key={repo._id} repo={repo} />
       ) : (
         <RepoList key={repo._id} repo={repo} />
@@ -51,21 +86,16 @@ class Explore extends React.Component<ExploreProps> {
   };
 
   renderContent = (showProject: string, projects: RepoRef[]) => (
-    <Fragment>
-      <div className="filters">
-        <Filters updateViewFn={this.updateView} />
+    <div className="repositories-grid">
+      <div className={`grid-container grid-${showProject}`}>
+        {this.renderProjects(showProject, projects)}
       </div>
-      <div className="repositories-grid">
-        <div className={`grid-container grid-${showProject}`}>
-          {this.renderProjects(showProject, projects)}
-        </div>
-      </div>
-    </Fragment>
+    </div>
   );
 
   renderNoContent = () => (
     <p
-      style={{ height: "100vh" }}
+      style={{ height: '100vh' }}
       className="biggest flex-item-center h2-like txtcenter"
     >
       No Project Found
@@ -73,12 +103,32 @@ class Explore extends React.Component<ExploreProps> {
   );
 
   render() {
-    const { projects, loading } = this.props;
+    const { projects, loading, selectedLanguage } = this.props;
     const { showProject } = this.state;
-    const content =
-      projects.length === 0
-        ? this.renderNoContent()
-        : this.renderContent(showProject, projects);
+    let content: any;
+
+    if (loading) {
+      if (projects.length === 0) {
+        content = this.projectsSpinner();
+      } else {
+        content = (
+          <Fragment>
+            {this.renderContent(showProject, projects)}
+            {this.projectsSpinner()}
+          </Fragment>
+        );
+      }
+    } else {
+      if (projects.length === 0) {
+        content = this.renderNoContent();
+      } else {
+        content = this.renderContent(showProject, projects);
+      }
+    }
+    // const content =
+    //   projects.length === 0
+    //     ? this.renderNoContent()
+    //     : this.renderContent(showProject, projects);
 
     return (
       <Fragment>
@@ -95,7 +145,15 @@ class Explore extends React.Component<ExploreProps> {
         </div>
         <div className="repositories-container">
           <div className="body-row">
-            {loading ? this.projectsSpinner() : content}
+            <div className="filters">
+              <Filters
+                handleSelectedLanguage={this.handleSelectedLanguage}
+                selectedLanguage={selectedLanguage}
+                updateViewFn={this.updateView}
+              />
+            </div>
+            {content}
+            <Footer />
           </div>
         </div>
       </Fragment>
@@ -105,11 +163,15 @@ class Explore extends React.Component<ExploreProps> {
 
 const mapStateToProps = ({
   projects,
+  repos,
 }: {
   projects: projectsInitialStateType;
+  repos: any;
 }) => ({
   projects: projects.projects,
   loading: projects.loading,
+  selectedLanguage: repos.selectedLanguage,
+  next: projects.next,
 });
 
 export default connect(mapStateToProps, { getRepos })(Explore);
