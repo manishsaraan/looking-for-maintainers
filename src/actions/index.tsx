@@ -1,29 +1,29 @@
-import * as actionTypes from "../constants/action-types";
-import { apiEndPoint } from "../config";
-import { RepoRef } from "../interface";
+import * as actionTypes from '../constants/action-types';
+import { apiEndPoint } from '../config';
+import { RepoRef } from '../interface';
 
 type HeaderRef = {
   Accept: string;
-  "Content-Type": string;
-  "x-access-token": string;
+  'Content-Type': string;
+  'x-access-token': string;
 };
 
 function createHeaders(): HeaderRef {
-  const user: any = localStorage.getItem("user");
+  const user: any = localStorage.getItem('user');
 
   const { jwtToken }: { jwtToken: string } = JSON.parse(user);
   return {
-    Accept: "application/json, text/plain, */*",
-    "Content-Type": "application/json",
-    "x-access-token": jwtToken,
+    Accept: 'application/json, text/plain, */*',
+    'Content-Type': 'application/json',
+    'x-access-token': jwtToken,
   };
 }
 
-export function getRepos(lang?: string): any {
+export function getRepos(lang?: string, page = 1): any {
   return function(dispatch: any) {
     dispatch({ type: actionTypes.REPOS_FETCHED_INIT });
 
-    let exploreEndPoint: string = `${apiEndPoint}/api/explore?page=1`;
+    let exploreEndPoint: string = `${apiEndPoint}/api/explore?page=${page}`;
 
     if (lang) {
       exploreEndPoint += `&lang=${lang}`;
@@ -49,12 +49,12 @@ export function getRepos(lang?: string): any {
 export function fetchUserRepos(userId: number): any {
   return function(dispatch: any) {
     return fetch(`${apiEndPoint}/api/repos/${userId}`, {
-      method: "GET",
+      method: 'GET',
       headers: createHeaders(),
     })
       .then((response) => response.json())
       .then((jsonResp) => {
-        console.log("---123456789", jsonResp);
+        console.log('---123456789', jsonResp);
         dispatch({ type: actionTypes.USER_REPOS_FETCHED, payload: jsonResp });
       });
   };
@@ -63,7 +63,7 @@ export function fetchUserRepos(userId: number): any {
 export function fetchUserGithubRepos(userName: string, repoName: string): any {
   return function(dispatch: any) {
     return fetch(`${apiEndPoint}/api/user-repo/${userName}/${repoName}`, {
-      method: "GET",
+      method: 'GET',
       headers: createHeaders(),
     })
       .then((response) => response.json())
@@ -84,7 +84,7 @@ export function publishRepo(repo: RepoRef): any {
 
   return function(dispatch: any, getState: any) {
     return fetch(`${apiEndPoint}/api/publish`, {
-      method: "POST",
+      method: 'POST',
       headers: createHeaders(),
       body: JSON.stringify(repo),
     })
@@ -131,7 +131,7 @@ export function publishRepo(repo: RepoRef): any {
 export function unpublishRepo(repoName: string, repoId: number): any {
   return function(dispatch: any) {
     return fetch(`${apiEndPoint}/api/delete/${repoId}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: createHeaders(),
     })
       .then((response) => response.json())
@@ -152,7 +152,7 @@ export function subscribe(email: string, cb?: any): any {
     dispatch({ type: actionTypes.SUBSCRIBE_EMAIL_INIT });
 
     const fetchedResp = await fetch(`${apiEndPoint}/api/subscribe`, {
-      method: "POST",
+      method: 'POST',
       headers: createHeaders(),
       body: JSON.stringify({ email }),
     });
