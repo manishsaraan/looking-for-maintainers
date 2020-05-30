@@ -6,6 +6,7 @@ import RepoContainer from '../partials/RepoContainer';
 import RepoList from '../partials/Repo-List';
 import Spinner from '../partials/Spinner';
 import Filters from '../partials/Filters';
+import Footer from '../partials/Footer';
 import { UserRef, RepoRef, projectsInitialStateType } from '../../interface';
 import './style.css';
 
@@ -15,14 +16,14 @@ type ExploreProps = {
   projects: RepoRef[];
   loading: boolean;
   selectedLanguage: string;
-  next: boolean
+  next: boolean;
 };
 
 class Explore extends React.Component<ExploreProps> {
   state = {
     showProject: 'grid',
     selectedLang: this.props.selectedLanguage,
-    page: 1
+    page: 1,
   };
 
   componentDidMount() {
@@ -34,10 +35,10 @@ class Explore extends React.Component<ExploreProps> {
     }
 
     // // Detect when scrolled to bottom.
-    window.addEventListener("scroll", this.paginationOnScroll)
+    window.addEventListener('scroll', this.paginationOnScroll);
   }
 
-  paginationOnScroll = () =>  {
+  paginationOnScroll = () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
       // you're at the bottom of the page
       console.log('at botom');
@@ -52,10 +53,10 @@ class Explore extends React.Component<ExploreProps> {
     }
   };
 
-  componentDidUpdate(prevProps:ExploreProps){
-    console.log(this.props.next)
-    if(!this.props.next){
-      window.removeEventListener("scroll", this.paginationOnScroll)
+  componentDidUpdate(prevProps: ExploreProps) {
+    console.log(this.props.next);
+    if (!this.props.next) {
+      window.removeEventListener('scroll', this.paginationOnScroll);
     }
   }
 
@@ -152,6 +153,7 @@ class Explore extends React.Component<ExploreProps> {
               />
             </div>
             {content}
+            <Footer />
           </div>
         </div>
       </Fragment>
@@ -169,7 +171,7 @@ const mapStateToProps = ({
   projects: projects.projects,
   loading: projects.loading,
   selectedLanguage: repos.selectedLanguage,
-  next: projects.next
+  next: projects.next,
 });
 
 export default connect(mapStateToProps, { getRepos })(Explore);

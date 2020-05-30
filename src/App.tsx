@@ -1,9 +1,10 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { subscribe } from "./actions";
-import { Link } from "react-router-dom";
-import Subscribe from "./components/partials/Subscribe";
-import "./all.css";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { subscribe } from './actions';
+import { Link } from 'react-router-dom';
+import Subscribe from './components/partials/Subscribe';
+import Footer from './components/partials/Footer';
+import './all.css';
 
 type AppProps = {
   history: any;
@@ -57,13 +58,13 @@ export class App extends Component<AppProps, AppState> {
                   Motivation
                 </h1>
                 <p className="flex-item-center h3-like txtcenter mts">
-                  {" "}
+                  {' '}
                   Most projects on GitHub die because their authors can't find
                   new contributors.
                 </p>
                 <p className="flex-item-center h3-like txtcenter mts">
-                  {" "}
-                  &nbsp;{" "}
+                  {' '}
+                  &nbsp;{' '}
                 </p>
                 <p
                   data-testid="landing-text"
@@ -75,15 +76,15 @@ export class App extends Component<AppProps, AppState> {
                   exciting projects.
                 </p>
                 <p className="flex-item-center h3-like txtcenter mts">
-                  {" "}
-                  &nbsp;{" "}
+                  {' '}
+                  &nbsp;{' '}
                 </p>
                 <div className="flex-item-center">
                   <a
                     className=" button flex-item-center mtxl no-margin"
                     href="https://github.com/manishsaraan/looking-for-maintainers"
                   >
-                    {" "}
+                    {' '}
                     View it on GitHub
                   </a>
                 </div>
@@ -113,13 +114,7 @@ export class App extends Component<AppProps, AppState> {
                 </div>
               </div>
             </section>
-            <footer className="footer-section mtxl">
-              <div className="wrapper w960p flex-container flex-container-v txtcenter">
-                <div className="h5-like pbs">
-                  © Looking For Maintainers • 2020 •
-                </div>
-              </div>
-            </footer>
+            <Footer />
           </div>
         </div>
       </div>
