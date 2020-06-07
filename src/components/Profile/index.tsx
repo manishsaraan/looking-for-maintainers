@@ -1,18 +1,18 @@
-import React from "react";
-import { connect } from "react-redux";
-import Header from "../partials/Header";
-import UserRepo from "../partials/Repo";
+import React from 'react';
+import { connect } from 'react-redux';
+import Header from '../partials/Header';
+import UserRepo from '../partials/Repo';
 import {
   fetchUserRepos,
   fetchUserGithubRepos,
   publishRepo,
   unpublishRepo,
-} from "../../actions";
-import Spinner from "../partials/Spinner";
-import { UserRef, RepoRef } from "../../interface";
+} from '../../actions';
+import Spinner from '../partials/Spinner';
+import { UserRef, RepoRef } from '../../interface';
 
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
+import ReactNotification from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
 
 type ProfileProps = {
   fetchUserRepos: (userId: number) => any;
@@ -37,7 +37,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
   private notificationDOMRef: Notification = React.createRef();
 
   state = {
-    search: "",
+    search: '',
   };
 
   componentDidMount() {
@@ -70,11 +70,11 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
     this.notificationDOMRef.current.addNotification({
       title: repo,
       message: msg,
-      type: "success",
-      insert: "top",
-      container: "top-right",
-      animationIn: ["animated", "fadeIn"],
-      animationOut: ["animated", "fadeOut"],
+      type: 'success',
+      insert: 'top',
+      container: 'top-right',
+      animationIn: ['animated', 'fadeIn'],
+      animationOut: ['animated', 'fadeOut'],
       dismiss: { duration: 2000 },
       dismissable: { click: true },
     });
@@ -218,9 +218,9 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
 }
 
 const mapStateToProps = (state: any) => ({
-  userPublishedRepos: state.userPublishedRepos,
-  userGithubRepos: state.userGithubRepos,
-  successMessage: state.successMessage,
+  userPublishedRepos: state.repos.userPublishedRepos,
+  userGithubRepos: state.repos.userGithubRepos,
+  successMessage: state.repos.successMessage,
 });
 
 export default connect(mapStateToProps, {

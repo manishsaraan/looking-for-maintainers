@@ -1,88 +1,57 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { UserRef } from "../../../interface";
+import React, { useState, useContext } from 'react';
+import { Navbar, NavDropdown, Nav } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import GitHubSvg from '../../../assets/images/github-brands.svg';
+import { UserRef } from '../../../interface';
+import AuthContext from '../../../context/authContext';
+import { clientId } from '../../../config';
+import './Header.css';
 
-const Header: React.FunctionComponent<{ user: UserRef }> = (props) => {
+const Header: React.FunctionComponent<{}> = (props) => {
   const [showDropdrown, updateShowDropdown] = useState(false);
+  const user: any = React.useContext(AuthContext);
 
   const updateMenuDropDown = () => {
     updateShowDropdown(!showDropdrown);
   };
 
+  console.log(user);
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div className="container">
-        <button
-          onClick={updateMenuDropDown}
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarTogglerDemo01"
-          aria-controls="navbarTogglerDemo01"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon" />
-        </button>
-        <a
-          href="https://github.com/manishsaraan/looking-for-maintainers"
-          rel="noopener noreferrer"
-          target="_blank"
-          className="navbar-brand"
-        >
-          <div className="logo-text">
-            <h4>LFM</h4>
-          </div>
-        </a>
-
-        <div
-          className={
-            showDropdrown ? "navbar-collapse" : "collapse navbar-collapse"
-          }
-          id="navbarTogglerDemo01"
-        >
-          <ul className="navbar-nav mr-auto mt-2 mt-lg-0" />
-          {props.user ? (
-            <ul className="navbar-nav ">
-              <li className="nav-item dropdown">
-                <span
-                  onClick={updateMenuDropDown}
-                  className="nav-link dropdown-toggle"
-                  id="navDropDownLink"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  {props.user.login}
-                </span>
-                <div
-                  className={
-                    showDropdrown ? "dropdown-menu show" : "dropdown-menu"
-                  }
-                  aria-labelledby="navDropDownLink"
-                >
-                  <Link to="/profile" className="dropdown-item">
-                    Profile
-                  </Link>
-                  <div className="dropdown-divider" />
-                  <Link to="/logout" className="dropdown-item">
-                    Logout
-                  </Link>
-                </div>
-              </li>
-            </ul>
-          ) : (
-            <a
-              href="/login/github"
-              rel="noopener noreferrer"
-              className="btn btn-light language-filter shadowed"
-            >
-              <i className="fa fa-github mr-1" /> Login
-            </a>
-          )}
-        </div>
-      </div>
-    </nav>
+    <div className="header">
+      <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+        <Navbar.Brand href="#home">Looking For Maintainers</Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto"></Nav>
+          <Nav>
+            <Link className="nav-link" to="/explore">
+              Explore
+            </Link>
+            {user ? (
+              <NavDropdown title={user.login} id="collasible-nav-dropdown">
+                <Link className="dropdown-item" to="/profile">
+                  <FontAwesomeIcon icon={faUser} /> Profile
+                </Link>
+                <Link className="dropdown-item" to="/logout">
+                  {' '}
+                  <FontAwesomeIcon icon={faSignOutAlt} /> Logout
+                </Link>
+              </NavDropdown>
+            ) : (
+              <Nav.Link
+                className="publish-button"
+                href={`https://github.com/login/oauth/authorize?client_id=${clientId}`}
+              >
+                <img className="header-svg" src={GitHubSvg} alt="test" />
+                Publish
+              </Nav.Link>
+            )}
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+    </div>
   );
 };
 

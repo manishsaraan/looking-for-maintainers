@@ -4,7 +4,8 @@ import { subscribe } from './actions';
 import { Link } from 'react-router-dom';
 import Subscribe from './components/partials/Subscribe';
 import Footer from './components/partials/Footer';
-import './all.css';
+import GitHubLogin from './lib';
+import { clientId } from './config';
 
 type AppProps = {
   history: any;
@@ -31,6 +32,7 @@ export class App extends Component<AppProps, AppState> {
                 >
                   Looking For Maintainers
                 </h1>
+                <GitHubLogin clientID={clientId} />
                 <p
                   data-testid="landing-subheading"
                   className="biggest flex-item-center h2-like txtcenter"

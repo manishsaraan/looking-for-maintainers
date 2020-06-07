@@ -7,6 +7,7 @@ import RepoList from '../partials/Repo-List';
 import Spinner from '../partials/Spinner';
 import Filters from '../partials/Filters';
 import Footer from '../partials/Footer';
+import Header from '../partials/Header';
 import { UserRef, RepoRef, projectsInitialStateType } from '../../interface';
 import './style.css';
 
@@ -132,7 +133,8 @@ class Explore extends React.Component<ExploreProps> {
 
     return (
       <Fragment>
-        <div className="page-wrap">
+        <Header />
+        {/* <div className="page-wrap">
           <section className="menu-section ">
             <div className="menu-section-container">
               <span className="biggest flex-item-center txtcenter">
@@ -142,7 +144,7 @@ class Explore extends React.Component<ExploreProps> {
               </span>
             </div>
           </section>
-        </div>
+        </div> */}
         <div className="repositories-container">
           <div className="body-row">
             <div className="filters">

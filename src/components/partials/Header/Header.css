@@ -1,0 +1,40 @@
+.header a {
+  font-size: 1.6rem;
+  color: #555;
+}
+.navbar-light .navbar-brand,
+.navbar-nav .show > .nav-link {
+  color: #555;
+}
+
+.navbar-light .navbar-brand {
+  font-size: 2rem;
+}
+
+.header-svg {
+  width: 25px;
+  margin-right: 5px;
+}
+
+.publish-button {
+  border: 1px solid #adadad;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+.header svg {
+  margin-right: 10px;
+}
+
+.header .navbar {
+  padding: 1rem;
+  background: #fff !important;
+  border-bottom: 1px solid #dbdbdb;
+}
+
+.dropdown-item {
+  width: 120px;
+  padding: 10px;
+}
