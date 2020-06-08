@@ -73,7 +73,5 @@ img {
 
 .repo-footer a svg {
   position: relative;
-  top: 3px;
   fill: #6c757d;
-  margin-right: 3px;
 }

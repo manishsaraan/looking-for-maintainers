@@ -1,10 +1,10 @@
-import React from "react";
-import classNames from "classnames";
-import { FaList, FaTable } from "react-icons/fa";
-import "./View-Filter.css";
+import React from 'react';
+import classNames from 'classnames';
+import { FaList, FaTable } from 'react-icons/fa';
+import './View-Filter.css';
 
 const ViewFilter = (props: { updateViewFn: (viewType: string) => void }) => {
-  const [selected, updateSelected] = React.useState("grid");
+  const [selected, updateSelected] = React.useState('grid');
 
   const handleClick = (type: string) => {
     props.updateViewFn(type);
@@ -15,18 +15,20 @@ const ViewFilter = (props: { updateViewFn: (viewType: string) => void }) => {
     <div className="view-type-wrap">
       <div className="view-type btn shadowed cursor-default">
         <button
-          onClick={() => handleClick("grid")}
+          onClick={() => handleClick('grid')}
           className={classNames({
-            active: selected === "grid",
+            'align-vertically-center': true,
+            active: selected === 'grid',
           })}
         >
           <FaTable />
           Grid
         </button>
         <button
-          onClick={() => handleClick("list")}
+          onClick={() => handleClick('list')}
           className={classNames({
-            active: selected === "list",
+            'align-vertically-center': true,
+            active: selected === 'list',
           })}
         >
           <FaList />

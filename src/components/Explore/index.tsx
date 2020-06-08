@@ -126,25 +126,10 @@ class Explore extends React.Component<ExploreProps> {
         content = this.renderContent(showProject, projects);
       }
     }
-    // const content =
-    //   projects.length === 0
-    //     ? this.renderNoContent()
-    //     : this.renderContent(showProject, projects);
 
     return (
       <Fragment>
         <Header />
-        {/* <div className="page-wrap">
-          <section className="menu-section ">
-            <div className="menu-section-container">
-              <span className="biggest flex-item-center txtcenter">
-                <Link className="homepage-link" to="/">
-                  Looking For Maintainers
-                </Link>
-              </span>
-            </div>
-          </section>
-        </div> */}
         <div className="repositories-container">
           <div className="body-row">
             <div className="filters">

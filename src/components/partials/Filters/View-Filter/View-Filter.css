@@ -24,8 +24,6 @@
 }
 
 .view-type svg {
-  margin-top: 12px;
-  float: left;
   margin-right: 5px;
 }
 
@@ -36,4 +34,8 @@
 
 .view-type button:first-child {
   margin-left: 0;
+}
+
+.view-type {
+  display: flex;
 }
