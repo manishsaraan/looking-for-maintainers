@@ -1,27 +1,22 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, memo } from 'react';
 import { Navbar, NavDropdown, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import GitHubSvg from '../../../assets/images/github-brands.svg';
-import { UserRef } from '../../../interface';
 import AuthContext from '../../../context/authContext';
 import { clientId } from '../../../config';
 import './Header.css';
 
 const Header: React.FunctionComponent<{}> = (props) => {
-  const [showDropdrown, updateShowDropdown] = useState(false);
-  const user: any = React.useContext(AuthContext);
+  const user: any = useContext(AuthContext);
 
-  const updateMenuDropDown = () => {
-    updateShowDropdown(!showDropdrown);
-  };
-
-  console.log(user);
   return (
     <div className="header">
       <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-        <Navbar.Brand href="#home">Looking For Maintainers</Navbar.Brand>
+        <Link className="navbar-brand" to="/">
+          Looking For Maintainers
+        </Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto"></Nav>
@@ -55,4 +50,4 @@ const Header: React.FunctionComponent<{}> = (props) => {
   );
 };
 
-export default Header;
+export default memo(Header);
