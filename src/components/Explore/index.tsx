@@ -13,7 +13,7 @@ import './style.css';
 
 type ExploreProps = {
   user: UserRef;
-  getRepos: (lang?: string, page?: number) => any;
+  getRepos: (lang?: string, page?: number, initial?: boolean) => any;
   projects: RepoRef[];
   loading: boolean;
   selectedLanguage: string;
@@ -48,7 +48,7 @@ class Explore extends React.Component<ExploreProps> {
       const { loading } = this.props;
 
       if (!loading) {
-        this.props.getRepos(selectedLang, nextPage);
+        this.props.getRepos(selectedLang, nextPage, false);
         this.setState({ page: nextPage });
       }
     }

@@ -19,7 +19,7 @@ function createHeaders(): HeaderRef {
   };
 }
 
-export function getRepos(lang?: string, page = 1): any {
+export function getRepos(lang?: string, page = 1, initial = true): any {
   return function(dispatch: any) {
     dispatch({ type: actionTypes.REPOS_FETCHED_INIT });
 
@@ -38,7 +38,14 @@ export function getRepos(lang?: string, page = 1): any {
     return fetch(exploreEndPoint)
       .then((response) => response.json())
       .then((json) => {
-        dispatch({ type: actionTypes.REPOS_FETCHED_SUCCESS, payload: json });
+        if (initial) {
+          dispatch({ type: actionTypes.REPOS_FETCHED_SUCCESS, payload: json });
+        } else {
+          dispatch({
+            type: actionTypes.REPOS_PAGINATION_FETCHED_SUCCESS,
+            payload: json,
+          });
+        }
       })
       .catch((error) => {
         dispatch({ type: actionTypes.REPOS_FETCHED_ERROR, payload: error });
