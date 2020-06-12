@@ -2,13 +2,15 @@
   font-size: 1.6rem;
   color: #555;
 }
-.navbar-light .navbar-brand,
+
 .navbar-nav .show > .nav-link {
   color: #555;
 }
 
 .navbar-light .navbar-brand {
   font-size: 2rem;
+  color: #3d5866;
+  font-weight: bold;
 }
 
 .header-svg {
@@ -16,12 +18,30 @@
   margin-right: 5px;
 }
 
-.publish-button {
-  border: 1px solid #adadad;
-  border-radius: 5px;
+.header .publish-button {
+  padding: 3px 7px !important;
+  font-size: 14px;
+  text-transform: none;
+  height: auto;
+  background: #3d5866;
+  color: #fff;
   display: flex;
+  border-radius: 5px;
   align-items: center;
-  padding: 5px;
+  line-height: 30px;
+  margin-left: 20px;
+  border: none;
+}
+.header .publish-button:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.publish-button svg {
+  margin-right: 5px !important;
+  color: #fff;
+  width: 24px;
+  background: #3d5866;
 }
 
 .header svg {
