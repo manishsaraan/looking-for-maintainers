@@ -1,0 +1,55 @@
+.publish-modal .modal-content {
+  border-radius: 8px;
+  border: 1px solid #eaeef0;
+}
+
+.publish-modal .modal-title.h4 {
+  color: #082333;
+  font-weight: bold;
+  font-size: 20px;
+  text-align: center;
+  align-items: center;
+  width: 100%;
+}
+
+.publish-modal input {
+  background: #eff3f5;
+  border-style: none;
+  height: 50px;
+}
+
+.publish-modal .search-repo-button {
+  height: 50px;
+  margin-left: 10px;
+  color: #fff;
+  background: #3d5866;
+  width: 75px;
+  text-transform: none;
+}
+
+.publish-modal .search-repo-button:focus {
+  box-shadow: none;
+}
+
+.publish-modal .modal-body {
+  min-height: 250px;
+}
+
+.search-repo-button div#wave {
+  margin-top: 0;
+  height: auto;
+}
+.search-repo-button div#wave .dot {
+  background: #fff;
+}
+
+.publish-modal .no-repo-message {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.publish-modal .close {
+  padding: 0 1rem;
+  margin: -3rem -1rem -1rem auto;
+  font-size: 35px;
+}

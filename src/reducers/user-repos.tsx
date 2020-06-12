@@ -2,9 +2,8 @@ import * as actionTypes from '../constants/action-types';
 import { RepoRef, OwnerRef } from '../interface';
 
 const initialState = {
-  userPublishedRepos: [],
+  repos: [],
   successMessage: {},
-  selectedLanguage: '',
   loading: false,
   error: false,
 };
@@ -47,41 +46,43 @@ const processGithubSearchResponse: processGithubSearchResponseType = (repo) => {
   };
 };
 
-function rootReducer(
+const updateUserGitHubRepos = (state: any, payload: any) => {
+  const updatedUserRepos = state.repos.map((repo: any) =>
+    repo.github_id === payload.github_id ? { ...payload } : { ...repo }
+  );
+
+  return updatedUserRepos;
+};
+
+function userGitHubRepos(
   state = initialState,
   { type, payload }: { type: any; payload: any }
 ) {
   switch (type) {
-    case actionTypes.SELECTED_LANGUAGE:
+    case actionTypes.USER_GITHUB_REPOS_FETCH_INIT:
       return {
         ...state,
-        selectedLanguage: payload,
-      };
-    case actionTypes.USER_REPOS_FETCHED_INIT:
-      return {
-        ...state,
+        repos: [],
+        successMessage: {},
         loading: true,
-        errro: false,
+        error: false,
       };
-    case actionTypes.USER_REPOS_FETCHED_SUCCESS:
+    case actionTypes.USER_GITHUB_REPOS_FETCH_SUCCESS:
       return {
         ...state,
-        userPublishedRepos: payload.map((repo: RepoRef) => ({
-          ...repo,
-          id: repo._id,
-          isChecked: true,
-        })),
+        repos: payload.items.map(processGithubSearchResponse),
+        successMessage: {},
         loading: false,
         error: false,
-        successMessage: {},
       };
-    case actionTypes.USER_GITHUB_REPOS_REMOVED:
+    case actionTypes.USER_GITHUB_REPOS_PUBLISHED:
       return {
         ...state,
-        successMessage: { ...payload },
+        repos: updateUserGitHubRepos(state, payload),
+        // successMessage: { ...payload.success },
       };
     default:
       return { ...state };
   }
 }
-export default rootReducer;
+export default userGitHubRepos;

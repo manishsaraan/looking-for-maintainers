@@ -423,10 +423,31 @@ html {
 
 body {
   font-size: 1.6rem;
-  background-color: #fff;
-  color: #555;
+  background-color: #eff3f5;
+  color: #3d5866;
   font-family: sans-serif;
   line-height: 1.5;
+}
+.list-group-item {
+  border: 1px solid #eaeef0;
+  padding: 0;
+}
+
+.list-group-item .row {
+  padding: 10px;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.align-center-horz {
+  display: flex;
+  justify-content: center;
+}
+
+.repo-description:first-letter {
+  text-transform: uppercase;
 }
 
 a {
