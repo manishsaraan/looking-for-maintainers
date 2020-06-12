@@ -6,6 +6,7 @@ import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import App from './App';
 import store from './store';
 import GithubLogin from './GithubLogin';
+import Logout from './components/Logout';
 import GA from './ga';
 import { gaKey } from './config';
 import { UserRef } from './interface';
@@ -74,6 +75,7 @@ const Routes = () => {
                 component={(props: any) => <Explore {...props} />}
               />
               <PrivateRoute path="/profile" component={Profile} />
+              <PrivateRoute path="/logout" component={Logout} />
             </Switch>
           </AuthProvider>
         </React.Suspense>
