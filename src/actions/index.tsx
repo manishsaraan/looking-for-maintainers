@@ -63,7 +63,6 @@ export function fetchUserRepos(userId: number): any {
     })
       .then((response) => response.json())
       .then((jsonResp) => {
-        console.log('---123456789', jsonResp);
         dispatch({
           type: actionTypes.USER_REPOS_FETCHED_SUCCESS,
           payload: jsonResp,
@@ -104,36 +103,6 @@ export function publishRepo(repo: RepoRef): any {
           type: actionTypes.USER_GITHUB_REPOS_PUBLISHED,
           payload: jsonResp,
         });
-        // const { userGithubRepos, userPublishedRepos } = getState();
-        // const dataIndex = userGithubRepos.findIndex(
-        //   (repo: RepoRef) => repo.github_id === jsonResp.github_id
-        // );
-        // const publishedRepoIndex = userPublishedRepos.findIndex(
-        //   (repo: RepoRef) => repo.github_id === jsonResp.github_id
-        // );
-        // if (dataIndex !== -1) {
-        //   userGithubRepos[dataIndex] = {
-        //     ...userGithubRepos[dataIndex],
-        //     ...jsonResp,
-        //   };
-        // }
-        // if (publishedRepoIndex !== -1) {
-        //   userPublishedRepos[publishedRepoIndex] = {
-        //     ...userPublishedRepos[publishedRepoIndex],
-        //     ...jsonResp,
-        //   };
-        // }
-        // dispatch({
-        //   type: actionTypes.USER_GITHUB_REPOS_PUBLISHED,
-        //   payload: {
-        //     userGithubRepos,
-        //     userPublishedRepos,
-        //     success: {
-        //       repo: repo.name,
-        //       msg: `${repo.name} successfully published`,
-        //     },
-        //   },
-        // });
       });
   };
 }
@@ -173,6 +142,48 @@ export function subscribe(email: string, cb?: any): any {
     dispatch({
       type: actionTypes.SUBSCRIBE_EMAIL_SUCCESS,
       payload: Resp,
+    });
+  };
+}
+
+export function loginUser(code: string): any {
+  return function(dispatch: any) {
+    dispatch({
+      type: actionTypes.USER_LOGIN_INIT,
+    });
+    return fetch(`${apiEndPoint}/api/login/github/${code}`, {
+      method: 'GET',
+    })
+      .then((response) => response.json())
+      .then((jsonResp) => {
+        localStorage.setItem('user', JSON.stringify(jsonResp));
+        dispatch({
+          type: actionTypes.USER_LOGIN_SUCCESS,
+          payload: jsonResp,
+        });
+      });
+  };
+}
+
+export function logout(): any {
+  return function(dispatch: any) {
+    localStorage.removeItem('user');
+
+    dispatch({
+      type: actionTypes.USER_LOGOUT_SUCCESS,
+    });
+  };
+}
+
+export function loadUser(): any {
+  return function(dispatch: any) {
+    const userData: any = localStorage.getItem('user');
+
+    const user: any = JSON.parse(userData);
+
+    dispatch({
+      type: actionTypes.USER_LOGIN_SUCCESS,
+      payload: user,
     });
   };
 }

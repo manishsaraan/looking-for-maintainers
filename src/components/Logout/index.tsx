@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { logout } from '../../actions';
 
 const Logout = (props: any) => {
   useEffect(() => {
-    localStorage.removeItem('user');
-
-    props.history.push('/');
-  });
+    props.logout();
+    props.history.push('/explore');
+  }, []);
   return <div>Logging out...</div>;
 };
 
-export default Logout;
+export default connect(null, { logout })(Logout);

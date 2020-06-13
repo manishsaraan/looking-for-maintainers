@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { getRepos } from '../../actions';
-import { Link } from 'react-router-dom';
 import RepoContainer from '../partials/RepoContainer';
 import RepoList from '../partials/Repo-List';
 import Spinner from '../partials/Spinner';
 import Filters from '../partials/Filters';
 import Footer from '../partials/Footer';
 import Header from '../partials/Header';
+import Wrapper from '../Wrapper';
 import { UserRef, RepoRef, projectsInitialStateType } from '../../interface';
 import './style.css';
 
@@ -42,7 +42,7 @@ class Explore extends React.Component<ExploreProps> {
   paginationOnScroll = () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
       // you're at the bottom of the page
-      console.log('at botom');
+      console.log('at the bottom');
       const { page, selectedLang } = this.state;
       const nextPage = page + 1;
       const { loading } = this.props;
@@ -55,7 +55,6 @@ class Explore extends React.Component<ExploreProps> {
   };
 
   componentDidUpdate(prevProps: ExploreProps) {
-    console.log(this.props.next);
     if (!this.props.next) {
       window.removeEventListener('scroll', this.paginationOnScroll);
     }
@@ -128,7 +127,7 @@ class Explore extends React.Component<ExploreProps> {
     }
 
     return (
-      <Fragment>
+      <Wrapper>
         <Header />
         <div className="repositories-container">
           <div className="body-row">
@@ -143,7 +142,7 @@ class Explore extends React.Component<ExploreProps> {
             <Footer />
           </div>
         </div>
-      </Fragment>
+      </Wrapper>
     );
   }
 }

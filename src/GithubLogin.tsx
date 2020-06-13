@@ -1,39 +1,36 @@
-import React, { Component } from "react";
-import axios from "axios";
-import { apiEndPoint } from "./config";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { loginUser } from './actions';
+import { apiEndPoint } from './config';
 import { History } from 'history';
 import { UserRef } from './interface/user';
-import "./App.css";
+import './App.css';
 
 type GithubLoginProps = {
-  history: History,
-  user: UserRef,
-  location: any
-}
+  history: History;
+  user: UserRef;
+  location: any;
+  loginUser: (code: string) => any;
+  auth: any;
+};
 
 class GithubLogin extends Component<GithubLoginProps, {}> {
-  onSuccess = async (code: string) => {
-    const { data, status } = await axios.get(
-      `${apiEndPoint}/api/login/github/${code}`
-    );
-    if (status === 200) {
-      localStorage.setItem("user", JSON.stringify(data));
-      this.props.history.push("/");
-    } else {
-      alert("error occured");
-    }
-  };
-
-  render() {
+  componentDidMount() {
     const { search } = this.props.location;
-    let user: UserRef;
-    ({ user } = this.props);
 
     if (search) {
-      const [, code] = search.split("=");
-      this.onSuccess(code);
-      console.log("-code-", code);
+      const [, code] = search.split('=');
+      this.props.loginUser(code);
     }
+  }
+
+  componentDidUpdate(oldProps: GithubLoginProps) {
+    if (this.props.auth.user !== oldProps.auth.user) {
+      this.props.history.push('/explore');
+    }
+  }
+
+  render() {
     return (
       <div className="App">
         <header className="App-header">Loggin to github.....</header>
@@ -42,4 +39,8 @@ class GithubLogin extends Component<GithubLoginProps, {}> {
   }
 }
 
-export default GithubLogin;
+const mapStateToProps = (state: any) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, { loginUser })(GithubLogin);

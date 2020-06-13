@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import Header from '../partials/Header';
 import Footer from '../partials/Footer';
 import UserRepo from '../partials/Repo';
+import Wrapper from '../Wrapper';
 import PublishModal from '../partials/PublishModal';
 import {
   fetchUserRepos,
@@ -115,7 +116,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
     if (!!Object.keys(successMessage).length) {
       this.showToaster(successMessage);
     }
-    console.log('userPublishedRepos', userPublishedRepos);
+
     const updatedUserGitHubRepos = this.state.intialLoad
       ? []
       : this.userUserReposIdsIfAlreadyPublished(
@@ -124,7 +125,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
         );
 
     return (
-      <div>
+      <Wrapper>
         <Header />
         <PublishModal
           show={this.state.showModal}
@@ -307,7 +308,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
           </div>
         </div>
         <Footer />
-      </div>
+      </Wrapper>
     );
   }
 }
