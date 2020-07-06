@@ -42,6 +42,7 @@ const Routes = () => (
       />
       <PrivateRoute path="/profile" component={Profile} />
       <PrivateRoute path="/logout" component={Logout} />
+      <Redirect to="/404" />
     </Switch>
   </React.Suspense>
 );

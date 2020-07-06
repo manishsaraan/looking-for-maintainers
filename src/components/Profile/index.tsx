@@ -141,7 +141,10 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
         <div className="page-wrap">
           <ReactNotification ref={this.notificationDOMRef} />
         </div>
-        <div className="container bootstrap snippet mt-5">
+        <div
+          style={{ minHeight: '400px' }}
+          className="container bootstrap snippet mt-5"
+        >
           <div className="row">
             <div className="col-sm-3">
               <div className="text-left">
