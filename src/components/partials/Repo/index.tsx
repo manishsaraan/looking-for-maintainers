@@ -1,13 +1,14 @@
-import React from "react";
-import Toggle from "react-toggle-component";
-import { RepoRef } from "../../../interface";
-import "../../../assets/css/profile.css";
-import "react-toggle-component/styles.css";
+import React from 'react';
+import Toggle from 'react-toggle-component';
+import { RepoRef } from '../../../interface';
+import '../../../assets/css/profile.css';
+import 'react-toggle-component/styles.css';
 
 type userRepoProps = {
   isChecked: boolean;
   repo: RepoRef;
   updateRepoStatus: (repo: RepoRef, status: boolean) => void;
+  index: number;
 };
 
 type userRepoState = {
@@ -26,9 +27,11 @@ class UserRepo extends React.Component<userRepoProps, userRepoState> {
         <div className="row">
           <div className="col-1">
             <i className="fa fa-book" />
+            {this.props.index}.
           </div>
-          <div className="col-8">{repo.name}</div>
-          <div className="col-3">
+          <div className="col-3">{repo.name}</div>
+          <div className="col-6 repo-description">{repo.description}</div>
+          <div className="col-2 align-center-horz">
             <Toggle
               checked={this.state.isChecked}
               name={repo.name}

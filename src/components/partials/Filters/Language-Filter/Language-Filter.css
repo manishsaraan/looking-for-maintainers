@@ -4,9 +4,7 @@
 }
 
 .language-filter {
-  width: 155px;
   border-radius: 8px;
-  padding: 4px 10px;
   cursor: default;
   height: auto;
   display: block;

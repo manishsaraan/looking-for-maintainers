@@ -5,7 +5,7 @@ const initialState: projectsInitialStateType = {
   loading: false,
   error: null,
   projects: [],
-  next: true
+  next: true,
 };
 
 const projectsReducder: projectsReducderType = (
@@ -18,10 +18,17 @@ const projectsReducder: projectsReducderType = (
     case actionTypes.REPOS_FETCHED_SUCCESS:
       return {
         ...state,
+        projects: [...payload],
+        error: null,
+        loading: false,
+      };
+    case actionTypes.REPOS_PAGINATION_FETCHED_SUCCESS:
+      return {
+        ...state,
         projects: [...state.projects, ...payload],
         error: null,
         loading: false,
-        next: payload.length > 0
+        next: payload.length > 0,
       };
     case actionTypes.REPOS_FETCHED_ERROR:
       return { ...state, projects: [], error: payload, loading: false };

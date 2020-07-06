@@ -1,18 +1,19 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { getRepos } from '../../actions';
-import { Link } from 'react-router-dom';
 import RepoContainer from '../partials/RepoContainer';
 import RepoList from '../partials/Repo-List';
 import Spinner from '../partials/Spinner';
 import Filters from '../partials/Filters';
 import Footer from '../partials/Footer';
+import Header from '../partials/Header';
+import Wrapper from '../Wrapper';
 import { UserRef, RepoRef, projectsInitialStateType } from '../../interface';
 import './style.css';
 
 type ExploreProps = {
   user: UserRef;
-  getRepos: (lang?: string, page?: number) => any;
+  getRepos: (lang?: string, page?: number, initial?: boolean) => any;
   projects: RepoRef[];
   loading: boolean;
   selectedLanguage: string;
@@ -41,20 +42,19 @@ class Explore extends React.Component<ExploreProps> {
   paginationOnScroll = () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
       // you're at the bottom of the page
-      console.log('at botom');
+      console.log('at the bottom');
       const { page, selectedLang } = this.state;
       const nextPage = page + 1;
       const { loading } = this.props;
 
       if (!loading) {
-        this.props.getRepos(selectedLang, nextPage);
+        this.props.getRepos(selectedLang, nextPage, false);
         this.setState({ page: nextPage });
       }
     }
   };
 
   componentDidUpdate(prevProps: ExploreProps) {
-    console.log(this.props.next);
     if (!this.props.next) {
       window.removeEventListener('scroll', this.paginationOnScroll);
     }
@@ -125,24 +125,10 @@ class Explore extends React.Component<ExploreProps> {
         content = this.renderContent(showProject, projects);
       }
     }
-    // const content =
-    //   projects.length === 0
-    //     ? this.renderNoContent()
-    //     : this.renderContent(showProject, projects);
 
     return (
-      <Fragment>
-        <div className="page-wrap">
-          <section className="menu-section ">
-            <div className="menu-section-container">
-              <span className="biggest flex-item-center txtcenter">
-                <Link className="homepage-link" to="/">
-                  Looking For Maintainers
-                </Link>
-              </span>
-            </div>
-          </section>
-        </div>
+      <Wrapper>
+        <Header />
         <div className="repositories-container">
           <div className="body-row">
             <div className="filters">
@@ -156,7 +142,7 @@ class Explore extends React.Component<ExploreProps> {
             <Footer />
           </div>
         </div>
-      </Fragment>
+      </Wrapper>
     );
   }
 }

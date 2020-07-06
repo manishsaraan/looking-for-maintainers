@@ -1,0 +1,60 @@
+.header a {
+  font-size: 1.6rem;
+  color: #555;
+}
+
+.navbar-nav .show > .nav-link {
+  color: #555;
+}
+
+.navbar-light .navbar-brand {
+  font-size: 2rem;
+  color: #3d5866;
+  font-weight: bold;
+}
+
+.header-svg {
+  width: 25px;
+  margin-right: 5px;
+}
+
+.header .publish-button {
+  padding: 3px 7px !important;
+  font-size: 14px;
+  text-transform: none;
+  height: auto;
+  background: #3d5866;
+  color: #fff;
+  display: flex;
+  border-radius: 5px;
+  align-items: center;
+  line-height: 30px;
+  margin-left: 20px;
+  border: none;
+}
+.header .publish-button:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.publish-button svg {
+  margin-right: 5px !important;
+  color: #fff;
+  width: 24px;
+  background: #3d5866;
+}
+
+.header svg {
+  margin-right: 10px;
+}
+
+.header .navbar {
+  padding: 1rem;
+  background: #fff !important;
+  border-bottom: 1px solid #dbdbdb;
+}
+
+.dropdown-item {
+  width: 120px;
+  padding: 10px;
+}
