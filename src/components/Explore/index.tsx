@@ -13,11 +13,17 @@ import './style.css';
 
 type ExploreProps = {
   user: UserRef;
-  getRepos: (lang?: string, page?: number, initial?: boolean) => any;
+  getRepos: (
+    lang?: string,
+    page?: number,
+    initial?: boolean,
+    props?: any
+  ) => any;
   projects: RepoRef[];
   loading: boolean;
   selectedLanguage: string;
   next: boolean;
+  history: any;
 };
 
 class Explore extends React.Component<ExploreProps> {
@@ -32,7 +38,9 @@ class Explore extends React.Component<ExploreProps> {
 
     // Only load if there are no projects in store
     if (projects.length === 0 && !selectedLanguage) {
-      this.props.getRepos();
+      this.props.getRepos(undefined, undefined, true, {
+        push: this.props.history.push,
+      });
     }
 
     // // Detect when scrolled to bottom.
@@ -48,7 +56,9 @@ class Explore extends React.Component<ExploreProps> {
       const { loading } = this.props;
 
       if (!loading) {
-        this.props.getRepos(selectedLang, nextPage, false);
+        this.props.getRepos(selectedLang, nextPage, false, {
+          push: this.props.history.push,
+        });
         this.setState({ page: nextPage });
       }
     }

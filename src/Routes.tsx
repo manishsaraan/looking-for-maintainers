@@ -2,6 +2,8 @@ import React, { lazy } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import GithubLogin from './GithubLogin';
 import Logout from './components/Logout';
+import Error500Page from './components/500';
+import Error404Page from './components/404';
 const Explore = lazy(() => import('./components/Explore'));
 const Profile = lazy(() => import('./components/Profile'));
 const Home = lazy(() => import('./components/Home'));
@@ -40,8 +42,11 @@ const Routes = () => (
         path="/explore"
         component={(props: any) => <Explore {...props} />}
       />
+      <Route path="/500" component={Error500Page} />
+      <Route path="/404" component={Error404Page} />
       <PrivateRoute path="/profile" component={Profile} />
       <PrivateRoute path="/logout" component={Logout} />
+
       <Redirect to="/404" />
     </Switch>
   </React.Suspense>
