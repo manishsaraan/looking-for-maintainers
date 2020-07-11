@@ -42,10 +42,11 @@ const Routes = () => (
         path="/explore"
         component={(props: any) => <Explore {...props} />}
       />
-      <PrivateRoute path="/profile" component={Profile} />
-      <PrivateRoute path="/logout" component={Logout} />
       <Route path="/500" component={Error500Page} />
       <Route path="/404" component={Error404Page} />
+      <PrivateRoute path="/profile" component={Profile} />
+      <PrivateRoute path="/logout" component={Logout} />
+
       <Redirect to="/404" />
     </Switch>
   </React.Suspense>

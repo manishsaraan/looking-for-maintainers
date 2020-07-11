@@ -20,13 +20,19 @@ function createHeaders(): HeaderRef {
   };
 }
 
-function getApi(apiUrl: string, headers = true) {
+function query(apiUrl: string, method: string, headers = true, payload?: any) {
   return new Promise(async (resolve, reject) => {
     try {
-      const fetchResponse = await fetch(apiUrl, {
-        method: 'GET',
+      let queryPayload: any = {
+        method: method,
         headers: headers ? createHeaders() : {},
-      });
+      };
+
+      if (payload) {
+        queryPayload['body'] = JSON.stringify(payload);
+      }
+
+      const fetchResponse = await fetch(apiUrl, queryPayload);
 
       if (!fetchResponse.ok) {
         throw fetchResponse;
@@ -62,9 +68,8 @@ export function getRepos(
       });
     }
 
-    console.log('-oprps', props);
     try {
-      const jsonResp = await getApi(exploreEndPoint, false);
+      const jsonResp = await query(exploreEndPoint, 'GET', false);
 
       const dispatchType = initial
         ? actionTypes.REPOS_FETCHED_SUCCESS
@@ -75,7 +80,6 @@ export function getRepos(
         payload: jsonResp,
       });
     } catch (e) {
-      console.log(e);
       handleHTTPError(e, dispatch, props, {
         type: actionTypes.REPOS_FETCHED_ERROR,
       });
@@ -88,7 +92,7 @@ export function fetchUserRepos(userId: number, props: any): any {
     dispatch({ type: actionTypes.USER_REPOS_FETCHED_INIT });
 
     try {
-      const jsonResp = await getApi(`${apiEndPoint}/api/repos/${userId}`);
+      const jsonResp = await query(`${apiEndPoint}/api/repos/${userId}`, 'GET');
 
       dispatch({
         type: actionTypes.USER_REPOS_FETCHED_SUCCESS,
@@ -103,57 +107,67 @@ export function fetchUserRepos(userId: number, props: any): any {
 }
 
 export function fetchUserGithubRepos(userName: string, repoName: string): any {
-  return function(dispatch: any) {
+  return async function(dispatch: any) {
     dispatch({
       type: actionTypes.USER_GITHUB_REPOS_FETCH_INIT,
     });
-    return fetch(`${apiEndPoint}/api/user-repo/${userName}/${repoName}`, {
-      method: 'GET',
-      headers: createHeaders(),
-    })
-      .then((response) => response.json())
-      .then((jsonResp) => {
-        dispatch({
-          type: actionTypes.USER_GITHUB_REPOS_FETCH_SUCCESS,
-          payload: jsonResp,
-        });
+
+    try {
+      const jsonResp = await query(
+        `${apiEndPoint}/api/user-repo/${userName}/${repoName}`,
+        'GET'
+      );
+
+      dispatch({
+        type: actionTypes.USER_GITHUB_REPOS_FETCH_SUCCESS,
+        payload: jsonResp,
       });
+    } catch (e) {
+      handleHTTPError(
+        e,
+        dispatch,
+        {},
+        {
+          type: actionTypes.USER_REPOS_FETCHED_ERROR,
+        }
+      );
+    }
   };
 }
 
 export function publishRepo(repo: RepoRef): any {
-  return function(dispatch: any, getState: any) {
-    return fetch(`${apiEndPoint}/api/publish/${repo.name}`, {
-      method: 'POST',
-      headers: createHeaders(),
-      body: JSON.stringify({}),
-    })
-      .then((response) => response.json())
-      .then((jsonResp) => {
-        dispatch({
-          type: actionTypes.USER_GITHUB_REPOS_PUBLISHED,
-          payload: jsonResp,
-        });
+  return async function(dispatch: any) {
+    try {
+      const jsonResp = await query(
+        `${apiEndPoint}/api/publish/${repo.name}`,
+        'POST'
+      );
+
+      dispatch({
+        type: actionTypes.USER_GITHUB_REPOS_PUBLISHED,
+        payload: jsonResp,
       });
+    } catch (e) {
+      //Todo: handle errors
+    }
   };
 }
 
 export function unpublishRepo(repoName: string, repoId: number): any {
-  return function(dispatch: any) {
-    return fetch(`${apiEndPoint}/api/delete/${repoId}`, {
-      method: 'DELETE',
-      headers: createHeaders(),
-    })
-      .then((response) => response.json())
-      .then((jsonResp) => {
-        dispatch({
-          type: actionTypes.USER_GITHUB_REPOS_REMOVED,
-          payload: {
-            repo: repoName,
-            msg: `${repoName} successfully un-published`,
-          },
-        });
+  return async function(dispatch: any) {
+    try {
+      await query(`${apiEndPoint}/api/delete/${repoId}`, 'DELETE');
+
+      dispatch({
+        type: actionTypes.USER_GITHUB_REPOS_REMOVED,
+        payload: {
+          repo: repoName,
+          msg: `${repoName} successfully un-published`,
+        },
       });
+    } catch (e) {
+      //Todo: handle errors
+    }
   };
 }
 
@@ -161,38 +175,55 @@ export function subscribe(email: string, cb?: any): any {
   return async function(dispatch: any) {
     dispatch({ type: actionTypes.SUBSCRIBE_EMAIL_INIT });
 
-    const fetchedResp = await fetch(`${apiEndPoint}/api/subscribe`, {
-      method: 'POST',
-      headers: createHeaders(),
-      body: JSON.stringify({ email }),
-    });
+    try {
+      const jsonResp = await query(
+        `${apiEndPoint}/api/subscribe`,
+        'POST',
+        false,
+        {
+          email,
+        }
+      );
 
-    const Resp = await fetchedResp.json();
-
-    cb();
-    dispatch({
-      type: actionTypes.SUBSCRIBE_EMAIL_SUCCESS,
-      payload: Resp,
-    });
+      dispatch({
+        type: actionTypes.SUBSCRIBE_EMAIL_SUCCESS,
+        payload: jsonResp,
+      });
+    } catch (e) {
+      //Todo: handle errors
+    }
   };
 }
 
 export function loginUser(code: string): any {
-  return function(dispatch: any) {
+  return async function(dispatch: any) {
     dispatch({
       type: actionTypes.USER_LOGIN_INIT,
     });
-    return fetch(`${apiEndPoint}/api/login/github/${code}`, {
-      method: 'GET',
-    })
-      .then((response) => response.json())
-      .then((jsonResp) => {
-        localStorage.setItem('user', JSON.stringify(jsonResp));
-        dispatch({
-          type: actionTypes.USER_LOGIN_SUCCESS,
-          payload: jsonResp,
-        });
+
+    try {
+      const jsonResp = await query(
+        `${apiEndPoint}/api/login/github/${code}`,
+        'GET',
+        false
+      );
+
+      localStorage.setItem('user', JSON.stringify(jsonResp));
+
+      dispatch({
+        type: actionTypes.USER_LOGIN_SUCCESS,
+        payload: jsonResp,
       });
+    } catch (e) {
+      handleHTTPError(
+        e,
+        dispatch,
+        {},
+        {
+          type: actionTypes.USER_REPOS_FETCHED_ERROR,
+        }
+      );
+    }
   };
 }
 
