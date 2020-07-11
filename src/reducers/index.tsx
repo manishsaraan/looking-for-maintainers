@@ -9,44 +9,6 @@ const initialState = {
   error: false,
 };
 
-type processGithubSearchResponseType = (repo: RepoRef) => any;
-
-const processGithubSearchResponse: processGithubSearchResponseType = (repo) => {
-  const {
-    name,
-    stargazers_count,
-    watchers_count,
-    open_issues_count,
-    created_at,
-    forks_count,
-    description,
-    html_url,
-    languages,
-    owner,
-    id,
-  } = repo;
-
-  const { html_url: userProfileUrl, avatar_url, login }: OwnerRef = owner;
-
-  return {
-    name,
-    github_id: id,
-    stargazers_count,
-    watchers_count,
-    open_issues_count,
-    forks_count,
-    description,
-    html_url,
-    languages,
-    created_at,
-    owner: {
-      userProfileUrl,
-      avatar_url,
-      username: login,
-    },
-  };
-};
-
 function rootReducer(
   state = initialState,
   { type, payload }: { type: any; payload: any }

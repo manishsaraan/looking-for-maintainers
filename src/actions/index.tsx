@@ -1,4 +1,5 @@
 import * as actionTypes from '../constants/action-types';
+import { handleHTTPError } from './errorHandlerActions';
 import { apiEndPoint } from '../config';
 import { RepoRef } from '../interface';
 
@@ -17,6 +18,27 @@ function createHeaders(): HeaderRef {
     'Content-Type': 'application/json',
     'x-access-token': jwtToken,
   };
+}
+
+function getApi(apiUrl: string) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const fetchResponse = await fetch(apiUrl, {
+        method: 'GET',
+        headers: createHeaders(),
+      });
+
+      if (!fetchResponse.ok) {
+        throw fetchResponse;
+      }
+
+      const data = await fetchResponse.json();
+
+      resolve(data);
+    } catch (error) {
+      reject(error);
+    }
+  });
 }
 
 export function getRepos(lang?: string, page = 1, initial = true): any {
@@ -53,21 +75,45 @@ export function getRepos(lang?: string, page = 1, initial = true): any {
   };
 }
 
-export function fetchUserRepos(userId: number): any {
-  return function(dispatch: any) {
+export function fetchUserRepos(userId: number, props: any): any {
+  return async function(dispatch: any) {
     dispatch({ type: actionTypes.USER_REPOS_FETCHED_INIT });
 
-    return fetch(`${apiEndPoint}/api/repos/${userId}`, {
-      method: 'GET',
-      headers: createHeaders(),
-    })
-      .then((response) => response.json())
-      .then((jsonResp) => {
-        dispatch({
-          type: actionTypes.USER_REPOS_FETCHED_SUCCESS,
-          payload: jsonResp,
-        });
+    try {
+      const jsonResp = await getApi(`${apiEndPoint}/api/repos/${userId}`);
+
+      dispatch({
+        type: actionTypes.USER_REPOS_FETCHED_SUCCESS,
+        payload: jsonResp,
       });
+    } catch (e) {
+      handleHTTPError(e, dispatch, props, {
+        type: actionTypes.USER_REPOS_FETCHED_ERROR,
+      });
+    }
+
+    // return fetch(`${apiEndPoint}/api/repos/${userId}`, {
+    //   method: 'GET',
+    //   headers: createHeaders(),
+    // })
+    //   .then((response) => {
+    //     if (!response.ok) {
+    //       throw response;
+    //     }
+
+    //     return response.json();
+    //   })
+    //   .then((jsonResp) => {
+    //     dispatch({
+    //       type: actionTypes.USER_REPOS_FETCHED_SUCCESS,
+    //       payload: jsonResp,
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     handleHTTPError(error, dispatch, props, {
+    //       type: actionTypes.USER_REPOS_FETCHED_ERROR,
+    //     });
+    //   });
   };
 }
 

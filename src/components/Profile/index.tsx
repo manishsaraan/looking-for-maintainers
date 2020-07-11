@@ -21,7 +21,7 @@ import ReactNotification from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 
 type ProfileProps = {
-  fetchUserRepos: (userId: number) => any;
+  fetchUserRepos: (userId: number, props: any) => any;
   fetchUserGithubRepos: (userName: string, repoName: string) => any;
   user: UserRef;
   publishRepo: (repo: RepoRef) => any;
@@ -29,6 +29,8 @@ type ProfileProps = {
   userPublishedRepos: any;
   userGithubRepos: any;
   successMessage: any;
+  errors: any;
+  history: any;
 };
 
 type ProfileState = {
@@ -52,7 +54,10 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
     this.reloadRepos();
   }
 
-  reloadRepos = () => this.props.fetchUserRepos(this.props.user.id);
+  reloadRepos = () =>
+    this.props.fetchUserRepos(this.props.user.id, {
+      push: this.props.history.push,
+    });
 
   findRepos = (search: string) => {
     this.setState({ intialLoad: false });
