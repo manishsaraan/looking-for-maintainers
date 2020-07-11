@@ -1,0 +1,25 @@
+.cover {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 0 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 50px);
+  flex-direction: column;
+}
+
+.cover h1 {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+  font-size: 36px;
+}
+
+.cover .lead {
+  color: #c0c0c0;
+  font-size: 21px;
+  line-height: 1.4;
+}

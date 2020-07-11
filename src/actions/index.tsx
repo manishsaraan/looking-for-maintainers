@@ -20,12 +20,12 @@ function createHeaders(): HeaderRef {
   };
 }
 
-function getApi(apiUrl: string) {
+function getApi(apiUrl: string, headers = true) {
   return new Promise(async (resolve, reject) => {
     try {
       const fetchResponse = await fetch(apiUrl, {
         method: 'GET',
-        headers: createHeaders(),
+        headers: headers ? createHeaders() : {},
       });
 
       if (!fetchResponse.ok) {
@@ -41,8 +41,13 @@ function getApi(apiUrl: string) {
   });
 }
 
-export function getRepos(lang?: string, page = 1, initial = true): any {
-  return function(dispatch: any) {
+export function getRepos(
+  lang?: string,
+  page = 1,
+  initial = true,
+  props?: any
+): any {
+  return async function(dispatch: any) {
     dispatch({ type: actionTypes.REPOS_FETCHED_INIT });
 
     let exploreEndPoint: string = `${apiEndPoint}/api/explore?page=${page}`;
@@ -57,21 +62,24 @@ export function getRepos(lang?: string, page = 1, initial = true): any {
       });
     }
 
-    return fetch(exploreEndPoint)
-      .then((response) => response.json())
-      .then((json) => {
-        if (initial) {
-          dispatch({ type: actionTypes.REPOS_FETCHED_SUCCESS, payload: json });
-        } else {
-          dispatch({
-            type: actionTypes.REPOS_PAGINATION_FETCHED_SUCCESS,
-            payload: json,
-          });
-        }
-      })
-      .catch((error) => {
-        dispatch({ type: actionTypes.REPOS_FETCHED_ERROR, payload: error });
+    console.log('-oprps', props);
+    try {
+      const jsonResp = await getApi(exploreEndPoint, false);
+
+      const dispatchType = initial
+        ? actionTypes.REPOS_FETCHED_SUCCESS
+        : actionTypes.REPOS_PAGINATION_FETCHED_SUCCESS;
+
+      dispatch({
+        type: dispatchType,
+        payload: jsonResp,
       });
+    } catch (e) {
+      console.log(e);
+      handleHTTPError(e, dispatch, props, {
+        type: actionTypes.REPOS_FETCHED_ERROR,
+      });
+    }
   };
 }
 
@@ -91,29 +99,6 @@ export function fetchUserRepos(userId: number, props: any): any {
         type: actionTypes.USER_REPOS_FETCHED_ERROR,
       });
     }
-
-    // return fetch(`${apiEndPoint}/api/repos/${userId}`, {
-    //   method: 'GET',
-    //   headers: createHeaders(),
-    // })
-    //   .then((response) => {
-    //     if (!response.ok) {
-    //       throw response;
-    //     }
-
-    //     return response.json();
-    //   })
-    //   .then((jsonResp) => {
-    //     dispatch({
-    //       type: actionTypes.USER_REPOS_FETCHED_SUCCESS,
-    //       payload: jsonResp,
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     handleHTTPError(error, dispatch, props, {
-    //       type: actionTypes.USER_REPOS_FETCHED_ERROR,
-    //     });
-    //   });
   };
 }
 

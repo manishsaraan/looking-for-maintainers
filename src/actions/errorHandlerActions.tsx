@@ -6,10 +6,12 @@ const execute404Handler = () => {
   };
 };
 
-const execute500Handler = () => {
-  return {
+const execute500Handler = (dispatch: any, props: any) => {
+  dispatch({
     type: actionTypes.HTTP_500_ERROR,
-  };
+  });
+
+  props.push('/500');
 };
 
 const execute401Handler = (dispatch: any, props: any) => {
@@ -38,7 +40,7 @@ export const handleHTTPError = (
   } else if (error.status === 404) {
     return execute404Handler();
   } else if (error.status === 500) {
-    return execute500Handler();
+    return execute500Handler(dispatch, props);
   } else {
     dispatch(next);
   }
