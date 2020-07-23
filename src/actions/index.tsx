@@ -151,7 +151,13 @@ export function publishRepo(repo: RepoRef): any {
 
       dispatch({
         type: actionTypes.USER_GITHUB_REPOS_PUBLISHED,
-        payload: jsonResp,
+        payload: {
+          data: jsonResp,
+          success: {
+            repo: repo.name,
+            msg: `${repo.name} successfully published`,
+          },
+        },
       });
     } catch (e) {
       //Todo: handle errors
@@ -174,6 +180,14 @@ export function unpublishRepo(repoName: string, repoId: number): any {
     } catch (e) {
       //Todo: handle errors
     }
+  };
+}
+
+export function resetNotifications() {
+  return function(dispatch: any) {
+    dispatch({
+      type: actionTypes.RESET_NOTIFICATIONS,
+    });
   };
 }
 

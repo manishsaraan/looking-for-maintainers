@@ -18,12 +18,14 @@ function rootReducer(
       return {
         ...state,
         selectedLanguage: payload,
+        successMessage: {},
       };
     case actionTypes.USER_REPOS_FETCHED_INIT:
       return {
         ...state,
         loading: true,
         errro: false,
+        successMessage: {},
       };
     case actionTypes.USER_REPOS_FETCHED_SUCCESS:
       return {
@@ -37,11 +39,7 @@ function rootReducer(
         error: false,
         successMessage: {},
       };
-    case actionTypes.USER_GITHUB_REPOS_REMOVED:
-      return {
-        ...state,
-        successMessage: { ...payload },
-      };
+
     default:
       return { ...state };
   }

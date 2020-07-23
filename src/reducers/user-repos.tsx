@@ -78,8 +78,18 @@ function userGitHubRepos(
     case actionTypes.USER_GITHUB_REPOS_PUBLISHED:
       return {
         ...state,
-        repos: updateUserGitHubRepos(state, payload),
-        // successMessage: { ...payload.success },
+        repos: updateUserGitHubRepos(state, payload.data),
+        successMessage: { ...payload.success },
+      };
+    case actionTypes.USER_GITHUB_REPOS_REMOVED:
+      return {
+        ...state,
+        successMessage: { ...payload },
+      };
+    case actionTypes.RESET_NOTIFICATIONS:
+      return {
+        ...state,
+        successMessage: {},
       };
     default:
       return { ...state };

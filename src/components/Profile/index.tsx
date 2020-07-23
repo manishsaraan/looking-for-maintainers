@@ -10,6 +10,7 @@ import {
   fetchUserRepos,
   fetchUserGithubRepos,
   publishRepo,
+  resetNotifications,
   unpublishRepo,
 } from '../../actions';
 import Spinner from '../partials/Spinner';
@@ -26,6 +27,7 @@ type ProfileProps = {
   user: UserRef;
   publishRepo: (repo: RepoRef) => any;
   unpublishRepo: (repoName: string, repoId: number) => any;
+  resetNotifications: () => void;
   userPublishedRepos: any;
   userGithubRepos: any;
   successMessage: any;
@@ -108,6 +110,11 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
   handlePopupClose = () => {
     this.setState({ showModal: false, intialLoad: true });
     this.reloadRepos();
+  };
+
+  handlePopupOpen = () => {
+    this.props.resetNotifications();
+    this.setState({ showModal: true });
   };
 
   render() {
@@ -200,7 +207,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
                           </b>
                           <div className="action-buttons">
                             <button
-                              onClick={() => this.setState({ showModal: true })}
+                              onClick={this.handlePopupOpen}
                               className="btn btn-sm publish-btn-small"
                             >
                               <svg
@@ -324,7 +331,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
 const mapStateToProps = (state: any) => ({
   userPublishedRepos: state.repos, // published on platform
   userGithubRepos: state.userGitHubRepos, // fetched from github
-  successMessage: state.repos.successMessage,
+  successMessage: state.userGitHubRepos.successMessage,
 });
 
 export default connect(mapStateToProps, {
@@ -332,4 +339,5 @@ export default connect(mapStateToProps, {
   fetchUserGithubRepos,
   publishRepo,
   unpublishRepo,
+  resetNotifications,
 })(Profile);
