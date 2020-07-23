@@ -2915,14 +2915,10 @@ label > .label-body {
 .load-email__form {
   flex-direction: column;
   align-items: center;
+  display: flex;
+  justify-content: center;
 }
 @media screen and (min-width: 768px) {
-  .load-email__form {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
-  }
 }
 
 .contact-section .load-email-enter {
@@ -2959,10 +2955,8 @@ label > .label-body {
 }
 @media (min-width: 992px) {
   .load-email-button {
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-radius: 5px;
+    width: 300px;
   }
 }
 
