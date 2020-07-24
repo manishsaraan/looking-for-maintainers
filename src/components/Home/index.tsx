@@ -11,6 +11,7 @@ type HomeProps = {
   user: any;
   articles: any;
   subscribe: (email: string, fname: string) => any;
+  subState: any;
 };
 
 type HomeState = {
@@ -109,7 +110,10 @@ export class Home extends Component<HomeProps, HomeState> {
                     <div className="first-page-email">
                       <div className="first-page-email-content">
                         <div className="first-page-email__input-container">
-                          <Subscribe subscribe={this.props.subscribe} />
+                          <Subscribe
+                            subState={this.props.subState}
+                            subscribe={this.props.subscribe}
+                          />
                         </div>
                       </div>
                     </div>
@@ -125,4 +129,8 @@ export class Home extends Component<HomeProps, HomeState> {
   }
 }
 
-export default connect(null, { subscribe })(Home);
+const mapStateToProps = (state: any) => ({
+  subState: state.subscribe,
+});
+
+export default connect(mapStateToProps, { subscribe })(Home);

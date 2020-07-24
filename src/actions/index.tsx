@@ -14,7 +14,7 @@ function createHeaders(): HeaderRef {
 
   const { jwtToken }: { jwtToken: string } = JSON.parse(user);
   return {
-    Accept: 'application/json, text/plain, */*',
+    Accept: 'application/json',
     'Content-Type': 'application/json',
     'x-access-token': jwtToken,
   };
@@ -25,20 +25,26 @@ function query(apiUrl: string, method: string, headers = true, payload?: any) {
     try {
       let queryPayload: any = {
         method: method,
-        headers: headers ? createHeaders() : {},
+        headers: headers
+          ? createHeaders()
+          : {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
       };
 
       if (payload) {
         queryPayload['body'] = JSON.stringify(payload);
       }
 
+      console.log('---', queryPayload);
       const fetchResponse = await fetch(apiUrl, queryPayload);
 
-      if (!fetchResponse.ok) {
-        throw fetchResponse;
-      }
-
       const data = await fetchResponse.json();
+
+      if (!fetchResponse.ok) {
+        throw { status: fetchResponse.status, data };
+      }
 
       resolve(data);
     } catch (error) {
@@ -145,7 +151,13 @@ export function publishRepo(repo: RepoRef): any {
 
       dispatch({
         type: actionTypes.USER_GITHUB_REPOS_PUBLISHED,
-        payload: jsonResp,
+        payload: {
+          data: jsonResp,
+          success: {
+            repo: repo.name,
+            msg: `${repo.name} successfully published`,
+          },
+        },
       });
     } catch (e) {
       //Todo: handle errors
@@ -171,7 +183,15 @@ export function unpublishRepo(repoName: string, repoId: number): any {
   };
 }
 
-export function subscribe(email: string, cb?: any): any {
+export function resetNotifications() {
+  return function(dispatch: any) {
+    dispatch({
+      type: actionTypes.RESET_NOTIFICATIONS,
+    });
+  };
+}
+
+export function subscribe(email: string, fname: string): any {
   return async function(dispatch: any) {
     dispatch({ type: actionTypes.SUBSCRIBE_EMAIL_INIT });
 
@@ -182,6 +202,7 @@ export function subscribe(email: string, cb?: any): any {
         false,
         {
           email,
+          fname,
         }
       );
 
@@ -190,7 +211,15 @@ export function subscribe(email: string, cb?: any): any {
         payload: jsonResp,
       });
     } catch (e) {
-      //Todo: handle errors
+      handleHTTPError(
+        e,
+        dispatch,
+        {},
+        {
+          type: actionTypes.SUBSCRIBE_EMAIL_ERROR,
+          payload: e.data,
+        }
+      );
     }
   };
 }
